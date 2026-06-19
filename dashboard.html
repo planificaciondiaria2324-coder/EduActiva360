@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduActiva 360 — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --verde:       #1A7F5A;
+      --verde-claro: #23A876;
+      --verde-bg:    #F0FAF5;
+      --gris:        #6B7280;
+      --gris-borde:  #E5E7EB;
+      --negro:       #111827;
+      --blanco:      #FFFFFF;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #F9FAFB;
+      color: var(--negro);
+    }
+
+    /* HEADER */
+    header {
+      background: var(--blanco);
+      border-bottom: 1px solid var(--gris-borde);
+      padding: 0 2rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .logo-icono {
+      width: 36px; height: 36px;
+      background: var(--verde);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .logo-icono svg { width: 20px; height: 20px; fill: white; }
+
+    .logo-texto {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--negro);
+    }
+
+    .usuario-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .usuario-nombre {
+      font-size: 0.875rem;
+      color: var(--gris);
+    }
+
+    .btn-salir {
+      background: none;
+      border: 1.5px solid var(--gris-borde);
+      color: var(--gris);
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .btn-salir:hover { border-color: var(--verde); color: var(--verde); }
+
+    /* MAIN */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    .bienvenida {
+      margin-bottom: 2rem;
+    }
+
+    .bienvenida h1 {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    .bienvenida p { color: var(--gris); font-size: 0.95rem; }
+
+    /* CARDS */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background: var(--blanco);
+      border: 1px solid var(--gris-borde);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .card-label {
+      font-size: 0.8rem;
+      color: var(--gris);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-valor {
+      font-family: 'Sora', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--verde);
+    }
+
+    .card-desc { font-size: 0.8rem; color: var(--gris); margin-top: 0.3rem; }
+
+    /* MÓDULOS */
+    .seccion-titulo {
+      font-family: 'Sora', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--negro);
+    }
+
+    .modulos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+
+    .modulo {
+      background: var(--blanco);
+      border: 1px solid var(--gris-borde);
+      border-radius: 10px;
+      padding: 1.2rem;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-align: center;
+    }
+
+    .modulo:hover {
+      border-color: var(--verde);
+      box-shadow: 0 2px 12px rgba(26,127,90,0.1);
+    }
+
+    .modulo-icono {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .modulo-nombre {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--negro);
+    }
+
+    .modulo-desc {
+      font-size: 0.75rem;
+      color: var(--gris);
+      margin-top: 0.2rem;
+    }
+
+    .badge-pronto {
+      display: inline-block;
+      background: var(--verde-bg);
+      color: var(--verde);
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 0.15rem 0.5rem;
+      border-radius: 20px;
+      margin-top: 0.4rem;
+      letter-spacing: 0.03em;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icono">
+      <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+    </div>
+    <span class="logo-texto">EduActiva 360</span>
+  </div>
+  <div class="usuario-info">
+    <span class="usuario-nombre" id="nombreUsuario">Cargando...</span>
+    <button class="btn-salir" onclick="cerrarSesion()">Salir</button>
+  </div>
+</header>
+
+<main>
+  <div class="bienvenida">
+    <h1 id="saludo">Bienvenida</h1>
+    <p>Sistema de Gestión Educativa · República Dominicana</p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-label">Plataforma</div>
+      <div class="card-valor">✓</div>
+      <div class="card-desc">Backend activo en Railway</div>
+    </div>
+    <div class="card">
+      <div class="card-label">API</div>
+      <div class="card-valor" id="estadoApi">—</div>
+      <div class="card-desc">Conexión con el servidor</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Versión</div>
+      <div class="card-valor">1.0</div>
+      <div class="card-desc">Fase piloto</div>
+    </div>
+  </div>
+
+  <p class="seccion-titulo">Módulos</p>
+  <div class="modulos">
+    <div class="modulo">
+      <div class="modulo-icono">🏫</div>
+      <div class="modulo-nombre">Instituciones</div>
+      <div class="modulo-desc">Gestión de centros</div>
+      <span class="badge-pronto">Próximamente</span>
+    </div>
+    <div class="modulo">
+      <div class="modulo-icono">👥</div>
+      <div class="modulo-nombre">Usuarios</div>
+      <div class="modulo-desc">Docentes y estudiantes</div>
+      <span class="badge-pronto">Próximamente</span>
+    </div>
+    <div class="modulo">
+      <div class="modulo-icono">📋</div>
+      <div class="modulo-nombre">Planificación</div>
+      <div class="modulo-desc">Planes de clase</div>
+      <span class="badge-pronto">Próximamente</span>
+    </div>
+    <div class="modulo">
+      <div class="modulo-icono">📊</div>
+      <div class="modulo-nombre">Reportes</div>
+      <div class="modulo-desc">Indicadores y métricas</div>
+      <span class="badge-pronto">Próximamente</span>
+    </div>
+    <div class="modulo">
+      <div class="modulo-icono">🔑</div>
+      <div class="modulo-nombre">Licencias</div>
+      <div class="modulo-desc">Gestión de accesos</div>
+      <span class="badge-pronto">Próximamente</span>
+    </div>
+    <div class="modulo">
+      <div class="modulo-icono">⚙️</div>
+      <div class="modulo-nombre">Configuración</div>
+      <div class="modulo-desc">Ajustes del sistema</div>
+      <span class="badge-pronto">Próximamente</span>
+    </div>
+  </div>
+</main>
+
+<script>
+  const API = 'https://eduactiva360-backend-production.up.railway.app';
+
+  // Verificar sesión
+  const token = localStorage.getItem('token');
+  if (!token) window.location.href = 'index.html';
+
+  // Mostrar usuario
+  try {
+    const u = JSON.parse(localStorage.getItem('usuario') || '{}');
+    const nombre = u.name || u.email || 'Usuario';
+    document.getElementById('nombreUsuario').textContent = nombre;
+    document.getElementById('saludo').textContent = `Bienvenida, ${nombre.split(' ')[0]}`;
+  } catch {}
+
+  // Ping al API
+  fetch(`${API}/api/v1/auth/login`, { method: 'HEAD' })
+    .then(() => { document.getElementById('estadoApi').textContent = '✓'; })
+    .catch(() => { document.getElementById('estadoApi').textContent = '✗'; });
+
+  function cerrarSesion() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('usuario');
+    window.location.href = 'index.html';
+  }
+</script>
+
+</body>
+</html>
