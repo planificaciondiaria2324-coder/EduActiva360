@@ -420,7 +420,51 @@
     <!-- USUARIOS -->
     <div id="section-usuarios" style="display:none">
       <div class="panel">
-        <div class="panel-header"><h3>👥 Usuarios del sistema</h3></div>
+        <div class="panel-header"><h3>➕ Registrar nuevo usuario</h3></div>
+        <div class="panel-body">
+          <div class="alert alert-success" id="user-success"></div>
+          <div class="alert alert-error" id="user-error"></div>
+          <div class="form-row">
+            <div class="form-field">
+              <label>Nombre</label>
+              <input type="text" id="user-firstname" placeholder="Ej: María">
+            </div>
+            <div class="form-field">
+              <label>Apellido</label>
+              <input type="text" id="user-lastname" placeholder="Ej: Pérez">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label>Correo electrónico</label>
+              <input type="email" id="user-email" placeholder="docente@centro.edu.do">
+            </div>
+            <div class="form-field">
+              <label>Contraseña</label>
+              <input type="password" id="user-password" placeholder="Mínimo 8 caracteres">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label>Rol</label>
+              <select id="user-role">
+                <option value="director">Director</option>
+                <option value="docente">Docente</option>
+                <option value="estudiante">Estudiante</option>
+                <option value="padre">Padre/Tutor</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label>Teléfono (opcional)</label>
+              <input type="text" id="user-phone" placeholder="809-000-0000">
+            </div>
+          </div>
+          <button class="btn-secondary" onclick="clearUserForm()">Limpiar</button>
+          <button class="btn-primary" onclick="crearUsuario()">Registrar usuario</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><h3>👥 Lista de usuarios</h3></div>
         <div class="panel-body" id="users-list">
           <div class="loading"><div class="spinner"></div><br>Cargando...</div>
         </div>
@@ -716,6 +760,42 @@ async function loadLicencias() {
   } catch(e) {
     document.getElementById('licencias-list').innerHTML = '<p style="color:var(--gris)">No se pudieron cargar las licencias.</p>';
   }
+}
+
+async function crearUsuario() {
+  const first_name = document.getElementById('user-firstname').value.trim();
+  const last_name = document.getElementById('user-lastname').value.trim();
+  const email = document.getElementById('user-email').value.trim();
+  const password = document.getElementById('user-password').value;
+  const role = document.getElementById('user-role').value;
+
+  if (!first_name || !email || !password) { showAlert('user-error', 'Nombre, correo y contraseña son obligatorios.'); return; }
+
+  try {
+    const res = await fetch(`${API}/auth/register`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ first_name, last_name, email, password, role })
+    });
+    const data = await res.json();
+    if (res.ok && (data.id || data.email)) {
+      showAlert('user-success', `✅ Usuario ${first_name} ${last_name} registrado exitosamente.`);
+      clearUserForm();
+      loadUsuarios();
+    } else {
+      showAlert('user-error', data.message || JSON.stringify(data));
+    }
+  } catch(e) {
+    showAlert('user-error', 'Error de conexión.');
+  }
+}
+
+function clearUserForm() {
+  ['user-firstname','user-lastname','user-email','user-password','user-phone'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.getElementById('user-role').value = 'docente';
 }
 
 function showAlert(id, msg) {
