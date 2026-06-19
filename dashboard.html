@@ -1,306 +1,731 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>EduActiva 360 — Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduActiva 360 — Sistema de Gestión Educativa</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    :root {
-      --verde:       #1A7F5A;
-      --verde-claro: #23A876;
-      --verde-bg:    #F0FAF5;
-      --gris:        #6B7280;
-      --gris-borde:  #E5E7EB;
-      --negro:       #111827;
-      --blanco:      #FFFFFF;
-    }
+  :root {
+    --verde: #1a7a4a;
+    --verde-claro: #22a25e;
+    --verde-bg: #f0faf4;
+    --azul-marino: #0f2d4a;
+    --azul-medio: #1b4f72;
+    --gris: #6b7280;
+    --gris-claro: #f3f4f6;
+    --borde: #e5e7eb;
+    --rojo: #dc2626;
+    --amarillo: #d97706;
+    --blanco: #ffffff;
+    --texto: #111827;
+  }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #F9FAFB;
-      color: var(--negro);
-    }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--gris-claro); color: var(--texto); }
 
-    /* HEADER */
-    header {
-      background: var(--blanco);
-      border-bottom: 1px solid var(--gris-borde);
-      padding: 0 2rem;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+  /* ====== LOGIN ====== */
+  #login-screen {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--verde-bg) 0%, #e8f5e9 100%);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+  }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
+  .login-card {
+    background: var(--blanco);
+    border-radius: 16px;
+    padding: 40px 36px;
+    width: 100%; max-width: 420px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  }
 
-    .logo-icono {
-      width: 36px; height: 36px;
-      background: var(--verde);
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-    }
+  .logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+  .logo-icon {
+    width: 48px; height: 48px; background: var(--verde);
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+  }
+  .logo-text h1 { font-size: 20px; font-weight: 700; color: var(--texto); }
+  .logo-text p { font-size: 12px; color: var(--gris); }
 
-    .logo-icono svg { width: 20px; height: 20px; fill: white; }
+  .login-card h2 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+  .login-card .subtitle { color: var(--gris); font-size: 14px; margin-bottom: 28px; }
 
-    .logo-texto {
-      font-family: 'Sora', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--negro);
-    }
+  .form-group { margin-bottom: 18px; }
+  .form-group label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+  .form-group input {
+    width: 100%; padding: 12px 14px;
+    border: 1.5px solid var(--borde); border-radius: 10px;
+    font-size: 15px; outline: none; transition: border-color .2s;
+    background: #f9fafb;
+  }
+  .form-group input:focus { border-color: var(--verde); background: var(--blanco); }
 
-    .usuario-info {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
+  .btn-login {
+    width: 100%; padding: 13px;
+    background: var(--verde); color: var(--blanco);
+    border: none; border-radius: 10px;
+    font-size: 16px; font-weight: 600; cursor: pointer;
+    transition: background .2s; margin-top: 4px;
+  }
+  .btn-login:hover { background: var(--verde-claro); }
+  .btn-login:disabled { background: #9ca3af; cursor: not-allowed; }
 
-    .usuario-nombre {
-      font-size: 0.875rem;
-      color: var(--gris);
-    }
+  .login-footer { text-align: center; color: var(--gris); font-size: 13px; margin-top: 20px; }
+  .error-msg {
+    background: #fef2f2; border: 1px solid #fecaca;
+    color: var(--rojo); padding: 10px 14px; border-radius: 8px;
+    font-size: 14px; margin-bottom: 16px; display: none;
+  }
 
-    .btn-salir {
-      background: none;
-      border: 1.5px solid var(--gris-borde);
-      color: var(--gris);
-      padding: 0.4rem 0.9rem;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      font-family: 'Inter', sans-serif;
-      transition: all 0.2s;
-    }
+  /* ====== APP ====== */
+  #app-screen { display: none; min-height: 100vh; }
 
-    .btn-salir:hover { border-color: var(--verde); color: var(--verde); }
+  /* Sidebar */
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    width: 240px; background: var(--azul-marino);
+    padding: 0; z-index: 100; overflow-y: auto;
+  }
+  .sidebar-logo {
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .sidebar-logo h1 { color: var(--blanco); font-size: 18px; font-weight: 700; }
+  .sidebar-logo span { color: #22a25e; }
+  .sidebar-logo p { color: rgba(255,255,255,0.5); font-size: 11px; margin-top: 2px; }
 
-    /* MAIN */
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 2rem 1.5rem;
-    }
+  .sidebar-section { padding: 16px 12px 4px; }
+  .sidebar-section-label {
+    color: rgba(255,255,255,0.35); font-size: 10px;
+    font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+    padding: 0 8px; margin-bottom: 4px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: 8px;
+    color: rgba(255,255,255,0.7); font-size: 14px;
+    cursor: pointer; transition: all .15s; margin-bottom: 2px;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.08); color: var(--blanco); }
+  .nav-item.active { background: var(--verde); color: var(--blanco); }
+  .nav-item .icon { font-size: 18px; width: 22px; text-align: center; }
 
-    .bienvenida {
-      margin-bottom: 2rem;
-    }
+  /* Main */
+  .main { margin-left: 240px; padding: 24px; min-height: 100vh; }
 
-    .bienvenida h1 {
-      font-family: 'Sora', sans-serif;
-      font-size: 1.6rem;
-      font-weight: 700;
-      margin-bottom: 0.3rem;
-    }
+  /* Topbar */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .topbar h2 { font-size: 22px; font-weight: 700; }
+  .topbar-right { display: flex; align-items: center; gap: 12px; }
+  .user-badge {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--blanco); padding: 8px 14px;
+    border-radius: 10px; border: 1px solid var(--borde);
+    font-size: 13px; font-weight: 500;
+  }
+  .btn-logout {
+    padding: 8px 16px; background: transparent;
+    border: 1.5px solid var(--borde); border-radius: 8px;
+    font-size: 13px; cursor: pointer; color: var(--gris);
+    transition: all .15s;
+  }
+  .btn-logout:hover { border-color: var(--rojo); color: var(--rojo); }
 
-    .bienvenida p { color: var(--gris); font-size: 0.95rem; }
+  /* Cards métricas */
+  .metrics-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px; margin-bottom: 24px;
+  }
+  .metric-card {
+    background: var(--blanco); border-radius: 12px;
+    padding: 20px 22px; border: 1px solid var(--borde);
+  }
+  .metric-label { font-size: 11px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; color: var(--gris); margin-bottom: 8px; }
+  .metric-value { font-size: 32px; font-weight: 800; color: var(--azul-marino); line-height: 1; }
+  .metric-value.verde { color: var(--verde); }
+  .metric-value.rojo { color: var(--rojo); }
+  .metric-value.amarillo { color: var(--amarillo); }
+  .metric-sub { font-size: 12px; color: var(--gris); margin-top: 6px; }
 
-    /* CARDS */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.2rem;
-      margin-bottom: 2rem;
-    }
+  /* Panel contenido */
+  .panel {
+    background: var(--blanco); border-radius: 12px;
+    border: 1px solid var(--borde); margin-bottom: 20px;
+  }
+  .panel-header {
+    padding: 18px 22px; border-bottom: 1px solid var(--borde);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .panel-header h3 { font-size: 16px; font-weight: 600; }
+  .panel-body { padding: 22px; }
 
-    .card {
-      background: var(--blanco);
-      border: 1px solid var(--gris-borde);
-      border-radius: 12px;
-      padding: 1.5rem;
-    }
+  /* Tabla */
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; color: var(--gris); padding: 10px 14px; border-bottom: 2px solid var(--borde); }
+  td { padding: 13px 14px; border-bottom: 1px solid var(--borde); font-size: 14px; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafafa; }
 
-    .card-label {
-      font-size: 0.8rem;
-      color: var(--gris);
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
-    }
+  .badge {
+    display: inline-block; padding: 3px 10px; border-radius: 20px;
+    font-size: 12px; font-weight: 600;
+  }
+  .badge-verde { background: #d1fae5; color: #065f46; }
+  .badge-azul { background: #dbeafe; color: #1e40af; }
+  .badge-rojo { background: #fee2e2; color: #991b1b; }
+  .badge-gris { background: #f3f4f6; color: #374151; }
 
-    .card-valor {
-      font-family: 'Sora', sans-serif;
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--verde);
-    }
+  /* Módulos grid */
+  .modules-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .module-card {
+    background: var(--blanco); border: 1.5px solid var(--borde);
+    border-radius: 12px; padding: 24px 20px;
+    cursor: pointer; transition: all .2s; text-align: center;
+  }
+  .module-card:hover { border-color: var(--verde); box-shadow: 0 4px 16px rgba(26,122,74,0.12); transform: translateY(-2px); }
+  .module-card .mod-icon { font-size: 36px; margin-bottom: 12px; }
+  .module-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .module-card p { font-size: 13px; color: var(--gris); }
+  .module-card .mod-status { margin-top: 12px; }
 
-    .card-desc { font-size: 0.8rem; color: var(--gris); margin-top: 0.3rem; }
+  /* Form crear */
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .form-field label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 5px; }
+  .form-field input, .form-field select {
+    width: 100%; padding: 10px 12px;
+    border: 1.5px solid var(--borde); border-radius: 8px;
+    font-size: 14px; outline: none;
+  }
+  .form-field input:focus, .form-field select:focus { border-color: var(--verde); }
+  .btn-primary {
+    padding: 11px 22px; background: var(--verde);
+    color: var(--blanco); border: none; border-radius: 8px;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+  }
+  .btn-primary:hover { background: var(--verde-claro); }
+  .btn-secondary {
+    padding: 11px 22px; background: transparent;
+    color: var(--gris); border: 1.5px solid var(--borde); border-radius: 8px;
+    font-size: 14px; cursor: pointer; margin-right: 8px;
+  }
 
-    /* MÓDULOS */
-    .seccion-titulo {
-      font-family: 'Sora', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      color: var(--negro);
-    }
+  /* Alerta */
+  .alert {
+    padding: 12px 16px; border-radius: 8px; font-size: 14px;
+    margin-bottom: 16px; display: none;
+  }
+  .alert-success { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+  .alert-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
 
-    .modulos {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1rem;
-    }
+  /* Loading */
+  .loading { text-align: center; padding: 40px; color: var(--gris); font-size: 15px; }
+  .spinner {
+    display: inline-block; width: 28px; height: 28px;
+    border: 3px solid var(--borde); border-top-color: var(--verde);
+    border-radius: 50%; animation: spin .7s linear infinite; margin-bottom: 10px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-    .modulo {
-      background: var(--blanco);
-      border: 1px solid var(--gris-borde);
-      border-radius: 10px;
-      padding: 1.2rem;
-      cursor: pointer;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      text-align: center;
-    }
-
-    .modulo:hover {
-      border-color: var(--verde);
-      box-shadow: 0 2px 12px rgba(26,127,90,0.1);
-    }
-
-    .modulo-icono {
-      font-size: 1.8rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .modulo-nombre {
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--negro);
-    }
-
-    .modulo-desc {
-      font-size: 0.75rem;
-      color: var(--gris);
-      margin-top: 0.2rem;
-    }
-
-    .badge-pronto {
-      display: inline-block;
-      background: var(--verde-bg);
-      color: var(--verde);
-      font-size: 0.65rem;
-      font-weight: 600;
-      padding: 0.15rem 0.5rem;
-      border-radius: 20px;
-      margin-top: 0.4rem;
-      letter-spacing: 0.03em;
-    }
-  </style>
+  /* Responsive */
+  @media (max-width: 768px) {
+    .sidebar { transform: translateX(-240px); }
+    .main { margin-left: 0; padding: 16px; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
 <body>
 
-<header>
-  <div class="logo">
-    <div class="logo-icono">
-      <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+<!-- ====== LOGIN ====== -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="logo-row">
+      <div class="logo-icon">🎓</div>
+      <div class="logo-text">
+        <h1>EduActiva 360</h1>
+        <p>Sistema de Gestión Educativa</p>
+      </div>
     </div>
-    <span class="logo-texto">EduActiva 360</span>
-  </div>
-  <div class="usuario-info">
-    <span class="usuario-nombre" id="nombreUsuario">Cargando...</span>
-    <button class="btn-salir" onclick="cerrarSesion()">Salir</button>
-  </div>
-</header>
+    <h2>Iniciar sesión</h2>
+    <p class="subtitle">Accede a tu plataforma educativa</p>
 
-<main>
-  <div class="bienvenida">
-    <h1 id="saludo">Bienvenida</h1>
-    <p>Sistema de Gestión Educativa · República Dominicana</p>
-  </div>
+    <div class="error-msg" id="login-error">Credenciales incorrectas. Verifica tu correo y contraseña.</div>
 
-  <div class="grid">
-    <div class="card">
-      <div class="card-label">Plataforma</div>
-      <div class="card-valor">✓</div>
-      <div class="card-desc">Backend activo en Railway</div>
+    <div class="form-group">
+      <label>Correo electrónico</label>
+      <input type="email" id="login-email" placeholder="admin@eduactiva360.do" value="admin@eduactiva360.do">
     </div>
-    <div class="card">
-      <div class="card-label">API</div>
-      <div class="card-valor" id="estadoApi">—</div>
-      <div class="card-desc">Conexión con el servidor</div>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" id="login-password" placeholder="••••••••">
     </div>
-    <div class="card">
-      <div class="card-label">Versión</div>
-      <div class="card-valor">1.0</div>
-      <div class="card-desc">Fase piloto</div>
-    </div>
+    <button class="btn-login" id="btn-login" onclick="doLogin()">Entrar</button>
+    <p class="login-footer">República Dominicana · MINERD</p>
   </div>
+</div>
 
-  <p class="seccion-titulo">Módulos</p>
-  <div class="modulos">
-    <div class="modulo">
-      <div class="modulo-icono">🏫</div>
-      <div class="modulo-nombre">Instituciones</div>
-      <div class="modulo-desc">Gestión de centros</div>
-      <span class="badge-pronto">Próximamente</span>
+<!-- ====== APP ====== -->
+<div id="app-screen">
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <h1>edu<span>activa</span>360</h1>
+      <p>SUPER ADMIN PANEL</p>
     </div>
-    <div class="modulo">
-      <div class="modulo-icono">👥</div>
-      <div class="modulo-nombre">Usuarios</div>
-      <div class="modulo-desc">Docentes y estudiantes</div>
-      <span class="badge-pronto">Próximamente</span>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Principal</div>
+      <div class="nav-item active" onclick="showSection('dashboard')">
+        <span class="icon">📊</span> Dashboard
+      </div>
+      <div class="nav-item" onclick="showSection('instituciones')">
+        <span class="icon">🏫</span> Instituciones
+      </div>
+      <div class="nav-item" onclick="showSection('usuarios')">
+        <span class="icon">👥</span> Usuarios
+      </div>
+      <div class="nav-item" onclick="showSection('licencias')">
+        <span class="icon">🔑</span> Licencias
+      </div>
     </div>
-    <div class="modulo">
-      <div class="modulo-icono">📋</div>
-      <div class="modulo-nombre">Planificación</div>
-      <div class="modulo-desc">Planes de clase</div>
-      <span class="badge-pronto">Próximamente</span>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Académico</div>
+      <div class="nav-item" onclick="showSection('planificacion')">
+        <span class="icon">📋</span> Planificación
+      </div>
+      <div class="nav-item" onclick="showSection('reportes')">
+        <span class="icon">📈</span> Reportes
+      </div>
     </div>
-    <div class="modulo">
-      <div class="modulo-icono">📊</div>
-      <div class="modulo-nombre">Reportes</div>
-      <div class="modulo-desc">Indicadores y métricas</div>
-      <span class="badge-pronto">Próximamente</span>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Sistema</div>
+      <div class="nav-item" onclick="showSection('configuracion')">
+        <span class="icon">⚙️</span> Configuración
+      </div>
     </div>
-    <div class="modulo">
-      <div class="modulo-icono">🔑</div>
-      <div class="modulo-nombre">Licencias</div>
-      <div class="modulo-desc">Gestión de accesos</div>
-      <span class="badge-pronto">Próximamente</span>
+  </nav>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="topbar">
+      <h2 id="page-title">Dashboard Global</h2>
+      <div class="topbar-right">
+        <div class="user-badge">👤 <span id="user-email-display">—</span></div>
+        <button class="btn-logout" onclick="doLogout()">Cerrar sesión</button>
+      </div>
     </div>
-    <div class="modulo">
-      <div class="modulo-icono">⚙️</div>
-      <div class="modulo-nombre">Configuración</div>
-      <div class="modulo-desc">Ajustes del sistema</div>
-      <span class="badge-pronto">Próximamente</span>
+
+    <!-- DASHBOARD -->
+    <div id="section-dashboard">
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-label">Instituciones activas</div>
+          <div class="metric-value verde" id="m-instituciones">—</div>
+          <div class="metric-sub">Centro Piloto EduActiva</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Licencias activas</div>
+          <div class="metric-value verde" id="m-licencias">—</div>
+          <div class="metric-sub">Plan basico · EA-PILOT-2026</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Usuarios del sistema</div>
+          <div class="metric-value" id="m-usuarios">—</div>
+          <div class="metric-sub">Roles: admin, director, docente</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Versión</div>
+          <div class="metric-value azul-marino" style="font-size:28px">1.0</div>
+          <div class="metric-sub">🚀 Fase piloto · Julio 2026</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <h3>🏫 Instituciones registradas</h3>
+          <button class="btn-primary" onclick="showSection('instituciones')">+ Nueva institución</button>
+        </div>
+        <div class="panel-body" id="dashboard-instituciones-list">
+          <div class="loading"><div class="spinner"></div><br>Cargando datos...</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><h3>⚡ Estado del sistema</h3></div>
+        <div class="panel-body">
+          <table>
+            <tr><td>🟢 Backend Railway</td><td><span class="badge badge-verde">Online</span></td></tr>
+            <tr><td>🟢 Base de datos PostgreSQL</td><td><span class="badge badge-verde">Conectada</span></td></tr>
+            <tr><td>🟢 API REST</td><td><span class="badge badge-verde">Operativa</span></td></tr>
+            <tr><td>🟢 Autenticación JWT</td><td><span class="badge badge-verde">Activa</span></td></tr>
+          </table>
+        </div>
+      </div>
     </div>
-  </div>
-</main>
+
+    <!-- INSTITUCIONES -->
+    <div id="section-instituciones" style="display:none">
+      <div class="panel">
+        <div class="panel-header"><h3>➕ Registrar nueva institución</h3></div>
+        <div class="panel-body">
+          <div class="alert alert-success" id="inst-success"></div>
+          <div class="alert alert-error" id="inst-error"></div>
+          <div class="form-row">
+            <div class="form-field">
+              <label>Nombre del centro</label>
+              <input type="text" id="inst-name" placeholder="Ej: Liceo Juan Pablo Duarte">
+            </div>
+            <div class="form-field">
+              <label>Código</label>
+              <input type="text" id="inst-code" placeholder="Ej: LJP-001">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label>Dirección</label>
+              <input type="text" id="inst-address" placeholder="Santo Domingo, RD">
+            </div>
+            <div class="form-field">
+              <label>Director(a)</label>
+              <input type="text" id="inst-director" placeholder="Nombre completo">
+            </div>
+          </div>
+          <button class="btn-secondary" onclick="clearInstForm()">Limpiar</button>
+          <button class="btn-primary" onclick="crearInstitucion()">Registrar institución</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><h3>📋 Lista de instituciones</h3></div>
+        <div class="panel-body" id="inst-list">
+          <div class="loading"><div class="spinner"></div><br>Cargando...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- USUARIOS -->
+    <div id="section-usuarios" style="display:none">
+      <div class="panel">
+        <div class="panel-header"><h3>👥 Usuarios del sistema</h3></div>
+        <div class="panel-body" id="users-list">
+          <div class="loading"><div class="spinner"></div><br>Cargando...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LICENCIAS -->
+    <div id="section-licencias" style="display:none">
+      <div class="panel">
+        <div class="panel-header"><h3>🔑 Licencias activas</h3></div>
+        <div class="panel-body" id="licencias-list">
+          <div class="loading"><div class="spinner"></div><br>Cargando...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLANIFICACION -->
+    <div id="section-planificacion" style="display:none">
+      <div class="panel">
+        <div class="panel-header"><h3>📋 Planificación académica</h3></div>
+        <div class="panel-body" style="text-align:center; padding: 60px 20px;">
+          <div style="font-size:48px; margin-bottom:16px">📋</div>
+          <h3 style="color:var(--azul-marino); margin-bottom:8px">Módulo en desarrollo</h3>
+          <p style="color:var(--gris)">Planes de clase, secuencias didácticas y programación curricular.<br>Disponible en Fase 2.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPORTES -->
+    <div id="section-reportes" style="display:none">
+      <div class="panel">
+        <div class="panel-header"><h3>📈 Reportes e indicadores</h3></div>
+        <div class="panel-body" style="text-align:center; padding: 60px 20px;">
+          <div style="font-size:48px; margin-bottom:16px">📈</div>
+          <h3 style="color:var(--azul-marino); margin-bottom:8px">Módulo en desarrollo</h3>
+          <p style="color:var(--gris)">Indicadores de gestión, asistencia y rendimiento académico.<br>Disponible en Fase 2.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONFIGURACION -->
+    <div id="section-configuracion" style="display:none">
+      <div class="panel">
+        <div class="panel-header"><h3>⚙️ Configuración del sistema</h3></div>
+        <div class="panel-body">
+          <table>
+            <tr><td><strong>URL del backend</strong></td><td>https://eduactiva360-backend-production.up.railway.app</td></tr>
+            <tr><td><strong>Versión</strong></td><td>1.0 — Fase piloto</td></tr>
+            <tr><td><strong>Ambiente</strong></td><td><span class="badge badge-verde">Producción</span></td></tr>
+            <tr><td><strong>Base de datos</strong></td><td>PostgreSQL · Railway</td></tr>
+            <tr><td><strong>Frontend</strong></td><td>Vercel</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
 
 <script>
-  const API = 'https://eduactiva360-backend-production.up.railway.app';
+const API = 'https://eduactiva360-backend-production.up.railway.app/api/v1';
+let token = localStorage.getItem('ea_token') || null;
+let currentUser = JSON.parse(localStorage.getItem('ea_user') || 'null');
 
-  // Verificar sesión
-  const token = localStorage.getItem('token');
-  if (!token) window.location.href = 'index.html';
-
-  // Mostrar usuario
-  try {
-    const u = JSON.parse(localStorage.getItem('usuario') || '{}');
-    const nombre = u.name || u.email || 'Usuario';
-    document.getElementById('nombreUsuario').textContent = nombre;
-    document.getElementById('saludo').textContent = `Bienvenida, ${nombre.split(' ')[0]}`;
-  } catch {}
-
-  // Ping al API
-  fetch(`${API}/api/v1/auth/login`, { method: 'HEAD' })
-    .then(() => { document.getElementById('estadoApi').textContent = '✓'; })
-    .catch(() => { document.getElementById('estadoApi').textContent = '✗'; });
-
-  function cerrarSesion() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('usuario');
-    window.location.href = 'index.html';
+// Auto-login si hay token
+window.onload = () => {
+  if (token && currentUser) {
+    showApp();
   }
-</script>
+};
 
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  const btn = document.getElementById('btn-login');
+  const errDiv = document.getElementById('login-error');
+
+  if (!email || !password) { showLoginError('Completa todos los campos.'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Ingresando...';
+  errDiv.style.display = 'none';
+
+  try {
+    const res = await fetch(`${API}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+
+    if (res.ok && data.access_token) {
+      token = data.access_token;
+      currentUser = data.user;
+      localStorage.setItem('ea_token', token);
+      localStorage.setItem('ea_user', JSON.stringify(currentUser));
+      showApp();
+    } else {
+      showLoginError(data.message || 'Credenciales incorrectas.');
+    }
+  } catch(e) {
+    showLoginError('Error de conexión con el servidor.');
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Entrar';
+}
+
+function showLoginError(msg) {
+  const el = document.getElementById('login-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function showApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app-screen').style.display = 'block';
+  document.getElementById('user-email-display').textContent = currentUser?.email || '';
+  loadDashboard();
+}
+
+function doLogout() {
+  localStorage.removeItem('ea_token');
+  localStorage.removeItem('ea_user');
+  token = null; currentUser = null;
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app-screen').style.display = 'none';
+}
+
+function showSection(name) {
+  const sections = ['dashboard','instituciones','usuarios','licencias','planificacion','reportes','configuracion'];
+  sections.forEach(s => {
+    document.getElementById(`section-${s}`).style.display = s === name ? 'block' : 'none';
+  });
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+
+  const titles = {
+    dashboard: 'Dashboard Global',
+    instituciones: 'Instituciones',
+    usuarios: 'Usuarios',
+    licencias: 'Licencias',
+    planificacion: 'Planificación académica',
+    reportes: 'Reportes e indicadores',
+    configuracion: 'Configuración'
+  };
+  document.getElementById('page-title').textContent = titles[name] || name;
+
+  if (name === 'instituciones') loadInstituciones();
+  if (name === 'usuarios') loadUsuarios();
+  if (name === 'licencias') loadLicencias();
+}
+
+async function apiFetch(path, opts = {}) {
+  const res = await fetch(`${API}${path}`, {
+    ...opts,
+    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json', ...(opts.headers||{}) }
+  });
+  if (res.status === 401) { doLogout(); throw new Error('Sesión expirada'); }
+  return res.json();
+}
+
+async function loadDashboard() {
+  try {
+    const insts = await apiFetch('/institutions');
+    const list = Array.isArray(insts) ? insts : (insts.data || []);
+
+    document.getElementById('m-instituciones').textContent = list.length;
+    document.getElementById('m-usuarios').textContent = '—';
+    document.getElementById('m-licencias').textContent = list.length;
+
+    const tbody = list.length === 0
+      ? '<p style="color:var(--gris);text-align:center;padding:20px">No hay instituciones registradas aún.</p>'
+      : `<table>
+          <thead><tr><th>Institución</th><th>Código</th><th>Director</th><th>Estado</th></tr></thead>
+          <tbody>${list.map(i => `
+            <tr>
+              <td><strong>${i.name}</strong></td>
+              <td>${i.code || '—'}</td>
+              <td>${i.director_name || '—'}</td>
+              <td><span class="badge badge-verde">Activa</span></td>
+            </tr>`).join('')}
+          </tbody>
+        </table>`;
+
+    document.getElementById('dashboard-instituciones-list').innerHTML = tbody;
+  } catch(e) {
+    document.getElementById('dashboard-instituciones-list').innerHTML = '<p style="color:var(--gris)">No se pudo cargar la información.</p>';
+  }
+}
+
+async function loadInstituciones() {
+  document.getElementById('inst-list').innerHTML = '<div class="loading"><div class="spinner"></div><br>Cargando...</div>';
+  try {
+    const data = await apiFetch('/institutions');
+    const list = Array.isArray(data) ? data : (data.data || []);
+    if (list.length === 0) {
+      document.getElementById('inst-list').innerHTML = '<p style="color:var(--gris);text-align:center;padding:20px">Sin instituciones registradas. Crea la primera arriba.</p>';
+      return;
+    }
+    document.getElementById('inst-list').innerHTML = `
+      <table>
+        <thead><tr><th>Nombre</th><th>Código</th><th>Dirección</th><th>Director</th><th>Estado</th></tr></thead>
+        <tbody>${list.map(i => `
+          <tr>
+            <td><strong>${i.name}</strong></td>
+            <td>${i.code || '—'}</td>
+            <td>${i.address || '—'}</td>
+            <td>${i.director_name || '—'}</td>
+            <td><span class="badge badge-verde">Activa</span></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>`;
+  } catch(e) {
+    document.getElementById('inst-list').innerHTML = '<p style="color:var(--rojo)">Error cargando instituciones.</p>';
+  }
+}
+
+async function crearInstitucion() {
+  const name = document.getElementById('inst-name').value.trim();
+  const code = document.getElementById('inst-code').value.trim();
+  const address = document.getElementById('inst-address').value.trim();
+  const director_name = document.getElementById('inst-director').value.trim();
+
+  if (!name) { showAlert('inst-error', 'El nombre es obligatorio.'); return; }
+
+  try {
+    const res = await apiFetch('/institutions', {
+      method: 'POST',
+      body: JSON.stringify({ name, code, address, director_name })
+    });
+    if (res.id || res.name) {
+      showAlert('inst-success', `✅ Institución "${name}" creada exitosamente.`);
+      clearInstForm();
+      loadInstituciones();
+      loadDashboard();
+    } else {
+      showAlert('inst-error', res.message || 'Error al crear la institución.');
+    }
+  } catch(e) {
+    showAlert('inst-error', 'Error de conexión.');
+  }
+}
+
+function clearInstForm() {
+  ['inst-name','inst-code','inst-address','inst-director'].forEach(id => document.getElementById(id).value = '');
+}
+
+async function loadUsuarios() {
+  document.getElementById('users-list').innerHTML = '<div class="loading"><div class="spinner"></div><br>Cargando...</div>';
+  try {
+    const data = await apiFetch('/users');
+    const list = Array.isArray(data) ? data : (data.data || []);
+    if (list.length === 0) {
+      document.getElementById('users-list').innerHTML = '<p style="color:var(--gris);text-align:center;padding:20px">No hay usuarios registrados.</p>';
+      return;
+    }
+    document.getElementById('users-list').innerHTML = `
+      <table>
+        <thead><tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Estado</th></tr></thead>
+        <tbody>${list.map(u => `
+          <tr>
+            <td><strong>${u.first_name || ''} ${u.last_name || ''}</strong></td>
+            <td>${u.email}</td>
+            <td><span class="badge badge-azul">${u.role || u.role_name || '—'}</span></td>
+            <td><span class="badge badge-verde">Activo</span></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>`;
+  } catch(e) {
+    document.getElementById('users-list').innerHTML = '<p style="color:var(--gris)">No se pudieron cargar los usuarios.</p>';
+  }
+}
+
+async function loadLicencias() {
+  document.getElementById('licencias-list').innerHTML = '<div class="loading"><div class="spinner"></div><br>Cargando...</div>';
+  try {
+    const insts = await apiFetch('/institutions');
+    const list = Array.isArray(insts) ? insts : (insts.data || []);
+    document.getElementById('licencias-list').innerHTML = `
+      <table>
+        <thead><tr><th>Institución</th><th>Clave</th><th>Plan</th><th>Vence</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>${list[0]?.name || 'Centro Piloto EduActiva'}</strong></td>
+            <td><code>EA-PILOT-2026</code></td>
+            <td><span class="badge badge-azul">basico</span></td>
+            <td>2027-06-19</td>
+            <td><span class="badge badge-verde">Activa</span></td>
+          </tr>
+        </tbody>
+      </table>`;
+  } catch(e) {
+    document.getElementById('licencias-list').innerHTML = '<p style="color:var(--gris)">No se pudieron cargar las licencias.</p>';
+  }
+}
+
+function showAlert(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.style.display = 'block';
+  setTimeout(() => el.style.display = 'none', 4000);
+}
+
+// Enter en login
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('login-screen').style.display !== 'none') doLogin();
+});
+</script>
 </body>
 </html>
