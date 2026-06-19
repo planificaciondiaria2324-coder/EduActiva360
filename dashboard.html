@@ -89,6 +89,9 @@
     padding: 0; z-index: 100; overflow-y: auto;
   }
   .sidebar-logo {
+    background: #fff;
+    border-radius: 0 0 10px 10px;
+    margin-bottom: 8px;
     padding: 20px 20px 16px;
     border-bottom: 1px solid rgba(255,255,255,0.1);
   }
@@ -248,7 +251,10 @@
 <div id="login-screen">
   <div class="login-card">
     <div class="logo-row">
-      <img src="logo.png" alt="EduActiva 360" style="height:70px;object-fit:contain;">
+      <div class="logo-icon">🎓</div>
+      <div class="logo-text">
+        <h1>EduActiva 360</h1>
+        <p>Sistema de Gestión Educativa</p>
       </div>
     </div>
     <h2>Iniciar sesión</h2>
@@ -271,10 +277,12 @@
 
 <!-- ====== APP ====== -->
 <div id="app-screen">
-<div class="sidebar-logo" style="text-align:center;padding:12px;background:#fff;border-radius:0 0 8px 8px;">
-      <img src="logo.png" alt="EduActiva 360" style="height:60px;object-fit:contain;">
-      <p style="color:rgba(255,255,255,0.5);font-size:11px;margin-top:6px;">SUPER ADMIN PANEL</p>
-    </div>
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <img src="logo.png" alt="EduActiva 360" style="height:64px;object-fit:contain;display:block;margin:0 auto;">
+      <p style="color:#666;font-size:10px;margin-top:4px;letter-spacing:1px;font-weight:600;text-align:center;">SUPER ADMIN PANEL</p>
     </div>
 
     <div class="sidebar-section">
