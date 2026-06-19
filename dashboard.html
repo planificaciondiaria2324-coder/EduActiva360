@@ -483,14 +483,214 @@
 
     <!-- PLANIFICACION -->
     <div id="section-planificacion" style="display:none">
-      <div class="panel">
-        <div class="panel-header"><h3>📋 Planificación académica</h3></div>
-        <div class="panel-body" style="text-align:center; padding: 60px 20px;">
-          <div style="font-size:48px; margin-bottom:16px">📋</div>
-          <h3 style="color:var(--azul-marino); margin-bottom:8px">Módulo en desarrollo</h3>
-          <p style="color:var(--gris)">Planes de clase, secuencias didácticas y programación curricular.<br>Disponible en Fase 2.</p>
+
+      <!-- Tabs -->
+      <div style="display:flex;gap:8px;margin-bottom:20px;">
+        <button class="btn-primary" id="tab-nuevo" onclick="showPlanTab('nuevo')">➕ Nuevo plan</button>
+        <button class="btn-secondary" id="tab-lista" onclick="showPlanTab('lista')">📋 Mis planes</button>
+      </div>
+
+      <!-- Formulario nuevo plan -->
+      <div id="plan-form-section">
+        <div class="panel">
+          <div class="panel-header"><h3>📋 Plan de clase — Formato MINERD</h3></div>
+          <div class="panel-body">
+            <div class="alert alert-success" id="plan-success"></div>
+            <div class="alert alert-error" id="plan-error"></div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label>Nombre del centro</label>
+                <input type="text" id="plan-centro" placeholder="Ej: Centro Piloto EduActiva">
+              </div>
+              <div class="form-field">
+                <label>Nombre del docente</label>
+                <input type="text" id="plan-docente" placeholder="Ej: María Pérez">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-field">
+                <label>Curso y sección</label>
+                <input type="text" id="plan-curso" placeholder="Ej: 3er grado · Sección A">
+              </div>
+              <div class="form-field">
+                <label>Tipo de planificación</label>
+                <select id="plan-tipo">
+                  <option value="Diaria">Diaria</option>
+                  <option value="De unidad">De unidad</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-field">
+                <label>Nivel educativo</label>
+                <select id="plan-nivel">
+                  <option value="">Seleccionar nivel...</option>
+                  <option>Inicial</option>
+                  <option>Primaria</option>
+                  <option>Media (Académica)</option>
+                  <option>Media (Técnico-Profesional)</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label>Área técnica <span style="color:var(--gris);font-weight:400;">(solo politécnicos)</span></label>
+                <select id="plan-tecnica">
+                  <option value="">No aplica</option>
+                  <option>Informática</option>
+                  <option>Contabilidad</option>
+                  <option>Administración</option>
+                  <option>Electrónica</option>
+                  <option>Electricidad</option>
+                  <option>Mecánica Automotriz</option>
+                  <option>Refrigeración y Aire Acondicionado</option>
+                  <option>Costura y Modas</option>
+                  <option>Belleza y Cosmetología</option>
+                  <option>Turismo y Hotelería</option>
+                  <option>Agropecuaria</option>
+                  <option>Salud</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-field">
+                <label>Área curricular</label>
+                <select id="plan-area">
+                  <option value="">Seleccionar área...</option>
+                  <option>Lengua Española</option>
+                  <option>Matemática</option>
+                  <option>Ciencias de la Naturaleza</option>
+                  <option>Ciencias Sociales</option>
+                  <option>Educación Artística</option>
+                  <option>Educación Física</option>
+                  <option>Formación Integral Humana y Religiosa</option>
+                  <option>Inglés</option>
+                  <option>Francés</option>
+                  <option>Tecnología e Informática</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label>Nivel y grado</label>
+                <select id="plan-grado">
+                  <option value="">Seleccionar grado...</option>
+                  <optgroup label="Nivel Primario">
+                    <option>1er grado - Primario</option>
+                    <option>2do grado - Primario</option>
+                    <option>3er grado - Primario</option>
+                    <option>4to grado - Primario</option>
+                    <option>5to grado - Primario</option>
+                    <option>6to grado - Primario</option>
+                  </optgroup>
+                  <optgroup label="Nivel Secundario">
+                    <option>1er grado - Secundario</option>
+                    <option>2do grado - Secundario</option>
+                    <option>3er grado - Secundario</option>
+                    <option>4to grado - Secundario</option>
+                    <option>5to grado - Secundario</option>
+                    <option>6to grado - Secundario</option>
+                  </optgroup>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label>Unidad temática</label>
+                <input type="text" id="plan-unidad" placeholder="Ej: Los seres vivos y su entorno">
+              </div>
+              <div class="form-field">
+                <label>Tiempo (semanas)</label>
+                <input type="number" id="plan-tiempo" placeholder="Ej: 2" min="1" max="40">
+              </div>
+            </div>
+
+            <div class="form-row" style="grid-template-columns:1fr;">
+              <div class="form-field">
+                <label>Situación de aprendizaje</label>
+                <textarea id="plan-situacion" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Describe el contexto o situación que motiva el aprendizaje..."></textarea>
+              </div>
+            </div>
+
+            <div class="form-row" style="grid-template-columns:1fr;">
+              <div class="form-field">
+                <label>Competencias específicas</label>
+                <textarea id="plan-competencias" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Lista las competencias específicas del área..."></textarea>
+              </div>
+            </div>
+
+            <div class="form-row" style="grid-template-columns:1fr;">
+              <div class="form-field">
+                <label>Indicadores de logro</label>
+                <textarea id="plan-indicadores" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="¿Qué debe demostrar el estudiante al finalizar?"></textarea>
+              </div>
+            </div>
+
+            <!-- Tipos de contenido -->
+            <div style="margin-bottom:16px;">
+              <label style="display:block;font-size:13px;font-weight:600;margin-bottom:10px;">Tipos de contenidos</label>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+                <div class="form-field">
+                  <label style="color:var(--azul-medio);">📘 Conceptual</label>
+                  <textarea id="plan-conceptual" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:13px;resize:vertical;" placeholder="¿Qué sabe? (hechos, conceptos, principios)"></textarea>
+                </div>
+                <div class="form-field">
+                  <label style="color:var(--verde);">📗 Procedimental</label>
+                  <textarea id="plan-procedimental" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:13px;resize:vertical;" placeholder="¿Qué hace? (habilidades, técnicas, métodos)"></textarea>
+                </div>
+                <div class="form-field">
+                  <label style="color:var(--amarillo);">📙 Actitudinal</label>
+                  <textarea id="plan-actitudinal" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:13px;resize:vertical;" placeholder="¿Cómo es? (valores, normas, actitudes)"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row" style="grid-template-columns:1fr;">
+              <div class="form-field">
+                <label>Estrategias de enseñanza</label>
+                <textarea id="plan-estrategias" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Trabajo cooperativo, aprendizaje basado en proyectos, debate..."></textarea>
+              </div>
+            </div>
+
+            <div class="form-row" style="grid-template-columns:1fr 1fr;gap:16px;">
+              <div class="form-field">
+                <label>Actividades</label>
+                <textarea id="plan-actividades" rows="4" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Describe las actividades principales de la clase..."></textarea>
+              </div>
+              <div class="form-field">
+                <label>Actividades de recuperación</label>
+                <textarea id="plan-recuperacion" rows="4" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Actividades para estudiantes que no alcanzaron los logros..."></textarea>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label>Recursos didácticos</label>
+                <textarea id="plan-recursos" rows="2" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Libros, materiales, tecnología, medioambiente..."></textarea>
+              </div>
+              <div class="form-field">
+                <label>Evaluación</label>
+                <textarea id="plan-evaluacion" rows="2" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Diagnóstica, formativa, sumativa..."></textarea>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+              <button class="btn-secondary" onclick="clearPlanForm()">Limpiar</button>
+              <button class="btn-primary" onclick="guardarPlan()">💾 Guardar plan</button>
+              <button class="btn-primary" style="background:var(--azul-medio);" onclick="imprimirPlan()">🖨️ Imprimir / PDF</button>
+            </div>
+          </div>
         </div>
       </div>
+
+      <!-- Lista de planes -->
+      <div id="plan-lista-section" style="display:none">
+        <div class="panel">
+          <div class="panel-header"><h3>📋 Planes guardados</h3></div>
+          <div class="panel-body" id="plan-lista-body">
+            <p style="color:var(--gris);text-align:center;padding:30px">No hay planes guardados aún.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- REPORTES -->
@@ -796,6 +996,179 @@ function clearUserForm() {
     if (el) el.value = '';
   });
   document.getElementById('user-role').value = 'docente';
+}
+
+function showPlanTab(tab) {
+  document.getElementById('plan-form-section').style.display = tab === 'nuevo' ? 'block' : 'none';
+  document.getElementById('plan-lista-section').style.display = tab === 'lista' ? 'block' : 'none';
+  document.getElementById('tab-nuevo').className = tab === 'nuevo' ? 'btn-primary' : 'btn-secondary';
+  document.getElementById('tab-lista').className = tab === 'lista' ? 'btn-primary' : 'btn-secondary';
+  if (tab === 'lista') renderPlanLista();
+}
+
+function guardarPlan() {
+  const area = document.getElementById('plan-area').value;
+  const grado = document.getElementById('plan-grado').value;
+  const unidad = document.getElementById('plan-unidad').value.trim();
+
+  if (!area || !grado || !unidad) {
+    showAlert('plan-error', 'Área curricular, grado y unidad temática son obligatorios.');
+    return;
+  }
+
+  const plan = {
+    id: Date.now(),
+    fecha: new Date().toLocaleDateString('es-DO'),
+    centro: document.getElementById('plan-centro').value,
+    docente: document.getElementById('plan-docente').value || currentUser?.email || 'Docente',
+    curso: document.getElementById('plan-curso').value,
+    tipo: document.getElementById('plan-tipo').value,
+    nivel: document.getElementById('plan-nivel').value,
+    tecnica: document.getElementById('plan-tecnica').value,
+    area, grado, unidad,
+    tiempo: document.getElementById('plan-tiempo').value,
+    situacion: document.getElementById('plan-situacion').value,
+    competencias: document.getElementById('plan-competencias').value,
+    indicadores: document.getElementById('plan-indicadores').value,
+    conceptual: document.getElementById('plan-conceptual').value,
+    procedimental: document.getElementById('plan-procedimental').value,
+    actitudinal: document.getElementById('plan-actitudinal').value,
+    estrategias: document.getElementById('plan-estrategias').value,
+    actividades: document.getElementById('plan-actividades').value,
+    recuperacion: document.getElementById('plan-recuperacion').value,
+    recursos: document.getElementById('plan-recursos').value,
+    evaluacion: document.getElementById('plan-evaluacion').value,
+  };
+
+  const planes = JSON.parse(localStorage.getItem('ea_planes') || '[]');
+  planes.unshift(plan);
+  localStorage.setItem('ea_planes', JSON.stringify(planes));
+  showAlert('plan-success', `✅ Plan "${unidad}" guardado exitosamente.`);
+}
+
+function clearPlanForm() {
+  ['plan-centro','plan-docente','plan-curso','plan-unidad','plan-tiempo','plan-situacion','plan-competencias','plan-indicadores',
+   'plan-conceptual','plan-procedimental','plan-actitudinal','plan-estrategias',
+   'plan-actividades','plan-recuperacion','plan-recursos','plan-evaluacion'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('plan-area').value = '';
+  document.getElementById('plan-grado').value = '';
+}
+
+function renderPlanLista() {
+  const planes = JSON.parse(localStorage.getItem('ea_planes') || '[]');
+  const body = document.getElementById('plan-lista-body');
+  if (planes.length === 0) {
+    body.innerHTML = '<p style="color:var(--gris);text-align:center;padding:30px">No hay planes guardados aún.</p>';
+    return;
+  }
+  body.innerHTML = `<table>
+    <thead><tr><th>Unidad</th><th>Área</th><th>Grado</th><th>Fecha</th><th>Acción</th></tr></thead>
+    <tbody>${planes.map(p => `
+      <tr>
+        <td><strong>${p.unidad}</strong></td>
+        <td>${p.area}</td>
+        <td>${p.grado}</td>
+        <td>${p.fecha}</td>
+        <td><button class="btn-primary" style="padding:5px 12px;font-size:12px;" onclick="imprimirPlanById(${p.id})">🖨️ Imprimir</button></td>
+      </tr>`).join('')}
+    </tbody>
+  </table>`;
+}
+
+function imprimirPlan() {
+  const area = document.getElementById('plan-area').value;
+  const grado = document.getElementById('plan-grado').value;
+  const unidad = document.getElementById('plan-unidad').value;
+  if (!area || !grado || !unidad) { showAlert('plan-error', 'Completa al menos área, grado y unidad antes de imprimir.'); return; }
+
+  const html = generarHTMLPlan({
+    centro: document.getElementById('plan-centro').value,
+    docente: document.getElementById('plan-docente').value || currentUser?.email || '',
+    curso: document.getElementById('plan-curso').value,
+    tipo: document.getElementById('plan-tipo').value,
+    nivel: document.getElementById('plan-nivel').value,
+    tecnica: document.getElementById('plan-tecnica').value,
+    area, grado, unidad,
+    tiempo: document.getElementById('plan-tiempo').value,
+    situacion: document.getElementById('plan-situacion').value,
+    competencias: document.getElementById('plan-competencias').value,
+    indicadores: document.getElementById('plan-indicadores').value,
+    conceptual: document.getElementById('plan-conceptual').value,
+    procedimental: document.getElementById('plan-procedimental').value,
+    actitudinal: document.getElementById('plan-actitudinal').value,
+    estrategias: document.getElementById('plan-estrategias').value,
+    actividades: document.getElementById('plan-actividades').value,
+    recuperacion: document.getElementById('plan-recuperacion').value,
+    recursos: document.getElementById('plan-recursos').value,
+    evaluacion: document.getElementById('plan-evaluacion').value,
+    fecha: new Date().toLocaleDateString('es-DO'),
+  });
+
+  const w = window.open('', '_blank');
+  w.document.write(html);
+  w.document.close();
+  w.print();
+}
+
+function imprimirPlanById(id) {
+  const planes = JSON.parse(localStorage.getItem('ea_planes') || '[]');
+  const plan = planes.find(p => p.id === id);
+  if (!plan) return;
+  const w = window.open('', '_blank');
+  w.document.write(generarHTMLPlan(plan));
+  w.document.close();
+  w.print();
+}
+
+function generarHTMLPlan(p) {
+  return `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
+  <title>Plan de Clase - ${p.unidad}</title>
+  <style>
+    body{font-family:Arial,sans-serif;padding:30px;color:#111;font-size:13px;}
+    h1{color:#1a7a4a;font-size:18px;margin-bottom:4px;}
+    h2{font-size:13px;color:#666;margin-bottom:20px;}
+    table{width:100%;border-collapse:collapse;margin-bottom:16px;}
+    th{background:#1a7a4a;color:#fff;padding:8px;text-align:left;font-size:12px;}
+    td{padding:8px;border:1px solid #ddd;vertical-align:top;}
+    .label{font-weight:bold;width:200px;background:#f9f9f9;}
+    .section-title{background:#0f2d4a;color:#fff;padding:6px 10px;font-weight:bold;font-size:12px;margin:12px 0 0;}
+    @media print{body{padding:15px;}}
+  </style></head><body>
+  <h1>🎓 EduActiva 360 — Plan de Clase</h1>
+  <h2>Sistema de Gestión Educativa · República Dominicana · MINERD</h2>
+  <table>
+    <tr><td class="label">Centro educativo</td><td colspan="3">${p.centro || '—'}</td></tr>
+    <tr><td class="label">Docente</td><td>${p.docente || '—'}</td><td class="label">Fecha</td><td>${p.fecha}</td></tr>
+    <tr><td class="label">Curso y sección</td><td>${p.curso || '—'}</td><td class="label">Tipo de planificación</td><td>${p.tipo || '—'}</td></tr>
+    <tr><td class="label">Nivel educativo</td><td>${p.nivel || '—'}</td><td class="label">Área técnica</td><td>${p.tecnica || 'No aplica'}</td></tr>
+    <tr><td class="label">Área curricular</td><td>${p.area}</td><td class="label">Grado</td><td>${p.grado}</td></tr>
+    <tr><td class="label">Unidad temática</td><td colspan="3">${p.unidad}</td></tr>
+    <tr><td class="label">Tiempo</td><td colspan="3">${p.tiempo ? p.tiempo + ' semanas' : '—'}</td></tr>
+  </table>
+  <div class="section-title">SITUACIÓN DE APRENDIZAJE</div>
+  <table><tr><td>${p.situacion || '—'}</td></tr></table>
+  <div class="section-title">COMPETENCIAS ESPECÍFICAS</div>
+  <table><tr><td>${p.competencias || '—'}</td></tr></table>
+  <div class="section-title">INDICADORES DE LOGRO</div>
+  <table><tr><td>${p.indicadores || '—'}</td></tr></table>
+  <div class="section-title">TIPOS DE CONTENIDOS</div>
+  <table>
+    <tr><th>📘 Conceptual</th><th>📗 Procedimental</th><th>📙 Actitudinal</th></tr>
+    <tr><td>${p.conceptual || '—'}</td><td>${p.procedimental || '—'}</td><td>${p.actitudinal || '—'}</td></tr>
+  </table>
+  <div class="section-title">ESTRATEGIAS DE ENSEÑANZA</div>
+  <table><tr><td>${p.estrategias || '—'}</td></tr></table>
+  <div class="section-title">ACTIVIDADES</div>
+  <table><tr><td>${p.actividades || '—'}</td></tr></table>
+  <div class="section-title">ACTIVIDADES DE RECUPERACIÓN</div>
+  <table><tr><td>${p.recuperacion || '—'}</td></tr></table>
+  <div class="section-title">RECURSOS DIDÁCTICOS</div>
+  <table><tr><td>${p.recursos || '—'}</td></tr></table>
+  <div class="section-title">EVALUACIÓN</div>
+  <table><tr><td>${p.evaluacion || '—'}</td></tr></table>
+  </body></html>`;
 }
 
 function showAlert(id, msg) {
