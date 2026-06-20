@@ -821,7 +821,7 @@ function showSection(name) {
 async function apiFetch(path, opts = {}) {
   const res = await fetch(`${API}${path}`, {
     ...opts,
-    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json', ...(opts.headers||{}) }
+    headers: { 'Authorization': `Bearer ${localStorage.getItem('ea_token')}`, 'Content-Type': 'application/json', ...(opts.headers||{}) }
   });
   if (res.status === 401) { doLogout(); throw new Error('Sesión expirada'); }
   return res.json();
