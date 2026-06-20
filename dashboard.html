@@ -912,7 +912,36 @@ async function crearInstitucion() {
 function clearInstForm() {
   ['inst-name','inst-code','inst-address','inst-director'].forEach(id => document.getElementById(id).value = '');
 }
+async function crearUsuario() {
+  const first_name = document.getElementById('user-firstname').value.trim();
+  const last_name = document.getElementById('user-lastname').value.trim();
+  const email = document.getElementById('user-email').value.trim();
+  const password = document.getElementById('user-password').value;
+  const role = document.getElementById('user-role').value;
+  const phone = document.getElementById('user-phone').value.trim();
 
+  if (!first_name || !last_name || !email || !password) {
+    showAlert('user-error', 'Completa todos los campos obligatorios.');
+    return;
+  }
+
+  try {
+    const res = await apiFetch('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({ first_name, last_name, email, password, role, phone: phone || undefined })
+    });
+    if (res.id || res.email) {
+      showAlert('user-success', `✅ Usuario "${first_name} ${last_name}" registrado exitosamente.`);
+      clearUserForm();
+      loadUsuarios();
+    } else {
+      showAlert('user-error', res.message || 'Error al registrar el usuario.');
+    }
+  } catch(e) {
+    showAlert('user-error', 'Error de conexión.');
+  }
+}
+ 
 async function loadUsuarios() {
   document.getElementById('users-list').innerHTML = '<div class="loading"><div class="spinner"></div><br>Cargando...</div>';
   try {
