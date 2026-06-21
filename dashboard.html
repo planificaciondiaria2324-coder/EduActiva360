@@ -558,19 +558,74 @@
             <div class="form-row">
               <div class="form-field">
                 <label>Área curricular</label>
-                <select id="plan-area">
-                  <option value="">Seleccionar área...</option>
-                  <option>Lengua Española</option>
-                  <option>Matemática</option>
-                  <option>Ciencias de la Naturaleza</option>
-                  <option>Ciencias Sociales</option>
-                  <option>Educación Artística</option>
-                  <option>Educación Física</option>
-                  <option>Formación Integral Humana y Religiosa</option>
-                  <option>Inglés</option>
-                  <option>Francés</option>
-                  <option>Tecnología e Informática</option>
-                </select>
+                function actualizarAreasPorNivel() {
+  const nivel = document.getElementById('plan-nivel').value;
+  const areaSelect = document.getElementById('plan-area');
+  const tecnicaDiv = document.getElementById('plan-tecnica').closest('.form-field');
+
+  const mallas = {
+    'Inicial': [
+      'Comunicación y Lenguaje',
+      'Matemática',
+      'Ciencias de la Naturaleza',
+      'Ciencias Sociales',
+      'Educación Artística',
+      'Educación Física',
+      'Formación Integral Humana y Religiosa'
+    ],
+    'Primaria': [
+      'Lengua Española',
+      'Matemática',
+      'Ciencias de la Naturaleza',
+      'Ciencias Sociales',
+      'Educación Artística',
+      'Educación Física',
+      'Formación Integral Humana y Religiosa',
+      'Lenguas Extranjeras (Inglés)',
+      'Lenguas Extranjeras (Francés)',
+      'Tecnología e Informática'
+    ],
+    'Media (Académica)': [
+      'Lengua Española',
+      'Matemática',
+      'Ciencias de la Naturaleza',
+      'Ciencias Sociales',
+      'Educación Artística',
+      'Educación Física',
+      'Formación Integral Humana y Religiosa',
+      'Lenguas Extranjeras (Inglés)',
+      'Lenguas Extranjeras (Francés)',
+      'Tecnología e Informática',
+      'Filosofía'
+    ],
+    'Media (Técnico-Profesional)': [
+      'Lengua Española',
+      'Matemática',
+      'Ciencias de la Naturaleza',
+      'Ciencias Sociales',
+      'Educación Artística',
+      'Educación Física',
+      'Formación Integral Humana y Religiosa',
+      'Lenguas Extranjeras (Inglés)',
+      'Tecnología e Informática',
+      'Área Técnica Específica'
+    ]
+  };
+
+  // Limpiar y rellenar áreas
+  areaSelect.innerHTML = '<option value="">Seleccionar área...</option>';
+  if (nivel && mallas[nivel]) {
+    mallas[nivel].forEach(area => {
+      const opt = document.createElement('option');
+      opt.value = area;
+      opt.textContent = area;
+      areaSelect.appendChild(opt);
+    });
+  }
+
+  // Mostrar/ocultar área técnica
+  tecnicaDiv.style.display = nivel === 'Media (Técnico-Profesional)' ? 'block' : 'none';
+}
               </div>
               <div class="form-field">
                 <label>Nivel y grado</label>
