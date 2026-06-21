@@ -1289,6 +1289,10 @@ async function cambiarPassword() {
   if (newpass !== confirm) { showAlert('config-error', 'Las contraseñas no coinciden.'); return; }
   showAlert('config-success', '✅ Funcionalidad disponible en la próxima versión.');
 }
+ function solicitarPlan(plan, precio) {
+  const msg = encodeURIComponent(`Hola, estoy interesado/a en el plan *${plan}* (${precio}/mes) de EduActiva 360. ¿Me pueden enviar los datos de pago?`);
+  window.open(`https://wa.me/18493677000?text=${msg}`, '_blank');
+}
 </script>
 </body>
 </html>
