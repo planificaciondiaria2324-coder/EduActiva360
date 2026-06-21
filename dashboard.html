@@ -958,7 +958,7 @@ async function loadUsuarios() {
           <tr>
             <td><strong>${u.first_name || ''} ${u.last_name || ''}</strong></td>
             <td>${u.email}</td>
-            <td><span class="badge badge-azul">${u.role || u.role_name || '—'}</span></td>
+            <td><span class="badge badge-azul">${u.role?.name || u.role_name || u.role || '-'}</span></td>
             <td><span class="badge badge-verde">Activo</span></td>
           </tr>`).join('')}
         </tbody>
