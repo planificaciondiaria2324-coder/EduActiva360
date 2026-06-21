@@ -1254,6 +1254,18 @@ function showAlert(id, msg) {
 document.addEventListener('keydown', e => {
   if (e.key === 'Enter' && document.getElementById('login-screen').style.display !== 'none') doLogin();
 });
+ function loadConfiguracion() {
+  document.getElementById('config-email').value = currentUser?.email || '-';
+  document.getElementById('config-role').value = currentUser?.role?.name || currentUser?.role || '-';
+}
+
+async function cambiarPassword() {
+  const newpass = document.getElementById('config-newpass').value;
+  const confirm = document.getElementById('config-confirmpass').value;
+  if (!newpass || newpass.length < 8) { showAlert('config-error', 'La contraseña debe tener al menos 8 caracteres.'); return; }
+  if (newpass !== confirm) { showAlert('config-error', 'Las contraseñas no coinciden.'); return; }
+  showAlert('config-success', '✅ Funcionalidad disponible en la próxima versión.');
+}
 </script>
 </body>
 </html>
