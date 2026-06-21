@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduActiva 360 — Kiosco de Asistencia</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --verde: #1a7a4a; --verde-claro: #22a25e;
+    --azul: #0f2d4a; --gris: #6b7280;
+    --borde: #e5e7eb; --blanco: #ffffff;
+    --rojo: #dc2626; --amarillo: #d97706;
+  }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: linear-gradient(135deg, #0f2d4a 0%, #1a7a4a 100%);
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .kiosco {
+    background: white; border-radius: 24px;
+    padding: 40px; width: 100%; max-width: 480px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center;
+  }
+  .logo { font-size: 48px; margin-bottom: 8px; }
+  .titulo { font-size: 22px; font-weight: 800; color: var(--azul); margin-bottom: 4px; }
+  .subtitulo { font-size: 14px; color: var(--gris); margin-bottom: 8px; }
+  .hora { font-size: 36px; font-weight: 800; color: var(--verde); margin: 16px 0 4px; }
+  .fecha { font-size: 14px; color: var(--gris); margin-bottom: 24px; }
+
+  .pin-display {
+    background: #f3f4f6; border-radius: 12px;
+    padding: 16px; margin-bottom: 20px;
+    font-size: 32px; letter-spacing: 12px;
+    min-height: 64px; display: flex; align-items: center; justify-content: center;
+    color: var(--azul); font-weight: 700;
+  }
+
+  .teclado {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 10px; margin-bottom: 16px;
+  }
+  .tecla {
+    padding: 18px; background: #f9fafb;
+    border: 2px solid var(--borde); border-radius: 12px;
+    font-size: 22px; font-weight: 700; cursor: pointer;
+    transition: all .15s; color: var(--azul);
+  }
+  .tecla:hover { background: var(--verde); color: white; border-color: var(--verde); }
+  .tecla:active { transform: scale(0.95); }
+  .tecla.borrar { background: #fef2f2; border-color: #fecaca; color: var(--rojo); }
+  .tecla.borrar:hover { background: var(--rojo); color: white; }
+
+  .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .btn-entrada {
+    padding: 16px; background: var(--verde); color: white;
+    border: none; border-radius: 12px; font-size: 16px;
+    font-weight: 700; cursor: pointer; transition: background .2s;
+  }
+  .btn-entrada:hover { background: var(--verde-claro); }
+  .btn-salida {
+    padding: 16px; background: var(--azul); color: white;
+    border: none; border-radius: 12px; font-size: 16px;
+    font-weight: 700; cursor: pointer; transition: background .2s;
+  }
+  .btn-salida:hover { background: #1b4f72; }
+
+  .resultado {
+    padding: 16px; border-radius: 12px; font-size: 15px;
+    font-weight: 600; display: none; margin-bottom: 12px;
+  }
+  .resultado.exito { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+  .resultado.error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+  .resultado.tarde { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+
+  .instruccion { font-size: 13px; color: var(--gris); margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="kiosco">
+  <div class="logo">🎓</div>
+  <div class="titulo">EduActiva 360</div>
+  <div class="subtitulo">Registro de Asistencia</div>
+  <div class="hora" id="hora">--:--</div>
+  <div class="fecha" id="fecha">--</div>
+
+  <div class="pin-display" id="pin-display">· · · ·</div>
+
+  <div class="teclado">
+    <button class="tecla" onclick="agregarDigito('1')">1</button>
+    <button class="tecla" onclick="agregarDigito('2')">2</button>
+    <button class="tecla" onclick="agregarDigito('3')">3</button>
+    <button class="tecla" onclick="agregarDigito('4')">4</button>
+    <button class="tecla" onclick="agregarDigito('5')">5</button>
+    <button class="tecla" onclick="agregarDigito('6')">6</button>
+    <button class="tecla" onclick="agregarDigito('7')">7</button>
+    <button class="tecla" onclick="agregarDigito('8')">8</button>
+    <button class="tecla" onclick="agregarDigito('9')">9</button>
+    <button class="tecla borrar" onclick="borrar()">⌫</button>
+    <button class="tecla" onclick="agregarDigito('0')">0</button>
+    <button class="tecla borrar" onclick="limpiar()">✕</button>
+  </div>
+
+  <div class="btns">
+    <button class="btn-entrada" onclick="registrar('entrada')">✅ Entrada</button>
+    <button class="btn-salida" onclick="registrar('salida')">🚪 Salida</button>
+  </div>
+
+  <div class="resultado" id="resultado"></div>
+  <div class="instruccion">Ingresa tu PIN y toca Entrada o Salida</div>
+</div>
+
+<script>
+const API = 'https://eduactiva360-backend-production.up.railway.app/api/v1';
+let pin = '';
+
+function actualizarReloj() {
+  const now = new Date();
+  document.getElementById('hora').textContent = now.toLocaleTimeString('es-DO', { hour: '2-digit', minute: '2-digit' });
+  document.getElementById('fecha').textContent = now.toLocaleDateString('es-DO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+setInterval(actualizarReloj, 1000);
+actualizarReloj();
+
+function agregarDigito(d) {
+  if (pin.length >= 6) return;
+  pin += d;
+  mostrarPin();
+}
+
+function borrar() {
+  pin = pin.slice(0, -1);
+  mostrarPin();
+}
+
+function limpiar() {
+  pin = '';
+  mostrarPin();
+  ocultarResultado();
+}
+
+function mostrarPin() {
+  const display = document.getElementById('pin-display');
+  display.textContent = pin ? '•'.repeat(pin.length) : '· · · ·';
+}
+
+async function registrar(tipo) {
+  if (pin.length < 4) {
+    mostrarResultado('Ingresa tu PIN (mínimo 4 dígitos)', 'error');
+    return;
+  }
+
+  // Buscar usuario por PIN en localStorage o API
+  const token = localStorage.getItem('ea_token');
+  const institution_id = localStorage.getItem('ea_institution_id');
+
+  if (!token || !institution_id) {
+    mostrarResultado('Kiosco no configurado. Contacta al administrador.', 'error');
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API}/attendance`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pin, type: tipo, institution_id })
+    });
+    const data = await res.json();
+
+    if (res.ok) {
+      const estado = data.status === 'tarde' ? 'tarde' : 'exito';
+      const msg = tipo === 'entrada'
+        ? (data.status === 'tarde' ? `⚠️ Entrada tardía registrada` : `✅ ¡Bienvenido/a! Entrada puntual`)
+        : `🚪 Salida registrada correctamente`;
+      mostrarResultado(msg, estado);
+      setTimeout(() => { limpiar(); }, 3000);
+    } else {
+      mostrarResultado(data.message || 'Error al registrar', 'error');
+    }
+  } catch(e) {
+    mostrarResultado('Sin conexión — intenta de nuevo', 'error');
+  }
+}
+
+function mostrarResultado(msg, tipo) {
+  const div = document.getElementById('resultado');
+  div.textContent = msg;
+  div.className = `resultado ${tipo}`;
+  div.style.display = 'block';
+}
+
+function ocultarResultado() {
+  document.getElementById('resultado').style.display = 'none';
+}
+</script>
+</body>
+</html>
