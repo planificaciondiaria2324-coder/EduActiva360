@@ -1297,6 +1297,12 @@ async function cambiarPassword() {
   const msg = encodeURIComponent(`Hola, estoy interesado/a en el plan *${plan}* (${precio}/mes) de EduActiva 360. ¿Me pueden enviar los datos de pago?`);
   window.open(`https://wa.me/18493677000?text=${msg}`, '_blank');
 }
+ function abrirKiosco() {
+  const user = JSON.parse(localStorage.getItem('ea_user') || 'null');
+  const institution_id = user?.institution_id || '';
+  localStorage.setItem('ea_institution_id', institution_id);
+  window.open('kiosco.html', '_blank');
+}
 </script>
 </body>
 </html>
