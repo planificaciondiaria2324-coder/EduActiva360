@@ -973,21 +973,35 @@ async function loadLicencias() {
   try {
     const insts = await apiFetch('/institutions');
     const list = Array.isArray(insts) ? insts : (insts.data || []);
+    
+    if (list.length === 0) {
+      document.getElementById('licencias-list').innerHTML = '<p style="color:var(--gris);text-align:center;padding:30px">No hay licencias registradas.</p>';
+      return;
+    }
+
+    const rows = list.map(inst => {
+      const lic = inst.licenses?.[0];
+      if (!lic) return '';
+      const vence = lic.expiration_date ? new Date(lic.expiration_date).toLocaleDateString('es-DO') : '-';
+      const estado = lic.status || '-';
+      const badgeColor = estado === 'active' ? 'badge-verde' : estado === 'trial' ? 'badge-azul' : 'badge-rojo';
+      return `
+        <tr>
+          <td><strong>${inst.name}</strong></td>
+          <td><code>${lic.license_key || '-'}</code></td>
+          <td><span class="badge badge-azul">${lic.plan_type || '-'}</span></td>
+          <td>${vence}</td>
+          <td><span class="badge ${badgeColor}">${estado}</span></td>
+        </tr>`;
+    }).join('');
+
     document.getElementById('licencias-list').innerHTML = `
       <table>
         <thead><tr><th>Institución</th><th>Clave</th><th>Plan</th><th>Vence</th><th>Estado</th></tr></thead>
-        <tbody>
-          <tr>
-            <td><strong>${list[0]?.name || 'Centro Piloto EduActiva'}</strong></td>
-            <td><code>EA-PILOT-2026</code></td>
-            <td><span class="badge badge-azul">basico</span></td>
-            <td>2027-06-19</td>
-            <td><span class="badge badge-verde">Activa</span></td>
-          </tr>
-        </tbody>
+        <tbody>${rows}</tbody>
       </table>`;
   } catch(e) {
-    document.getElementById('licencias-list').innerHTML = '<p style="color:var(--gris)">No se pudieron cargar las licencias.</p>';
+    document.getElementById('licencias-list').innerHTML = '<p style="color:var(--rojo);padding:20px">Error al cargar licencias.</p>';
   }
 }
 
