@@ -706,20 +706,49 @@
     </div>
 
     <!-- CONFIGURACION -->
-    <div id="section-configuracion" style="display:none">
-      <div class="panel">
-        <div class="panel-header"><h3>⚙️ Configuración del sistema</h3></div>
-        <div class="panel-body">
-          <table>
-            <tr><td><strong>URL del backend</strong></td><td>https://eduactiva360-backend-production.up.railway.app</td></tr>
-            <tr><td><strong>Versión</strong></td><td>1.0 — Fase piloto</td></tr>
-            <tr><td><strong>Ambiente</strong></td><td><span class="badge badge-verde">Producción</span></td></tr>
-            <tr><td><strong>Base de datos</strong></td><td>PostgreSQL · Railway</td></tr>
-            <tr><td><strong>Frontend</strong></td><td>Vercel</td></tr>
-          </table>
+   <div id="section-configuracion" style="display:none">
+  <div class="panel">
+    <div class="panel-header"><h3>⚙️ Información del sistema</h3></div>
+    <div class="panel-body">
+      <table>
+        <tr><td><strong>URL del backend</strong></td><td>https://eduactiva360-backend-production.up.railway.app</td></tr>
+        <tr><td><strong>Versión</strong></td><td>1.0 — Fase piloto</td></tr>
+        <tr><td><strong>Ambiente</strong></td><td><span class="badge badge-verde">Producción</span></td></tr>
+        <tr><td><strong>Base de datos</strong></td><td>PostgreSQL · Railway</td></tr>
+        <tr><td><strong>Frontend</strong></td><td>Vercel</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header"><h3>👤 Mi cuenta</h3></div>
+    <div class="panel-body">
+      <div class="alert alert-success" id="config-success"></div>
+      <div class="alert alert-error" id="config-error"></div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Correo actual</label>
+          <input type="text" id="config-email" disabled style="background:#f3f4f6;color:#6b7280;">
+        </div>
+        <div class="form-field">
+          <label>Rol</label>
+          <input type="text" id="config-role" disabled style="background:#f3f4f6;color:#6b7280;">
         </div>
       </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Nueva contraseña</label>
+          <input type="password" id="config-newpass" placeholder="Mínimo 8 caracteres">
+        </div>
+        <div class="form-field">
+          <label>Confirmar contraseña</label>
+          <input type="password" id="config-confirmpass" placeholder="Repite la contraseña">
+        </div>
+      </div>
+      <button class="btn-primary" onclick="cambiarPassword()">🔒 Cambiar contraseña</button>
     </div>
+  </div>
+</div>
 
   </main>
 </div>
