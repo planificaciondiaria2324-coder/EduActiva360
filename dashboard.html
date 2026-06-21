@@ -874,7 +874,7 @@ async function loadInstituciones() {
             <td>${i.code || '—'}</td>
             <td>${i.address || '—'}</td>
             <td>${i.director_name || '—'}</td>
-            <td><span class="badge badge-verde">Activa</span></td>
+            <td><span class="badge ${i.licenses?.[0]?.status === 'active' ? 'badge-verde' : 'badge-azul'}">${i.licenses?.[0]?.status || 'sin licencia'}</span></td>
           </tr>`).join('')}
         </tbody>
       </table>`;
