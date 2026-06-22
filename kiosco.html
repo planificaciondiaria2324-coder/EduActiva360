@@ -75,6 +75,15 @@
   .resultado.tarde { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
 
   .instruccion { font-size: 13px; color: var(--gris); margin-top: 8px; }
+
+  .btn-volver {
+    display: inline-block; margin-top: 20px;
+    padding: 8px 16px; background: transparent;
+    border: 1.5px solid var(--borde); border-radius: 8px;
+    font-size: 13px; color: var(--gris); cursor: pointer;
+    text-decoration: none; transition: all .15s;
+  }
+  .btn-volver:hover { border-color: var(--verde); color: var(--verde); }
 </style>
 </head>
 <body>
@@ -109,6 +118,8 @@
 
   <div class="resultado" id="resultado"></div>
   <div class="instruccion">Ingresa tu PIN y toca Entrada o Salida</div>
+
+  <a href="dashboard.html" class="btn-volver">← Volver al Dashboard</a>
 </div>
 
 <script>
@@ -151,7 +162,6 @@ async function registrar(tipo) {
     return;
   }
 
-  // Buscar usuario por PIN en localStorage o API
   const token = localStorage.getItem('ea_token');
   const institution_id = localStorage.getItem('ea_institution_id');
 
