@@ -558,7 +558,10 @@
             <div class="form-row">
               <div class="form-field">
                 <label>Área curricular</label>
-                function actualizarAreasPorNivel() {
+               <select id="plan-area">
+                <option value="">Seleccionar área...</option>
+              </select>
+            </div>
   const nivel = document.getElementById('plan-nivel').value;
   const areaSelect = document.getElementById('plan-area');
   const tecnicaDiv = document.getElementById('plan-tecnica').closest('.form-field');
