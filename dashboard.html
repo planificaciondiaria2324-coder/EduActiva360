@@ -1159,7 +1159,72 @@ function showPlanTab(tab) {
   document.getElementById('tab-lista').className = tab === 'lista' ? 'btn-primary' : 'btn-secondary';
   if (tab === 'lista') renderPlanLista();
 }
+function actualizarAreasPorNivel() {
+      const nivel = document.getElementById('plan-nivel').value;
+      const areaSelect = document.getElementById('plan-area');
+      const tecnicaField = document.getElementById('plan-tecnica').closest('.form-field');
 
+      const mallas = {
+        'Inicial': [
+          'Comunicación y Lenguaje',
+          'Matemática',
+          'Ciencias de la Naturaleza',
+          'Ciencias Sociales',
+          'Educación Artística',
+          'Educación Física',
+          'Formación Integral Humana y Religiosa'
+        ],
+        'Primaria': [
+          'Lengua Española',
+          'Matemática',
+          'Ciencias de la Naturaleza',
+          'Ciencias Sociales',
+          'Educación Artística',
+          'Educación Física',
+          'Formación Integral Humana y Religiosa',
+          'Lenguas Extranjeras (Inglés)',
+          'Lenguas Extranjeras (Francés)',
+          'Tecnología e Informática'
+        ],
+        'Media (Académica)': [
+          'Lengua Española',
+          'Matemática',
+          'Ciencias de la Naturaleza',
+          'Ciencias Sociales',
+          'Educación Artística',
+          'Educación Física',
+          'Formación Integral Humana y Religiosa',
+          'Lenguas Extranjeras (Inglés)',
+          'Lenguas Extranjeras (Francés)',
+          'Tecnología e Informática',
+          'Filosofía'
+        ],
+        'Media (Técnico-Profesional)': [
+          'Lengua Española',
+          'Matemática',
+          'Ciencias de la Naturaleza',
+          'Ciencias Sociales',
+          'Educación Artística',
+          'Educación Física',
+          'Formación Integral Humana y Religiosa',
+          'Lenguas Extranjeras (Inglés)',
+          'Tecnología e Informática',
+          'Área Técnica Específica'
+        ]
+      };
+
+      areaSelect.innerHTML = '<option value="">Seleccionar área...</option>';
+      if (nivel && mallas[nivel]) {
+        mallas[nivel].forEach(area => {
+          const opt = document.createElement('option');
+          opt.value = area;
+          opt.textContent = area;
+         areaSelect.appendChild(opt);
+        });
+      }
+
+      tecnicaField.style.display = nivel === 'Media (Técnico-Profesional)' ? 'block' : 'none';
+    }
 function guardarPlan() {
   const area = document.getElementById('plan-area').value;
   const grado = document.getElementById('plan-grado').value;
