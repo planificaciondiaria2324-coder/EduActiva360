@@ -1058,10 +1058,9 @@ function guardarPlan() {
   var grado = document.getElementById('plan-grado').value;
   var unidad = document.getElementById('plan-unidad').value.trim();
 
-  if (!area || !grado || !unidad) {
-    showAlert('plan-error', 'Área curricular, grado y unidad temática son obligatorios.');
-    return;
-  }
+  if (!area) { showAlert('plan-error', '⚠️ Selecciona el Área curricular.'); return; }
+  if (!grado) { showAlert('plan-error', '⚠️ Selecciona el Nivel y grado.'); return; }
+  if (!unidad) { showAlert('plan-error', '⚠️ Escribe la Unidad temática (campo de texto, no es un selector).'); document.getElementById('plan-unidad').focus(); return; }
 
   var planes = JSON.parse(localStorage.getItem('ea_planes') || '[]');
 
