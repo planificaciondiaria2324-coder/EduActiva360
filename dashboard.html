@@ -599,6 +599,18 @@
               </div>
             </div>
 
+            <!-- Botón IA -->
+            <div style="margin-bottom:20px;padding:16px;background:linear-gradient(135deg,#f0faf4,#e8f5e9);border:1.5px solid var(--verde);border-radius:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+              <div>
+                <div style="font-weight:700;color:var(--verde);font-size:14px;">✨ Generar plan con Inteligencia Artificial</div>
+                <div style="font-size:12px;color:var(--gris);margin-top:2px;">Completa nivel, área, grado y unidad temática — la IA llena el resto alineado al currículo MINERD.</div>
+              </div>
+              <button id="btn-ia" onclick="generarConIA()" style="padding:10px 20px;background:var(--verde);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;">✨ Generar con IA</button>
+            </div>
+            <div id="ia-loading" style="display:none;text-align:center;padding:16px;color:var(--verde);font-weight:600;">
+              <div class="spinner"></div><br>Generando plan... puede tomar unos segundos
+            </div>
+
             <div class="form-row" style="grid-template-columns:1fr;">
               <div class="form-field">
                 <label>Situación de aprendizaje</label>
@@ -1018,7 +1030,75 @@ async function loadLicencias() {
   }
 }
 
-var planEditandoId = null;
+async function generarConIA() {
+  var nivel = document.getElementById('plan-nivel').value;
+  var area = document.getElementById('plan-area').value;
+  var grado = document.getElementById('plan-grado').value;
+  var unidad = document.getElementById('plan-unidad').value.trim();
+  var curso = document.getElementById('plan-curso').value.trim();
+  var tipo = document.getElementById('plan-tipo').value;
+
+  if (!nivel || !area || !grado || !unidad) {
+    showAlert('plan-error', '⚠️ Para generar con IA necesitas: Nivel educativo, Área curricular, Nivel y grado, y Unidad temática.');
+    return;
+  }
+
+  var btn = document.getElementById('btn-ia');
+  btn.disabled = true;
+  btn.textContent = '⏳ Generando...';
+  document.getElementById('ia-loading').style.display = 'block';
+
+  var prompt = 'Eres un experto en el currículo dominicano MINERD. Genera un plan de clase completo en español para:\n'
+    + '- Nivel educativo: ' + nivel + '\n'
+    + '- Área curricular: ' + area + '\n'
+    + '- Grado: ' + grado + '\n'
+    + '- Unidad temática: ' + unidad + '\n'
+    + (curso ? '- Curso/sección: ' + curso + '\n' : '')
+    + '- Tipo de planificación: ' + tipo + '\n\n'
+    + 'Responde SOLO con un objeto JSON válido, sin texto adicional, sin bloques de código, sin explicaciones. El JSON debe tener exactamente estas claves:\n'
+    + '{"situacion":"...","competencias":"...","indicadores":"...","conceptual":"...","procedimental":"...","actitudinal":"...","estrategias":"...","actividades":"...","recuperacion":"...","recursos":"...","evaluacion":"..."}\n\n'
+    + 'Cada campo debe tener contenido real, concreto y alineado al currículo MINERD. Usa texto plano sin markdown.';
+
+  try {
+    var res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    var data = await res.json();
+    var texto = data.content && data.content[0] && data.content[0].text ? data.content[0].text : '';
+    // Limpiar posibles bloques de código
+    texto = texto.replace(/```json/g, '').replace(/```/g, '').trim();
+    var plan = JSON.parse(texto);
+
+    document.getElementById('plan-situacion').value = plan.situacion || '';
+    document.getElementById('plan-competencias').value = plan.competencias || '';
+    document.getElementById('plan-indicadores').value = plan.indicadores || '';
+    document.getElementById('plan-conceptual').value = plan.conceptual || '';
+    document.getElementById('plan-procedimental').value = plan.procedimental || '';
+    document.getElementById('plan-actitudinal').value = plan.actitudinal || '';
+    document.getElementById('plan-estrategias').value = plan.estrategias || '';
+    document.getElementById('plan-actividades').value = plan.actividades || '';
+    document.getElementById('plan-recuperacion').value = plan.recuperacion || '';
+    document.getElementById('plan-recursos').value = plan.recursos || '';
+    document.getElementById('plan-evaluacion').value = plan.evaluacion || '';
+
+    showAlert('plan-success', '✅ Plan generado con IA. Revisa y ajusta el contenido antes de guardar.');
+  } catch(e) {
+    showAlert('plan-error', '⚠️ Error generando el plan. Verifica tu conexión e intenta de nuevo.');
+  }
+
+  btn.disabled = false;
+  btn.textContent = '✨ Generar con IA';
+  document.getElementById('ia-loading').style.display = 'none';
+}
+
+
 
 function showPlanTab(tab) {
   document.getElementById('plan-form-section').style.display = tab === 'nuevo' ? 'block' : 'none';
