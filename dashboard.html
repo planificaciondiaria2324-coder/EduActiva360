@@ -669,9 +669,10 @@
             </div>
 
             <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
-              <button class="btn-secondary" onclick="clearPlanForm()">Limpiar</button>
-              <button class="btn-primary" onclick="guardarPlan()">💾 Guardar plan</button>
+              <button class="btn-secondary" onclick="clearPlanForm()">🆕 Nuevo</button>
+              <button class="btn-primary" id="btn-guardar-plan" onclick="guardarPlan()">💾 Guardar borrador</button>
               <button class="btn-primary" style="background:var(--azul-medio);" onclick="imprimirPlan()">🖨️ Imprimir / PDF</button>
+              <span id="plan-edit-label" style="display:none;font-size:13px;color:var(--verde);font-weight:600;align-self:center;">✏️ Editando borrador guardado</span>
             </div>
           </div>
         </div>
@@ -1017,6 +1018,8 @@ async function loadLicencias() {
   }
 }
 
+var planEditandoId = null;
+
 function showPlanTab(tab) {
   document.getElementById('plan-form-section').style.display = tab === 'nuevo' ? 'block' : 'none';
   document.getElementById('plan-lista-section').style.display = tab === 'lista' ? 'block' : 'none';
@@ -1060,8 +1063,10 @@ function guardarPlan() {
     return;
   }
 
+  var planes = JSON.parse(localStorage.getItem('ea_planes') || '[]');
+
   var plan = {
-    id: Date.now(),
+    id: planEditandoId || Date.now(),
     fecha: new Date().toLocaleDateString('es-DO'),
     centro: document.getElementById('plan-centro').value,
     docente: document.getElementById('plan-docente').value || (currentUser && currentUser.email) || 'Docente',
@@ -1086,22 +1091,41 @@ function guardarPlan() {
     evaluacion: document.getElementById('plan-evaluacion').value
   };
 
-  var planes = JSON.parse(localStorage.getItem('ea_planes') || '[]');
-  planes.unshift(plan);
+  if (planEditandoId) {
+    // Actualizar el existente
+    var idx = planes.findIndex(function(p) { return p.id === planEditandoId; });
+    if (idx !== -1) {
+      planes[idx] = plan;
+    } else {
+      planes.unshift(plan);
+    }
+    showAlert('plan-success', '✅ Borrador "' + unidad + '" actualizado.');
+  } else {
+    // Nuevo plan
+    planEditandoId = plan.id;
+    planes.unshift(plan);
+    showAlert('plan-success', '✅ Borrador "' + unidad + '" guardado. Puedes continuar editando.');
+  }
+
   localStorage.setItem('ea_planes', JSON.stringify(planes));
-  showAlert('plan-success', '✅ Plan "' + unidad + '" guardado exitosamente.');
+  document.getElementById('plan-edit-label').style.display = 'inline';
+  document.getElementById('btn-guardar-plan').textContent = '💾 Actualizar borrador';
 }
 
 function clearPlanForm() {
+  planEditandoId = null;
+  document.getElementById('plan-edit-label').style.display = 'none';
+  document.getElementById('btn-guardar-plan').textContent = '💾 Guardar borrador';
   ['plan-centro','plan-docente','plan-curso','plan-unidad','plan-tiempo','plan-situacion','plan-competencias','plan-indicadores',
    'plan-conceptual','plan-procedimental','plan-actitudinal','plan-estrategias',
    'plan-actividades','plan-recuperacion','plan-recursos','plan-evaluacion'].forEach(function(id) {
     document.getElementById(id).value = '';
   });
-  document.getElementById('plan-area').value = '';
+  document.getElementById('plan-area').innerHTML = '<option value="">Seleccionar área...</option>';
   document.getElementById('plan-grado').value = '';
   document.getElementById('plan-nivel').value = '';
   document.getElementById('plan-tipo').value = 'Diaria';
+  document.getElementById('plan-tecnica').value = '';
 }
 
 function renderPlanLista() {
@@ -1111,11 +1135,73 @@ function renderPlanLista() {
     body.innerHTML = '<p style="color:var(--gris);text-align:center;padding:30px">No hay planes guardados aún.</p>';
     return;
   }
-  body.innerHTML = '<table><thead><tr><th>Unidad</th><th>Área</th><th>Grado</th><th>Fecha</th><th>Acción</th></tr></thead><tbody>'
+  body.innerHTML = '<table><thead><tr><th>Unidad</th><th>Área</th><th>Grado</th><th>Fecha</th><th>Acciones</th></tr></thead><tbody>'
     + planes.map(function(p) {
-        return '<tr><td><strong>' + p.unidad + '</strong></td><td>' + p.area + '</td><td>' + p.grado + '</td><td>' + p.fecha + '</td><td><button class="btn-primary" style="padding:5px 12px;font-size:12px;" onclick="imprimirPlanById(' + p.id + ')">🖨️ Imprimir</button></td></tr>';
+        return '<tr>'
+          + '<td><strong>' + p.unidad + '</strong></td>'
+          + '<td>' + p.area + '</td>'
+          + '<td>' + p.grado + '</td>'
+          + '<td>' + p.fecha + '</td>'
+          + '<td style="display:flex;gap:6px;flex-wrap:wrap;">'
+          + '<button class="btn-primary" style="padding:5px 10px;font-size:12px;" onclick="cargarPlanEnFormulario(' + p.id + ')">✏️ Continuar</button>'
+          + '<button class="btn-primary" style="padding:5px 10px;font-size:12px;background:var(--azul-medio);" onclick="imprimirPlanById(' + p.id + ')">🖨️ Imprimir</button>'
+          + '<button class="btn-secondary" style="padding:5px 10px;font-size:12px;color:var(--rojo);border-color:var(--rojo);" onclick="eliminarPlan(' + p.id + ')">🗑️</button>'
+          + '</td></tr>';
       }).join('')
     + '</tbody></table>';
+}
+
+function cargarPlanEnFormulario(id) {
+  var planes = JSON.parse(localStorage.getItem('ea_planes') || '[]');
+  var p = planes.find(function(x) { return x.id === id; });
+  if (!p) return;
+
+  planEditandoId = p.id;
+
+  // Cargar nivel primero para que se pueble el select de áreas
+  document.getElementById('plan-nivel').value = p.nivel || '';
+  actualizarAreasPorNivel();
+
+  document.getElementById('plan-centro').value = p.centro || '';
+  document.getElementById('plan-docente').value = p.docente || '';
+  document.getElementById('plan-curso').value = p.curso || '';
+  document.getElementById('plan-tipo').value = p.tipo || 'Diaria';
+  document.getElementById('plan-tecnica').value = p.tecnica || '';
+  document.getElementById('plan-area').value = p.area || '';
+  document.getElementById('plan-grado').value = p.grado || '';
+  document.getElementById('plan-unidad').value = p.unidad || '';
+  document.getElementById('plan-tiempo').value = p.tiempo || '';
+  document.getElementById('plan-situacion').value = p.situacion || '';
+  document.getElementById('plan-competencias').value = p.competencias || '';
+  document.getElementById('plan-indicadores').value = p.indicadores || '';
+  document.getElementById('plan-conceptual').value = p.conceptual || '';
+  document.getElementById('plan-procedimental').value = p.procedimental || '';
+  document.getElementById('plan-actitudinal').value = p.actitudinal || '';
+  document.getElementById('plan-estrategias').value = p.estrategias || '';
+  document.getElementById('plan-actividades').value = p.actividades || '';
+  document.getElementById('plan-recuperacion').value = p.recuperacion || '';
+  document.getElementById('plan-recursos').value = p.recursos || '';
+  document.getElementById('plan-evaluacion').value = p.evaluacion || '';
+
+  document.getElementById('plan-edit-label').style.display = 'inline';
+  document.getElementById('btn-guardar-plan').textContent = '💾 Actualizar borrador';
+
+  // Ir al formulario
+  showPlanTab('nuevo');
+  document.getElementById('section-planificacion').scrollIntoView({ behavior: 'smooth' });
+}
+
+function eliminarPlan(id) {
+  if (!confirm('¿Eliminar este plan?')) return;
+  var planes = JSON.parse(localStorage.getItem('ea_planes') || '[]');
+  planes = planes.filter(function(p) { return p.id !== id; });
+  localStorage.setItem('ea_planes', JSON.stringify(planes));
+  if (planEditandoId === id) {
+    planEditandoId = null;
+    document.getElementById('plan-edit-label').style.display = 'none';
+    document.getElementById('btn-guardar-plan').textContent = '💾 Guardar borrador';
+  }
+  renderPlanLista();
 }
 
 function imprimirPlan() {
