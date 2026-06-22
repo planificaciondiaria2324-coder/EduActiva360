@@ -1048,33 +1048,14 @@ async function generarConIA() {
   btn.textContent = '⏳ Generando...';
   document.getElementById('ia-loading').style.display = 'block';
 
-  var prompt = 'Eres un experto en el currículo dominicano MINERD. Genera un plan de clase completo en español para:\n'
-    + '- Nivel educativo: ' + nivel + '\n'
-    + '- Área curricular: ' + area + '\n'
-    + '- Grado: ' + grado + '\n'
-    + '- Unidad temática: ' + unidad + '\n'
-    + (curso ? '- Curso/sección: ' + curso + '\n' : '')
-    + '- Tipo de planificación: ' + tipo + '\n\n'
-    + 'Responde SOLO con un objeto JSON válido, sin texto adicional, sin bloques de código, sin explicaciones. El JSON debe tener exactamente estas claves:\n'
-    + '{"situacion":"...","competencias":"...","indicadores":"...","conceptual":"...","procedimental":"...","actitudinal":"...","estrategias":"...","actividades":"...","recuperacion":"...","recursos":"...","evaluacion":"..."}\n\n'
-    + 'Cada campo debe tener contenido real, concreto y alineado al currículo MINERD. Usa texto plano sin markdown.';
-
   try {
-    var res = await fetch('https://api.anthropic.com/v1/messages', {
+    var response = await fetch('/api/generar-plan', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
+      body: JSON.stringify({ nivel: nivel, area: area, grado: grado, unidad: unidad, curso: curso, tipo: tipo })
     });
-
-    var data = await res.json();
-    var texto = data.content && data.content[0] && data.content[0].text ? data.content[0].text : '';
-    // Limpiar posibles bloques de código
-    texto = texto.replace(/```json/g, '').replace(/```/g, '').trim();
-    var plan = JSON.parse(texto);
+    var plan = await response.json();
+    if (!response.ok) throw new Error(plan.error || 'Error del servidor');
 
     document.getElementById('plan-situacion').value = plan.situacion || '';
     document.getElementById('plan-competencias').value = plan.competencias || '';
