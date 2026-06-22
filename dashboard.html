@@ -287,40 +287,39 @@
 
     <div class="sidebar-section">
       <div class="sidebar-section-label">Principal</div>
-      <div class="nav-item active" onclick="showSection('dashboard')">
+      <div class="nav-item active" onclick="showSection('dashboard', this)">
         <span class="icon">📊</span> Dashboard
       </div>
-      <div class="nav-item" onclick="showSection('instituciones')">
+      <div class="nav-item" onclick="showSection('instituciones', this)">
         <span class="icon">🏫</span> Instituciones
       </div>
-      <div class="nav-item" onclick="showSection('usuarios')">
+      <div class="nav-item" onclick="showSection('usuarios', this)">
         <span class="icon">👥</span> Usuarios
       </div>
-      <div class="nav-item" onclick="showSection('licencias')">
+      <div class="nav-item" onclick="showSection('licencias', this)">
         <span class="icon">🔑</span> Licencias
       </div>
     </div>
 
     <div class="sidebar-section">
       <div class="sidebar-section-label">Académico</div>
-      <div class="nav-item" onclick="showSection('planificacion')">
+      <div class="nav-item" onclick="showSection('planificacion', this)">
         <span class="icon">📋</span> Planificación
       </div>
-      <div class="nav-item" onclick="showSection('reportes')">
+      <div class="nav-item" onclick="showSection('reportes', this)">
         <span class="icon">📈</span> Reportes
       </div>
     </div>
 
-   <div class="sidebar-section">
-  <div class="sidebar-section-label">Sistema</div>
-  <div class="nav-item" onclick="showSection('configuracion')">
-    <span class="icon">⚙️</span> Configuración
-  </div>
-  <div class="nav-item" onclick="abrirKiosco()">
-    <span class="icon">📟</span> Kiosco
-  </div>
-</div> 
-   
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Sistema</div>
+      <div class="nav-item" onclick="showSection('configuracion', this)">
+        <span class="icon">⚙️</span> Configuración
+      </div>
+      <div class="nav-item" onclick="abrirKiosco()">
+        <span class="icon">📟</span> Kiosco
+      </div>
+    </div>
   </nav>
 
   <!-- Main -->
@@ -353,7 +352,7 @@
         </div>
         <div class="metric-card">
           <div class="metric-label">Versión</div>
-          <div class="metric-value azul-marino" style="font-size:28px">1.0</div>
+          <div class="metric-value" style="font-size:28px">1.0</div>
           <div class="metric-sub">🚀 Fase piloto · Julio 2026</div>
         </div>
       </div>
@@ -361,7 +360,7 @@
       <div class="panel">
         <div class="panel-header">
           <h3>🏫 Instituciones registradas</h3>
-          <button class="btn-primary" onclick="showSection('instituciones')">+ Nueva institución</button>
+          <button class="btn-primary" onclick="showSection('instituciones', null)">+ Nueva institución</button>
         </div>
         <div class="panel-body" id="dashboard-instituciones-list">
           <div class="loading"><div class="spinner"></div><br>Cargando datos...</div>
@@ -512,6 +511,7 @@
                 <input type="text" id="plan-docente" placeholder="Ej: María Pérez">
               </div>
             </div>
+
             <div class="form-row">
               <div class="form-field">
                 <label>Curso y sección</label>
@@ -525,6 +525,7 @@
                 </select>
               </div>
             </div>
+
             <div class="form-row">
               <div class="form-field">
                 <label>Nivel educativo</label>
@@ -555,14 +556,13 @@
                 </select>
               </div>
             </div>
+
             <div class="form-row">
               <div class="form-field">
                 <label>Área curricular</label>
-               <select id="plan-area">
-                <option value="">Seleccionar área...</option>
-              </select>
-            </div>
- 
+                <select id="plan-area">
+                  <option value="">Seleccionar área...</option>
+                </select>
               </div>
               <div class="form-field">
                 <label>Nivel y grado</label>
@@ -702,72 +702,74 @@
     </div>
 
     <!-- CONFIGURACION -->
-   <div id="section-configuracion" style="display:none">
-  <div class="panel">
-    <div class="panel-header"><h3>⚙️ Información del sistema</h3></div>
-    <div class="panel-body">
-      <table>
-        <tr><td><strong>URL del backend</strong></td><td>https://eduactiva360-backend-production.up.railway.app</td></tr>
-        <tr><td><strong>Versión</strong></td><td>1.0 — Fase piloto</td></tr>
-        <tr><td><strong>Ambiente</strong></td><td><span class="badge badge-verde">Producción</span></td></tr>
-        <tr><td><strong>Base de datos</strong></td><td>PostgreSQL · Railway</td></tr>
-        <tr><td><strong>Frontend</strong></td><td>Vercel</td></tr>
-      </table>
-    </div>
-  </div>
+    <div id="section-configuracion" style="display:none">
+      <div class="panel">
+        <div class="panel-header"><h3>⚙️ Información del sistema</h3></div>
+        <div class="panel-body">
+          <table>
+            <tr><td><strong>URL del backend</strong></td><td>https://eduactiva360-backend-production.up.railway.app</td></tr>
+            <tr><td><strong>Versión</strong></td><td>1.0 — Fase piloto</td></tr>
+            <tr><td><strong>Ambiente</strong></td><td><span class="badge badge-verde">Producción</span></td></tr>
+            <tr><td><strong>Base de datos</strong></td><td>PostgreSQL · Railway</td></tr>
+            <tr><td><strong>Frontend</strong></td><td>Vercel</td></tr>
+          </table>
+        </div>
+      </div>
 
-  <div class="panel">
-    <div class="panel-header"><h3>👤 Mi cuenta</h3></div>
-    <div class="panel-body">
-      <div class="alert alert-success" id="config-success"></div>
-      <div class="alert alert-error" id="config-error"></div>
-      <div class="form-row">
-        <div class="form-field">
-          <label>Correo actual</label>
-          <input type="text" id="config-email" disabled style="background:#f3f4f6;color:#6b7280;">
-        </div>
-        <div class="form-field">
-          <label>Rol</label>
-          <input type="text" id="config-role" disabled style="background:#f3f4f6;color:#6b7280;">
+      <div class="panel">
+        <div class="panel-header"><h3>👤 Mi cuenta</h3></div>
+        <div class="panel-body">
+          <div class="alert alert-success" id="config-success"></div>
+          <div class="alert alert-error" id="config-error"></div>
+          <div class="form-row">
+            <div class="form-field">
+              <label>Correo actual</label>
+              <input type="text" id="config-email" disabled style="background:#f3f4f6;color:#6b7280;">
+            </div>
+            <div class="form-field">
+              <label>Rol</label>
+              <input type="text" id="config-role" disabled style="background:#f3f4f6;color:#6b7280;">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label>Nueva contraseña</label>
+              <input type="password" id="config-newpass" placeholder="Mínimo 8 caracteres">
+            </div>
+            <div class="form-field">
+              <label>Confirmar contraseña</label>
+              <input type="password" id="config-confirmpass" placeholder="Repite la contraseña">
+            </div>
+          </div>
+          <button class="btn-primary" onclick="cambiarPassword()">🔒 Cambiar contraseña</button>
         </div>
       </div>
-      <div class="form-row">
-        <div class="form-field">
-          <label>Nueva contraseña</label>
-          <input type="password" id="config-newpass" placeholder="Mínimo 8 caracteres">
-        </div>
-        <div class="form-field">
-          <label>Confirmar contraseña</label>
-          <input type="password" id="config-confirmpass" placeholder="Repite la contraseña">
+
+      <div class="panel">
+        <div class="panel-header"><h3>💳 Solicitar plan</h3></div>
+        <div class="panel-body">
+          <p style="font-size:14px;color:var(--gris);margin-bottom:16px;">Selecciona tu plan y te contactaremos con los datos de pago.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
+            <div style="border:1.5px solid var(--borde);border-radius:10px;padding:20px;text-align:center;">
+              <div style="font-weight:700;font-size:16px;margin-bottom:4px;">Básico</div>
+              <div style="font-size:24px;font-weight:800;color:var(--verde);margin-bottom:12px;">RD$3,500<span style="font-size:13px;font-weight:400;">/mes</span></div>
+              <button class="btn-primary" style="width:100%" onclick="solicitarPlan('Básico','RD$3,500')">Solicitar</button>
+            </div>
+            <div style="border:2px solid var(--verde);border-radius:10px;padding:20px;text-align:center;">
+              <div style="font-weight:700;font-size:16px;margin-bottom:4px;">Profesional ⭐</div>
+              <div style="font-size:24px;font-weight:800;color:var(--verde);margin-bottom:12px;">RD$6,500<span style="font-size:13px;font-weight:400;">/mes</span></div>
+              <button class="btn-primary" style="width:100%" onclick="solicitarPlan('Profesional','RD$6,500')">Solicitar</button>
+            </div>
+            <div style="border:1.5px solid var(--borde);border-radius:10px;padding:20px;text-align:center;">
+              <div style="font-weight:700;font-size:16px;margin-bottom:4px;">Institucional</div>
+              <div style="font-size:24px;font-weight:800;color:var(--verde);margin-bottom:12px;">RD$10,500<span style="font-size:13px;font-weight:400;">/mes</span></div>
+              <button class="btn-primary" style="width:100%" onclick="solicitarPlan('Institucional','RD$10,500')">Solicitar</button>
+            </div>
+          </div>
         </div>
       </div>
-      <button class="btn-primary" onclick="cambiarPassword()">🔒 Cambiar contraseña</button>
     </div>
-  </div>
-</div>
-<div style="margin-bottom:24px;">
-  <h4 style="margin-bottom:12px;color:var(--azul-marino);">💳 Solicitar plan</h4>
-  <p style="font-size:14px;color:var(--gris);margin-bottom:16px;">Selecciona tu plan y te contactaremos con los datos de pago.</p>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
-    <div style="border:1.5px solid var(--borde);border-radius:10px;padding:20px;text-align:center;">
-      <div style="font-weight:700;font-size:16px;margin-bottom:4px;">Básico</div>
-      <div style="font-size:24px;font-weight:800;color:var(--verde);margin-bottom:12px;">RD$3,500<span style="font-size:13px;font-weight:400;">/mes</span></div>
-      <button class="btn-primary" style="width:100%" onclick="solicitarPlan('Básico','RD$3,500')">Solicitar</button>
-    </div>
-    <div style="border:2px solid var(--verde);border-radius:10px;padding:20px;text-align:center;">
-      <div style="font-weight:700;font-size:16px;margin-bottom:4px;">Profesional ⭐</div>
-      <div style="font-size:24px;font-weight:800;color:var(--verde);margin-bottom:12px;">RD$6,500<span style="font-size:13px;font-weight:400;">/mes</span></div>
-      <button class="btn-primary" style="width:100%" onclick="solicitarPlan('Profesional','RD$6,500')">Solicitar</button>
-    </div>
-    <div style="border:1.5px solid var(--borde);border-radius:10px;padding:20px;text-align:center;">
-      <div style="font-weight:700;font-size:16px;margin-bottom:4px;">Institucional</div>
-      <div style="font-size:24px;font-weight:800;color:var(--verde);margin-bottom:12px;">RD$10,500<span style="font-size:13px;font-weight:400;">/mes</span></div>
-      <button class="btn-primary" style="width:100%" onclick="solicitarPlan('Institucional','RD$10,500')">Solicitar</button>
-    </div>
-  </div>
-</div>
-  </div>
-</div>
+
   </main>
 </div>
 
@@ -776,11 +778,8 @@ const API = 'https://eduactiva360-backend-production.up.railway.app/api/v1';
 let token = localStorage.getItem('ea_token') || null;
 let currentUser = JSON.parse(localStorage.getItem('ea_user') || 'null');
 
-// Auto-login si hay token
 window.onload = () => {
-  if (token && currentUser) {
-    showApp();
-  }
+  if (token && currentUser) showApp();
 };
 
 async function doLogin() {
@@ -802,7 +801,6 @@ async function doLogin() {
       body: JSON.stringify({ email, password })
     });
     const data = await res.json();
-
     if (res.ok && data.access_token) {
       token = data.access_token;
       currentUser = data.user;
@@ -841,13 +839,13 @@ function doLogout() {
   document.getElementById('app-screen').style.display = 'none';
 }
 
-function showSection(name) {
+function showSection(name, el) {
   const sections = ['dashboard','instituciones','usuarios','licencias','planificacion','reportes','configuracion'];
   sections.forEach(s => {
-    document.getElementById(`section-${s}`).style.display = s === name ? 'block' : 'none';
+    document.getElementById('section-' + s).style.display = s === name ? 'block' : 'none';
   });
-  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-  event.currentTarget.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+  if (el) el.classList.add('active');
 
   const titles = {
     dashboard: 'Dashboard Global',
@@ -863,14 +861,14 @@ function showSection(name) {
   if (name === 'instituciones') loadInstituciones();
   if (name === 'usuarios') loadUsuarios();
   if (name === 'licencias') loadLicencias();
- if (name === 'configuracion') loadConfiguracion();
+  if (name === 'configuracion') loadConfiguracion();
 }
 
-async function apiFetch(path, opts = {}) {
-  const res = await fetch(`${API}${path}`, {
-    ...opts,
-    headers: { 'Authorization': `Bearer ${localStorage.getItem('ea_token')}`, 'Content-Type': 'application/json', ...(opts.headers||{}) }
-  });
+async function apiFetch(path, opts) {
+  opts = opts || {};
+  const res = await fetch(API + path, Object.assign({}, opts, {
+    headers: Object.assign({ 'Authorization': 'Bearer ' + localStorage.getItem('ea_token'), 'Content-Type': 'application/json' }, opts.headers || {})
+  }));
   if (res.status === 401) { doLogout(); throw new Error('Sesión expirada'); }
   return res.json();
 }
@@ -879,25 +877,16 @@ async function loadDashboard() {
   try {
     const insts = await apiFetch('/institutions');
     const list = Array.isArray(insts) ? insts : (insts.data || []);
-
     document.getElementById('m-instituciones').textContent = list.length;
     document.getElementById('m-usuarios').textContent = '—';
     document.getElementById('m-licencias').textContent = list.length;
-
     const tbody = list.length === 0
       ? '<p style="color:var(--gris);text-align:center;padding:20px">No hay instituciones registradas aún.</p>'
-      : `<table>
-          <thead><tr><th>Institución</th><th>Código</th><th>Director</th><th>Estado</th></tr></thead>
-          <tbody>${list.map(i => `
-            <tr>
-              <td><strong>${i.name}</strong></td>
-              <td>${i.code || '—'}</td>
-              <td>${i.director_name || '—'}</td>
-              <td><span class="badge badge-verde">Activa</span></td>
-            </tr>`).join('')}
-          </tbody>
-        </table>`;
-
+      : '<table><thead><tr><th>Institución</th><th>Código</th><th>Director</th><th>Estado</th></tr></thead><tbody>'
+        + list.map(function(i) {
+            return '<tr><td><strong>' + i.name + '</strong></td><td>' + (i.code || '—') + '</td><td>' + (i.director_name || '—') + '</td><td><span class="badge badge-verde">Activa</span></td></tr>';
+          }).join('')
+        + '</tbody></table>';
     document.getElementById('dashboard-instituciones-list').innerHTML = tbody;
   } catch(e) {
     document.getElementById('dashboard-instituciones-list').innerHTML = '<p style="color:var(--gris)">No se pudo cargar la información.</p>';
@@ -910,42 +899,32 @@ async function loadInstituciones() {
     const data = await apiFetch('/institutions');
     const list = Array.isArray(data) ? data : (data.data || []);
     if (list.length === 0) {
-      document.getElementById('inst-list').innerHTML = '<p style="color:var(--gris);text-align:center;padding:20px">Sin instituciones registradas. Crea la primera arriba.</p>';
+      document.getElementById('inst-list').innerHTML = '<p style="color:var(--gris);text-align:center;padding:20px">Sin instituciones registradas.</p>';
       return;
     }
-    document.getElementById('inst-list').innerHTML = `
-      <table>
-        <thead><tr><th>Nombre</th><th>Código</th><th>Dirección</th><th>Director</th><th>Estado</th></tr></thead>
-        <tbody>${list.map(i => `
-          <tr>
-            <td><strong>${i.name}</strong></td>
-            <td>${i.code || '—'}</td>
-            <td>${i.address || '—'}</td>
-            <td>${i.director_name || '—'}</td>
-            <td><span class="badge ${i.licenses?.[0]?.status === 'active' ? 'badge-verde' : 'badge-azul'}">${{active:'Activa',trial:'Prueba'}[i.licenses?.[0]?.status] || 'Sin licencia'}</span>
-          </tr>`).join('')}
-        </tbody>
-      </table>`;
+    document.getElementById('inst-list').innerHTML = '<table><thead><tr><th>Nombre</th><th>Código</th><th>Dirección</th><th>Director</th><th>Estado</th></tr></thead><tbody>'
+      + list.map(function(i) {
+          var status = i.licenses && i.licenses[0] ? i.licenses[0].status : '';
+          var badge = status === 'active' ? 'badge-verde' : 'badge-azul';
+          var label = {active:'Activa', trial:'Prueba'}[status] || 'Sin licencia';
+          return '<tr><td><strong>' + i.name + '</strong></td><td>' + (i.code || '—') + '</td><td>' + (i.address || '—') + '</td><td>' + (i.director_name || '—') + '</td><td><span class="badge ' + badge + '">' + label + '</span></td></tr>';
+        }).join('')
+      + '</tbody></table>';
   } catch(e) {
     document.getElementById('inst-list').innerHTML = '<p style="color:var(--rojo)">Error cargando instituciones.</p>';
   }
 }
 
 async function crearInstitucion() {
-  const name = document.getElementById('inst-name').value.trim();
-  const code = document.getElementById('inst-code').value.trim();
-  const address = document.getElementById('inst-address').value.trim();
-  const director_name = document.getElementById('inst-director').value.trim();
-
+  var name = document.getElementById('inst-name').value.trim();
+  var code = document.getElementById('inst-code').value.trim();
+  var address = document.getElementById('inst-address').value.trim();
+  var director_name = document.getElementById('inst-director').value.trim();
   if (!name) { showAlert('inst-error', 'El nombre es obligatorio.'); return; }
-
   try {
-    const res = await apiFetch('/institutions', {
-      method: 'POST',
-      body: JSON.stringify({ name, code, address, director_name })
-    });
+    var res = await apiFetch('/institutions', { method: 'POST', body: JSON.stringify({ name: name, code: code, address: address, director_name: director_name }) });
     if (res.id || res.name) {
-      showAlert('inst-success', `✅ Institución "${name}" creada exitosamente.`);
+      showAlert('inst-success', '✅ Institución "' + name + '" creada exitosamente.');
       clearInstForm();
       loadInstituciones();
       loadDashboard();
@@ -958,28 +937,45 @@ async function crearInstitucion() {
 }
 
 function clearInstForm() {
-  ['inst-name','inst-code','inst-address','inst-director'].forEach(id => document.getElementById(id).value = '');
+  ['inst-name','inst-code','inst-address','inst-director'].forEach(function(id) { document.getElementById(id).value = ''; });
 }
-async function crearUsuario() {
-  const first_name = document.getElementById('user-firstname').value.trim();
-  const last_name = document.getElementById('user-lastname').value.trim();
-  const email = document.getElementById('user-email').value.trim();
-  const password = document.getElementById('user-password').value;
-  const role = document.getElementById('user-role').value;
-  const phone = document.getElementById('user-phone').value.trim();
 
+async function loadUsuarios() {
+  document.getElementById('users-list').innerHTML = '<div class="loading"><div class="spinner"></div><br>Cargando...</div>';
+  try {
+    var data = await apiFetch('/users');
+    var list = Array.isArray(data) ? data : (data.data || []);
+    if (list.length === 0) {
+      document.getElementById('users-list').innerHTML = '<p style="color:var(--gris);text-align:center;padding:20px">No hay usuarios registrados.</p>';
+      return;
+    }
+    document.getElementById('users-list').innerHTML = '<table><thead><tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Estado</th></tr></thead><tbody>'
+      + list.map(function(u) {
+          return '<tr><td><strong>' + (u.first_name || '') + ' ' + (u.last_name || '') + '</strong></td><td>' + u.email + '</td><td><span class="badge badge-azul">' + (u.role && u.role.name ? u.role.name : (u.role_name || u.role || '-')) + '</span></td><td><span class="badge badge-verde">Activo</span></td></tr>';
+        }).join('')
+      + '</tbody></table>';
+  } catch(e) {
+    document.getElementById('users-list').innerHTML = '<p style="color:var(--gris)">No se pudieron cargar los usuarios.</p>';
+  }
+}
+
+async function crearUsuario() {
+  var first_name = document.getElementById('user-firstname').value.trim();
+  var last_name = document.getElementById('user-lastname').value.trim();
+  var email = document.getElementById('user-email').value.trim();
+  var password = document.getElementById('user-password').value;
+  var role = document.getElementById('user-role').value;
+  var phone = document.getElementById('user-phone').value.trim();
   if (!first_name || !last_name || !email || !password) {
     showAlert('user-error', 'Completa todos los campos obligatorios.');
     return;
   }
-
   try {
-    const res = await apiFetch('/auth/register', {
-      method: 'POST',
-      body: JSON.stringify({ first_name, last_name, email, password, role, phone: phone || undefined })
-    });
+    var body = { first_name: first_name, last_name: last_name, email: email, password: password, role: role };
+    if (phone) body.phone = phone;
+    var res = await apiFetch('/auth/register', { method: 'POST', body: JSON.stringify(body) });
     if (res.id || res.email) {
-      showAlert('user-success', `✅ Usuario "${first_name} ${last_name}" registrado exitosamente.`);
+      showAlert('user-success', '✅ Usuario "' + first_name + ' ' + last_name + '" registrado exitosamente.');
       clearUserForm();
       loadUsuarios();
     } else {
@@ -989,104 +985,36 @@ async function crearUsuario() {
     showAlert('user-error', 'Error de conexión.');
   }
 }
- 
-async function loadUsuarios() {
-  document.getElementById('users-list').innerHTML = '<div class="loading"><div class="spinner"></div><br>Cargando...</div>';
-  try {
-    const data = await apiFetch('/users');
-    const list = Array.isArray(data) ? data : (data.data || []);
-    if (list.length === 0) {
-      document.getElementById('users-list').innerHTML = '<p style="color:var(--gris);text-align:center;padding:20px">No hay usuarios registrados.</p>';
-      return;
-    }
-    document.getElementById('users-list').innerHTML = `
-      <table>
-        <thead><tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Estado</th></tr></thead>
-        <tbody>${list.map(u => `
-          <tr>
-            <td><strong>${u.first_name || ''} ${u.last_name || ''}</strong></td>
-            <td>${u.email}</td>
-            <td><span class="badge badge-azul">${u.role?.name || u.role_name || u.role || '-'}</span></td>
-            <td><span class="badge badge-verde">Activo</span></td>
-          </tr>`).join('')}
-        </tbody>
-      </table>`;
-  } catch(e) {
-    document.getElementById('users-list').innerHTML = '<p style="color:var(--gris)">No se pudieron cargar los usuarios.</p>';
-  }
+
+function clearUserForm() {
+  ['user-firstname','user-lastname','user-email','user-password','user-phone'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.getElementById('user-role').value = 'docente';
 }
 
 async function loadLicencias() {
   document.getElementById('licencias-list').innerHTML = '<div class="loading"><div class="spinner"></div><br>Cargando...</div>';
   try {
-    const insts = await apiFetch('/institutions');
-    const list = Array.isArray(insts) ? insts : (insts.data || []);
-    
+    var insts = await apiFetch('/institutions');
+    var list = Array.isArray(insts) ? insts : (insts.data || []);
     if (list.length === 0) {
       document.getElementById('licencias-list').innerHTML = '<p style="color:var(--gris);text-align:center;padding:30px">No hay licencias registradas.</p>';
       return;
     }
-
-    const rows = list.map(inst => {
-      const lic = inst.licenses?.[0];
+    var rows = list.map(function(inst) {
+      var lic = inst.licenses && inst.licenses[0];
       if (!lic) return '';
-      const vence = lic.expiration_date ? new Date(lic.expiration_date).toLocaleDateString('es-DO') : '-';
-      const estado = lic.status || '-';
-      const badgeColor = estado === 'active' ? 'badge-verde' : estado === 'trial' ? 'badge-azul' : 'badge-rojo';
-      return `
-        <tr>
-          <td><strong>${inst.name}</strong></td>
-          <td><code>${lic.license_key || '-'}</code></td>
-          <td><span class="badge badge-azul">${lic.plan_type || '-'}</span></td>
-          <td>${vence}</td>
-          <td><span class="badge ${badgeColor}">${estado}</span></td>
-        </tr>`;
+      var vence = lic.expiration_date ? new Date(lic.expiration_date).toLocaleDateString('es-DO') : '-';
+      var estado = lic.status || '-';
+      var badgeColor = estado === 'active' ? 'badge-verde' : estado === 'trial' ? 'badge-azul' : 'badge-rojo';
+      return '<tr><td><strong>' + inst.name + '</strong></td><td><code>' + (lic.license_key || '-') + '</code></td><td><span class="badge badge-azul">' + (lic.plan_type || '-') + '</span></td><td>' + vence + '</td><td><span class="badge ' + badgeColor + '">' + estado + '</span></td></tr>';
     }).join('');
-
-    document.getElementById('licencias-list').innerHTML = `
-      <table>
-        <thead><tr><th>Institución</th><th>Clave</th><th>Plan</th><th>Vence</th><th>Estado</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>`;
+    document.getElementById('licencias-list').innerHTML = '<table><thead><tr><th>Institución</th><th>Clave</th><th>Plan</th><th>Vence</th><th>Estado</th></tr></thead><tbody>' + rows + '</tbody></table>';
   } catch(e) {
     document.getElementById('licencias-list').innerHTML = '<p style="color:var(--rojo);padding:20px">Error al cargar licencias.</p>';
   }
-}
-
-async function crearUsuario() {
-  const first_name = document.getElementById('user-firstname').value.trim();
-  const last_name = document.getElementById('user-lastname').value.trim();
-  const email = document.getElementById('user-email').value.trim();
-  const password = document.getElementById('user-password').value;
-  const role = document.getElementById('user-role').value;
-
-  if (!first_name || !email || !password) { showAlert('user-error', 'Nombre, correo y contraseña son obligatorios.'); return; }
-
-  try {
-    const res = await fetch(`${API}/auth/register`, {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ first_name, last_name, email, password, role })
-    });
-    const data = await res.json();
-    if (res.ok && (data.id || data.email)) {
-      showAlert('user-success', `✅ Usuario ${first_name} ${last_name} registrado exitosamente.`);
-      clearUserForm();
-      loadUsuarios();
-    } else {
-      showAlert('user-error', data.message || JSON.stringify(data));
-    }
-  } catch(e) {
-    showAlert('user-error', 'Error de conexión.');
-  }
-}
-
-function clearUserForm() {
-  ['user-firstname','user-lastname','user-email','user-password','user-phone'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
-  });
-  document.getElementById('user-role').value = 'docente';
 }
 
 function showPlanTab(tab) {
@@ -1096,92 +1024,54 @@ function showPlanTab(tab) {
   document.getElementById('tab-lista').className = tab === 'lista' ? 'btn-primary' : 'btn-secondary';
   if (tab === 'lista') renderPlanLista();
 }
+
 function actualizarAreasPorNivel() {
-      const nivel = document.getElementById('plan-nivel').value;
-      const areaSelect = document.getElementById('plan-area');
-      const tecnicaField = document.getElementById('plan-tecnica').closest('.form-field');
+  var nivel = document.getElementById('plan-nivel').value;
+  var areaSelect = document.getElementById('plan-area');
+  var tecnicaField = document.getElementById('plan-tecnica').closest('.form-field');
 
-      const mallas = {
-        'Inicial': [
-          'Comunicación y Lenguaje',
-          'Matemática',
-          'Ciencias de la Naturaleza',
-          'Ciencias Sociales',
-          'Educación Artística',
-          'Educación Física',
-          'Formación Integral Humana y Religiosa'
-        ],
-        'Primaria': [
-          'Lengua Española',
-          'Matemática',
-          'Ciencias de la Naturaleza',
-          'Ciencias Sociales',
-          'Educación Artística',
-          'Educación Física',
-          'Formación Integral Humana y Religiosa',
-          'Lenguas Extranjeras (Inglés)',
-          'Lenguas Extranjeras (Francés)',
-          'Tecnología e Informática'
-        ],
-        'Media (Académica)': [
-          'Lengua Española',
-          'Matemática',
-          'Ciencias de la Naturaleza',
-          'Ciencias Sociales',
-          'Educación Artística',
-          'Educación Física',
-          'Formación Integral Humana y Religiosa',
-          'Lenguas Extranjeras (Inglés)',
-          'Lenguas Extranjeras (Francés)',
-          'Tecnología e Informática',
-          'Filosofía'
-        ],
-        'Media (Técnico-Profesional)': [
-          'Lengua Española',
-          'Matemática',
-          'Ciencias de la Naturaleza',
-          'Ciencias Sociales',
-          'Educación Artística',
-          'Educación Física',
-          'Formación Integral Humana y Religiosa',
-          'Lenguas Extranjeras (Inglés)',
-          'Tecnología e Informática',
-          'Área Técnica Específica'
-        ]
-      };
+  var mallas = {
+    'Inicial': ['Comunicación y Lenguaje','Matemática','Ciencias de la Naturaleza','Ciencias Sociales','Educación Artística','Educación Física','Formación Integral Humana y Religiosa'],
+    'Primaria': ['Lengua Española','Matemática','Ciencias de la Naturaleza','Ciencias Sociales','Educación Artística','Educación Física','Formación Integral Humana y Religiosa','Lenguas Extranjeras (Inglés)','Lenguas Extranjeras (Francés)','Tecnología e Informática'],
+    'Media (Académica)': ['Lengua Española','Matemática','Ciencias de la Naturaleza','Ciencias Sociales','Educación Artística','Educación Física','Formación Integral Humana y Religiosa','Lenguas Extranjeras (Inglés)','Lenguas Extranjeras (Francés)','Tecnología e Informática','Filosofía'],
+    'Media (Técnico-Profesional)': ['Lengua Española','Matemática','Ciencias de la Naturaleza','Ciencias Sociales','Educación Artística','Educación Física','Formación Integral Humana y Religiosa','Lenguas Extranjeras (Inglés)','Tecnología e Informática','Área Técnica Específica']
+  };
 
-      areaSelect.innerHTML = '<option value="">Seleccionar área...</option>';
-      if (nivel && mallas[nivel]) {
-        mallas[nivel].forEach(area => {
-          const opt = document.createElement('option');
-          opt.value = area;
-          opt.textContent = area;
-         areaSelect.appendChild(opt);
-        });
-      }
+  areaSelect.innerHTML = '<option value="">Seleccionar área...</option>';
+  if (nivel && mallas[nivel]) {
+    mallas[nivel].forEach(function(area) {
+      var opt = document.createElement('option');
+      opt.value = area;
+      opt.textContent = area;
+      areaSelect.appendChild(opt);
+    });
+  }
 
-      tecnicaField.style.display = nivel === 'Media (Técnico-Profesional)' ? 'block' : 'none';
-    }
+  tecnicaField.style.display = nivel === 'Media (Técnico-Profesional)' ? 'block' : 'none';
+}
+
 function guardarPlan() {
-  const area = document.getElementById('plan-area').value;
-  const grado = document.getElementById('plan-grado').value;
-  const unidad = document.getElementById('plan-unidad').value.trim();
+  var area = document.getElementById('plan-area').value;
+  var grado = document.getElementById('plan-grado').value;
+  var unidad = document.getElementById('plan-unidad').value.trim();
 
   if (!area || !grado || !unidad) {
     showAlert('plan-error', 'Área curricular, grado y unidad temática son obligatorios.');
     return;
   }
 
-  const plan = {
+  var plan = {
     id: Date.now(),
     fecha: new Date().toLocaleDateString('es-DO'),
     centro: document.getElementById('plan-centro').value,
-    docente: document.getElementById('plan-docente').value || currentUser?.email || 'Docente',
+    docente: document.getElementById('plan-docente').value || (currentUser && currentUser.email) || 'Docente',
     curso: document.getElementById('plan-curso').value,
     tipo: document.getElementById('plan-tipo').value,
     nivel: document.getElementById('plan-nivel').value,
     tecnica: document.getElementById('plan-tecnica').value,
-    area, grado, unidad,
+    area: area,
+    grado: grado,
+    unidad: unidad,
     tiempo: document.getElementById('plan-tiempo').value,
     situacion: document.getElementById('plan-situacion').value,
     competencias: document.getElementById('plan-competencias').value,
@@ -1193,60 +1083,55 @@ function guardarPlan() {
     actividades: document.getElementById('plan-actividades').value,
     recuperacion: document.getElementById('plan-recuperacion').value,
     recursos: document.getElementById('plan-recursos').value,
-    evaluacion: document.getElementById('plan-evaluacion').value,
+    evaluacion: document.getElementById('plan-evaluacion').value
   };
 
-  const planes = JSON.parse(localStorage.getItem('ea_planes') || '[]');
+  var planes = JSON.parse(localStorage.getItem('ea_planes') || '[]');
   planes.unshift(plan);
   localStorage.setItem('ea_planes', JSON.stringify(planes));
-  showAlert('plan-success', `✅ Plan "${unidad}" guardado exitosamente.`);
+  showAlert('plan-success', '✅ Plan "' + unidad + '" guardado exitosamente.');
 }
 
 function clearPlanForm() {
   ['plan-centro','plan-docente','plan-curso','plan-unidad','plan-tiempo','plan-situacion','plan-competencias','plan-indicadores',
    'plan-conceptual','plan-procedimental','plan-actitudinal','plan-estrategias',
-   'plan-actividades','plan-recuperacion','plan-recursos','plan-evaluacion'].forEach(id => {
+   'plan-actividades','plan-recuperacion','plan-recursos','plan-evaluacion'].forEach(function(id) {
     document.getElementById(id).value = '';
   });
   document.getElementById('plan-area').value = '';
   document.getElementById('plan-grado').value = '';
+  document.getElementById('plan-nivel').value = '';
+  document.getElementById('plan-tipo').value = 'Diaria';
 }
 
 function renderPlanLista() {
-  const planes = JSON.parse(localStorage.getItem('ea_planes') || '[]');
-  const body = document.getElementById('plan-lista-body');
+  var planes = JSON.parse(localStorage.getItem('ea_planes') || '[]');
+  var body = document.getElementById('plan-lista-body');
   if (planes.length === 0) {
     body.innerHTML = '<p style="color:var(--gris);text-align:center;padding:30px">No hay planes guardados aún.</p>';
     return;
   }
-  body.innerHTML = `<table>
-    <thead><tr><th>Unidad</th><th>Área</th><th>Grado</th><th>Fecha</th><th>Acción</th></tr></thead>
-    <tbody>${planes.map(p => `
-      <tr>
-        <td><strong>${p.unidad}</strong></td>
-        <td>${p.area}</td>
-        <td>${p.grado}</td>
-        <td>${p.fecha}</td>
-        <td><button class="btn-primary" style="padding:5px 12px;font-size:12px;" onclick="imprimirPlanById(${p.id})">🖨️ Imprimir</button></td>
-      </tr>`).join('')}
-    </tbody>
-  </table>`;
+  body.innerHTML = '<table><thead><tr><th>Unidad</th><th>Área</th><th>Grado</th><th>Fecha</th><th>Acción</th></tr></thead><tbody>'
+    + planes.map(function(p) {
+        return '<tr><td><strong>' + p.unidad + '</strong></td><td>' + p.area + '</td><td>' + p.grado + '</td><td>' + p.fecha + '</td><td><button class="btn-primary" style="padding:5px 12px;font-size:12px;" onclick="imprimirPlanById(' + p.id + ')">🖨️ Imprimir</button></td></tr>';
+      }).join('')
+    + '</tbody></table>';
 }
 
 function imprimirPlan() {
-  const area = document.getElementById('plan-area').value;
-  const grado = document.getElementById('plan-grado').value;
-  const unidad = document.getElementById('plan-unidad').value;
+  var area = document.getElementById('plan-area').value;
+  var grado = document.getElementById('plan-grado').value;
+  var unidad = document.getElementById('plan-unidad').value;
   if (!area || !grado || !unidad) { showAlert('plan-error', 'Completa al menos área, grado y unidad antes de imprimir.'); return; }
-
-  const html = generarHTMLPlan({
+  var w = window.open('', '_blank');
+  w.document.write(generarHTMLPlan({
     centro: document.getElementById('plan-centro').value,
-    docente: document.getElementById('plan-docente').value || currentUser?.email || '',
+    docente: document.getElementById('plan-docente').value || (currentUser && currentUser.email) || '',
     curso: document.getElementById('plan-curso').value,
     tipo: document.getElementById('plan-tipo').value,
     nivel: document.getElementById('plan-nivel').value,
     tecnica: document.getElementById('plan-tecnica').value,
-    area, grado, unidad,
+    area: area, grado: grado, unidad: unidad,
     tiempo: document.getElementById('plan-tiempo').value,
     situacion: document.getElementById('plan-situacion').value,
     competencias: document.getElementById('plan-competencias').value,
@@ -1259,107 +1144,85 @@ function imprimirPlan() {
     recuperacion: document.getElementById('plan-recuperacion').value,
     recursos: document.getElementById('plan-recursos').value,
     evaluacion: document.getElementById('plan-evaluacion').value,
-    fecha: new Date().toLocaleDateString('es-DO'),
-  });
-
-  const w = window.open('', '_blank');
-  w.document.write(html);
+    fecha: new Date().toLocaleDateString('es-DO')
+  }));
   w.document.close();
   w.print();
 }
 
 function imprimirPlanById(id) {
-  const planes = JSON.parse(localStorage.getItem('ea_planes') || '[]');
-  const plan = planes.find(p => p.id === id);
+  var planes = JSON.parse(localStorage.getItem('ea_planes') || '[]');
+  var plan = planes.find(function(p) { return p.id === id; });
   if (!plan) return;
-  const w = window.open('', '_blank');
+  var w = window.open('', '_blank');
   w.document.write(generarHTMLPlan(plan));
   w.document.close();
   w.print();
 }
 
 function generarHTMLPlan(p) {
-  return `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
-  <title>Plan de Clase - ${p.unidad}</title>
-  <style>
-    body{font-family:Arial,sans-serif;padding:30px;color:#111;font-size:13px;}
-    h1{color:#1a7a4a;font-size:18px;margin-bottom:4px;}
-    h2{font-size:13px;color:#666;margin-bottom:20px;}
-    table{width:100%;border-collapse:collapse;margin-bottom:16px;}
-    th{background:#1a7a4a;color:#fff;padding:8px;text-align:left;font-size:12px;}
-    td{padding:8px;border:1px solid #ddd;vertical-align:top;}
-    .label{font-weight:bold;width:200px;background:#f9f9f9;}
-    .section-title{background:#0f2d4a;color:#fff;padding:6px 10px;font-weight:bold;font-size:12px;margin:12px 0 0;}
-    @media print{body{padding:15px;}}
-  </style></head><body>
-  <h1>🎓 EduActiva 360 — Plan de Clase</h1>
-  <h2>Sistema de Gestión Educativa · República Dominicana · MINERD</h2>
-  <table>
-    <tr><td class="label">Centro educativo</td><td colspan="3">${p.centro || '—'}</td></tr>
-    <tr><td class="label">Docente</td><td>${p.docente || '—'}</td><td class="label">Fecha</td><td>${p.fecha}</td></tr>
-    <tr><td class="label">Curso y sección</td><td>${p.curso || '—'}</td><td class="label">Tipo de planificación</td><td>${p.tipo || '—'}</td></tr>
-    <tr><td class="label">Nivel educativo</td><td>${p.nivel || '—'}</td><td class="label">Área técnica</td><td>${p.tecnica || 'No aplica'}</td></tr>
-    <tr><td class="label">Área curricular</td><td>${p.area}</td><td class="label">Grado</td><td>${p.grado}</td></tr>
-    <tr><td class="label">Unidad temática</td><td colspan="3">${p.unidad}</td></tr>
-    <tr><td class="label">Tiempo</td><td colspan="3">${p.tiempo ? p.tiempo + ' semanas' : '—'}</td></tr>
-  </table>
-  <div class="section-title">SITUACIÓN DE APRENDIZAJE</div>
-  <table><tr><td>${p.situacion || '—'}</td></tr></table>
-  <div class="section-title">COMPETENCIAS ESPECÍFICAS</div>
-  <table><tr><td>${p.competencias || '—'}</td></tr></table>
-  <div class="section-title">INDICADORES DE LOGRO</div>
-  <table><tr><td>${p.indicadores || '—'}</td></tr></table>
-  <div class="section-title">TIPOS DE CONTENIDOS</div>
-  <table>
-    <tr><th>📘 Conceptual</th><th>📗 Procedimental</th><th>📙 Actitudinal</th></tr>
-    <tr><td>${p.conceptual || '—'}</td><td>${p.procedimental || '—'}</td><td>${p.actitudinal || '—'}</td></tr>
-  </table>
-  <div class="section-title">ESTRATEGIAS DE ENSEÑANZA</div>
-  <table><tr><td>${p.estrategias || '—'}</td></tr></table>
-  <div class="section-title">ACTIVIDADES</div>
-  <table><tr><td>${p.actividades || '—'}</td></tr></table>
-  <div class="section-title">ACTIVIDADES DE RECUPERACIÓN</div>
-  <table><tr><td>${p.recuperacion || '—'}</td></tr></table>
-  <div class="section-title">RECURSOS DIDÁCTICOS</div>
-  <table><tr><td>${p.recursos || '—'}</td></tr></table>
-  <div class="section-title">EVALUACIÓN</div>
-  <table><tr><td>${p.evaluacion || '—'}</td></tr></table>
-  </body></html>`;
+  return '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Plan de Clase - ' + p.unidad + '</title>'
+    + '<style>body{font-family:Arial,sans-serif;padding:30px;color:#111;font-size:13px;}h1{color:#1a7a4a;font-size:18px;margin-bottom:4px;}h2{font-size:13px;color:#666;margin-bottom:20px;}table{width:100%;border-collapse:collapse;margin-bottom:16px;}th{background:#1a7a4a;color:#fff;padding:8px;text-align:left;font-size:12px;}td{padding:8px;border:1px solid #ddd;vertical-align:top;}.label{font-weight:bold;width:200px;background:#f9f9f9;}.section-title{background:#0f2d4a;color:#fff;padding:6px 10px;font-weight:bold;font-size:12px;margin:12px 0 0;}@media print{body{padding:15px;}}</style></head><body>'
+    + '<h1>🎓 EduActiva 360 — Plan de Clase</h1>'
+    + '<h2>Sistema de Gestión Educativa · República Dominicana · MINERD</h2>'
+    + '<table>'
+    + '<tr><td class="label">Centro educativo</td><td colspan="3">' + (p.centro || '—') + '</td></tr>'
+    + '<tr><td class="label">Docente</td><td>' + (p.docente || '—') + '</td><td class="label">Fecha</td><td>' + p.fecha + '</td></tr>'
+    + '<tr><td class="label">Curso y sección</td><td>' + (p.curso || '—') + '</td><td class="label">Tipo de planificación</td><td>' + (p.tipo || '—') + '</td></tr>'
+    + '<tr><td class="label">Nivel educativo</td><td>' + (p.nivel || '—') + '</td><td class="label">Área técnica</td><td>' + (p.tecnica || 'No aplica') + '</td></tr>'
+    + '<tr><td class="label">Área curricular</td><td>' + p.area + '</td><td class="label">Grado</td><td>' + p.grado + '</td></tr>'
+    + '<tr><td class="label">Unidad temática</td><td colspan="3">' + p.unidad + '</td></tr>'
+    + '<tr><td class="label">Tiempo</td><td colspan="3">' + (p.tiempo ? p.tiempo + ' semanas' : '—') + '</td></tr>'
+    + '</table>'
+    + '<div class="section-title">SITUACIÓN DE APRENDIZAJE</div><table><tr><td>' + (p.situacion || '—') + '</td></tr></table>'
+    + '<div class="section-title">COMPETENCIAS ESPECÍFICAS</div><table><tr><td>' + (p.competencias || '—') + '</td></tr></table>'
+    + '<div class="section-title">INDICADORES DE LOGRO</div><table><tr><td>' + (p.indicadores || '—') + '</td></tr></table>'
+    + '<div class="section-title">TIPOS DE CONTENIDOS</div>'
+    + '<table><tr><th>📘 Conceptual</th><th>📗 Procedimental</th><th>📙 Actitudinal</th></tr>'
+    + '<tr><td>' + (p.conceptual || '—') + '</td><td>' + (p.procedimental || '—') + '</td><td>' + (p.actitudinal || '—') + '</td></tr></table>'
+    + '<div class="section-title">ESTRATEGIAS DE ENSEÑANZA</div><table><tr><td>' + (p.estrategias || '—') + '</td></tr></table>'
+    + '<div class="section-title">ACTIVIDADES</div><table><tr><td>' + (p.actividades || '—') + '</td></tr></table>'
+    + '<div class="section-title">ACTIVIDADES DE RECUPERACIÓN</div><table><tr><td>' + (p.recuperacion || '—') + '</td></tr></table>'
+    + '<div class="section-title">RECURSOS DIDÁCTICOS</div><table><tr><td>' + (p.recursos || '—') + '</td></tr></table>'
+    + '<div class="section-title">EVALUACIÓN</div><table><tr><td>' + (p.evaluacion || '—') + '</td></tr></table>'
+    + '</body></html>';
 }
 
 function showAlert(id, msg) {
-  const el = document.getElementById(id);
+  var el = document.getElementById(id);
   el.textContent = msg;
   el.style.display = 'block';
-  setTimeout(() => el.style.display = 'none', 4000);
+  setTimeout(function() { el.style.display = 'none'; }, 4000);
 }
 
-// Enter en login
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && document.getElementById('login-screen').style.display !== 'none') doLogin();
-});
- function loadConfiguracion() {
-  document.getElementById('config-email').value = currentUser?.email || '-';
-  document.getElementById('config-role').value = currentUser?.role?.name || currentUser?.role || '-';
+function loadConfiguracion() {
+  document.getElementById('config-email').value = (currentUser && currentUser.email) || '-';
+  document.getElementById('config-role').value = (currentUser && currentUser.role && currentUser.role.name) || (currentUser && currentUser.role) || '-';
 }
 
-async function cambiarPassword() {
-  const newpass = document.getElementById('config-newpass').value;
-  const confirm = document.getElementById('config-confirmpass').value;
+function cambiarPassword() {
+  var newpass = document.getElementById('config-newpass').value;
+  var confirm = document.getElementById('config-confirmpass').value;
   if (!newpass || newpass.length < 8) { showAlert('config-error', 'La contraseña debe tener al menos 8 caracteres.'); return; }
   if (newpass !== confirm) { showAlert('config-error', 'Las contraseñas no coinciden.'); return; }
   showAlert('config-success', '✅ Funcionalidad disponible en la próxima versión.');
 }
- function solicitarPlan(plan, precio) {
-  const msg = encodeURIComponent(`Hola, estoy interesado/a en el plan *${plan}* (${precio}/mes) de EduActiva 360. ¿Me pueden enviar los datos de pago?`);
-  window.open(`https://wa.me/18493677000?text=${msg}`, '_blank');
+
+function solicitarPlan(plan, precio) {
+  var msg = encodeURIComponent('Hola, estoy interesado/a en el plan *' + plan + '* (' + precio + '/mes) de EduActiva 360. ¿Me pueden enviar los datos de pago?');
+  window.open('https://wa.me/18493677000?text=' + msg, '_blank');
 }
- function abrirKiosco() {
-  const user = JSON.parse(localStorage.getItem('ea_user') || 'null');
-  const institution_id = user?.institution_id || '';
+
+function abrirKiosco() {
+  var user = JSON.parse(localStorage.getItem('ea_user') || 'null');
+  var institution_id = (user && user.institution_id) || '';
   localStorage.setItem('ea_institution_id', institution_id);
   window.open('kiosco.html', '_blank');
 }
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.getElementById('login-screen').style.display !== 'none') doLogin();
+});
 </script>
 </body>
 </html>
