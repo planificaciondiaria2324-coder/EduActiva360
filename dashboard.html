@@ -595,7 +595,9 @@
             <div class="form-row">
               <div class="form-field">
                 <label>Unidad temática</label>
-                <input type="text" id="plan-unidad" placeholder="Escribe el nombre de la unidad temática...">
+                <select id="plan-unidad" onchange="completarPlanificacionSinIA()">
+                  <option value="">Seleccionar unidad temática...</option>
+                </select>
               </div>
               <div class="form-field">
                 <label>Tiempo (semanas)</label>
@@ -1074,7 +1076,7 @@ function guardarPlan() {
 
   if (!area) { showAlert('plan-error', '⚠️ Selecciona el Área curricular.'); return; }
   if (!grado) { showAlert('plan-error', '⚠️ Selecciona el Nivel y grado.'); return; }
-  if (!unidad) { showAlert('plan-error', '⚠️ Escribe la Unidad temática.'); document.getElementById('plan-unidad').focus(); return; }
+  if (!unidad) { showAlert('plan-error', '⚠️ Selecciona la Unidad temática.'); document.getElementById('plan-unidad').focus(); return; }
 
   var planes = JSON.parse(localStorage.getItem('ea_planes') || '[]');
 
