@@ -262,15 +262,17 @@
 
     <div class="error-msg" id="login-error">Credenciales incorrectas. Verifica tu correo y contraseña.</div>
 
-    <div class="form-group">
-      <label>Correo electrónico</label>
-      <input type="email" id="login-email" placeholder="admin@eduactiva360.do" value="admin@eduactiva360.do">
-    </div>
-    <div class="form-group">
-      <label>Contraseña</label>
-      <input type="password" id="login-password" placeholder="••••••••">
-    </div>
-    <button class="btn-login" id="btn-login" onclick="doLogin()">Entrar</button>
+    <form onsubmit="event.preventDefault(); doLogin()">
+      <div class="form-group">
+        <label>Correo electrónico</label>
+        <input type="email" id="login-email" placeholder="admin@eduactiva360.do" value="admin@eduactiva360.do">
+      </div>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="login-password" placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn-login" id="btn-login">Entrar</button>
+    </form>
     <p class="login-footer">República Dominicana · MINERD</p>
   </div>
 </div>
@@ -427,43 +429,45 @@
         <div class="panel-body">
           <div class="alert alert-success" id="user-success"></div>
           <div class="alert alert-error" id="user-error"></div>
-          <div class="form-row">
-            <div class="form-field">
-              <label>Nombre</label>
-              <input type="text" id="user-firstname" placeholder="Ej: María">
+          <form onsubmit="event.preventDefault(); crearUsuario()">
+            <div class="form-row">
+              <div class="form-field">
+                <label>Nombre</label>
+                <input type="text" id="user-firstname" placeholder="Ej: María">
+              </div>
+              <div class="form-field">
+                <label>Apellido</label>
+                <input type="text" id="user-lastname" placeholder="Ej: Pérez">
+              </div>
             </div>
-            <div class="form-field">
-              <label>Apellido</label>
-              <input type="text" id="user-lastname" placeholder="Ej: Pérez">
+            <div class="form-row">
+              <div class="form-field">
+                <label>Correo electrónico</label>
+                <input type="email" id="user-email" placeholder="docente@centro.edu.do">
+              </div>
+              <div class="form-field">
+                <label>Contraseña</label>
+                <input type="password" id="user-password" placeholder="Mínimo 8 caracteres">
+              </div>
             </div>
-          </div>
-          <div class="form-row">
-            <div class="form-field">
-              <label>Correo electrónico</label>
-              <input type="email" id="user-email" placeholder="docente@centro.edu.do">
+            <div class="form-row">
+              <div class="form-field">
+                <label>Rol</label>
+                <select id="user-role">
+                  <option value="director">Director</option>
+                  <option value="docente">Docente</option>
+                  <option value="estudiante">Estudiante</option>
+                  <option value="padre">Padre/Tutor</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label>Teléfono (opcional)</label>
+                <input type="text" id="user-phone" placeholder="809-000-0000">
+              </div>
             </div>
-            <div class="form-field">
-              <label>Contraseña</label>
-              <input type="password" id="user-password" placeholder="Mínimo 8 caracteres">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-field">
-              <label>Rol</label>
-              <select id="user-role">
-                <option value="director">Director</option>
-                <option value="docente">Docente</option>
-                <option value="estudiante">Estudiante</option>
-                <option value="padre">Padre/Tutor</option>
-              </select>
-            </div>
-            <div class="form-field">
-              <label>Teléfono (opcional)</label>
-              <input type="text" id="user-phone" placeholder="809-000-0000">
-            </div>
-          </div>
-          <button class="btn-secondary" onclick="clearUserForm()">Limpiar</button>
-          <button class="btn-primary" onclick="crearUsuario()">Registrar usuario</button>
+            <button class="btn-secondary" type="button" onclick="clearUserForm()">Limpiar</button>
+            <button type="submit" class="btn-primary">Registrar usuario</button>
+          </form>
         </div>
       </div>
       <div class="panel">
@@ -591,9 +595,7 @@
             <div class="form-row">
               <div class="form-field">
                 <label>Unidad temática</label>
-                <select id="plan-unidad" onchange="completarPlanificacionSinIA()">
-                  <option value="">Seleccionar unidad temática...</option>
-                </select>
+                <input type="text" id="plan-unidad" placeholder="Escribe el nombre de la unidad temática...">
               </div>
               <div class="form-field">
                 <label>Tiempo (semanas)</label>
@@ -605,9 +607,9 @@
             <div style="margin-bottom:20px;padding:16px;background:linear-gradient(135deg,#f0faf4,#e8f5e9);border:1.5px solid var(--verde);border-radius:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
               <div>
                 <div style="font-weight:700;color:var(--verde);font-size:14px;">⚡ Completar planificación</div>
-                <div style="font-size:12px;color:var(--gris);margin-top:2px;">Selecciona nivel, grado, área y unidad temática. El sistema llena el resto usando la biblioteca curricular MINERD, sin IA.</div>
+                <div style="font-size:12px;color:var(--gris);margin-top:2px;">Selecciona nivel, grado, área y unidad temática. El sistema llena el resto usando la biblioteca curricular MINERD.</div>
               </div>
-              <button id="btn-completar-plan" onclick="completarPlanificacionSinIA()" style="padding:10px 20px;background:var(--verde);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;">⚡ Completar planificación</button>
+              <button type="button" id="btn-completar-plan" onclick="completarPlanificacionSinIA()" style="padding:10px 20px;background:var(--verde);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;">⚡ Completar planificación</button>
             </div>
 
             <div class="form-row" style="grid-template-columns:1fr;">
@@ -680,9 +682,9 @@
             </div>
 
             <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
-              <button class="btn-secondary" onclick="clearPlanForm()">🆕 Nuevo</button>
-              <button class="btn-primary" id="btn-guardar-plan" onclick="guardarPlan()">💾 Guardar borrador</button>
-              <button class="btn-primary" style="background:var(--azul-medio);" onclick="imprimirPlan()">🖨️ Imprimir / PDF</button>
+              <button type="button" class="btn-secondary" onclick="clearPlanForm()">🆕 Nuevo</button>
+              <button type="button" class="btn-primary" id="btn-guardar-plan" onclick="guardarPlan()">💾 Guardar borrador</button>
+              <button type="button" class="btn-primary" style="background:var(--azul-medio);" onclick="imprimirPlan()">🖨️ Imprimir / PDF</button>
               <span id="plan-edit-label" style="display:none;font-size:13px;color:var(--verde);font-weight:600;align-self:center;">✏️ Editando borrador guardado</span>
             </div>
           </div>
@@ -743,17 +745,19 @@
               <input type="text" id="config-role" disabled style="background:#f3f4f6;color:#6b7280;">
             </div>
           </div>
-          <div class="form-row">
-            <div class="form-field">
-              <label>Nueva contraseña</label>
-              <input type="password" id="config-newpass" placeholder="Mínimo 8 caracteres">
+          <form onsubmit="event.preventDefault(); cambiarPassword()">
+            <div class="form-row">
+              <div class="form-field">
+                <label>Nueva contraseña</label>
+                <input type="password" id="config-newpass" placeholder="Mínimo 8 caracteres">
+              </div>
+              <div class="form-field">
+                <label>Confirmar contraseña</label>
+                <input type="password" id="config-confirmpass" placeholder="Repite la contraseña">
+              </div>
             </div>
-            <div class="form-field">
-              <label>Confirmar contraseña</label>
-              <input type="password" id="config-confirmpass" placeholder="Repite la contraseña">
-            </div>
-          </div>
-          <button class="btn-primary" onclick="cambiarPassword()">🔒 Cambiar contraseña</button>
+            <button type="submit" class="btn-primary">🔒 Cambiar contraseña</button>
+          </form>
         </div>
       </div>
 
@@ -789,6 +793,7 @@
 const API = 'https://eduactiva360-backend-production.up.railway.app/api/v1';
 let token = localStorage.getItem('ea_token') || null;
 let currentUser = JSON.parse(localStorage.getItem('ea_user') || 'null');
+let planEditandoId = null;
 
 window.onload = () => {
   if (token && currentUser) showApp();
@@ -1029,57 +1034,6 @@ async function loadLicencias() {
   }
 }
 
-async function generarConIA() {
-  var nivel = document.getElementById('plan-nivel').value;
-  var area = document.getElementById('plan-area').value;
-  var grado = document.getElementById('plan-grado').value;
-  var unidad = document.getElementById('plan-unidad').value.trim();
-  var curso = document.getElementById('plan-curso').value.trim();
-  var tipo = document.getElementById('plan-tipo').value;
-
-  if (!nivel || !area || !grado || !unidad) {
-    showAlert('plan-error', '⚠️ Para generar con IA necesitas: Nivel educativo, Área curricular, Nivel y grado, y Unidad temática.');
-    return;
-  }
-
-  var btn = document.getElementById('btn-ia');
-  btn.disabled = true;
-  btn.textContent = '⏳ Generando...';
-  document.getElementById('ia-loading').style.display = 'block';
-
-  try {
-    var response = await fetch('/api/generar-plan', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nivel: nivel, area: area, grado: grado, unidad: unidad, curso: curso, tipo: tipo })
-    });
-    var plan = await response.json();
-    if (!response.ok) throw new Error(plan.error || 'Error del servidor');
-
-    document.getElementById('plan-situacion').value = plan.situacion || '';
-    document.getElementById('plan-competencias').value = plan.competencias || '';
-    document.getElementById('plan-indicadores').value = plan.indicadores || '';
-    document.getElementById('plan-conceptual').value = plan.conceptual || '';
-    document.getElementById('plan-procedimental').value = plan.procedimental || '';
-    document.getElementById('plan-actitudinal').value = plan.actitudinal || '';
-    document.getElementById('plan-estrategias').value = plan.estrategias || '';
-    document.getElementById('plan-actividades').value = plan.actividades || '';
-    document.getElementById('plan-recuperacion').value = plan.recuperacion || '';
-    document.getElementById('plan-recursos').value = plan.recursos || '';
-    document.getElementById('plan-evaluacion').value = plan.evaluacion || '';
-
-    showAlert('plan-success', '✅ Plan generado con IA. Revisa y ajusta el contenido antes de guardar.');
-  } catch(e) {
-    showAlert('plan-error', '⚠️ Error generando el plan. Verifica tu conexión e intenta de nuevo.');
-  }
-
-  btn.disabled = false;
-  btn.textContent = '✨ Generar con IA';
-  document.getElementById('ia-loading').style.display = 'none';
-}
-
-
-
 function showPlanTab(tab) {
   document.getElementById('plan-form-section').style.display = tab === 'nuevo' ? 'block' : 'none';
   document.getElementById('plan-lista-section').style.display = tab === 'lista' ? 'block' : 'none';
@@ -1120,7 +1074,7 @@ function guardarPlan() {
 
   if (!area) { showAlert('plan-error', '⚠️ Selecciona el Área curricular.'); return; }
   if (!grado) { showAlert('plan-error', '⚠️ Selecciona el Nivel y grado.'); return; }
-  if (!unidad) { showAlert('plan-error', '⚠️ Escribe la Unidad temática (campo de texto, no es un selector).'); document.getElementById('plan-unidad').focus(); return; }
+  if (!unidad) { showAlert('plan-error', '⚠️ Escribe la Unidad temática.'); document.getElementById('plan-unidad').focus(); return; }
 
   var planes = JSON.parse(localStorage.getItem('ea_planes') || '[]');
 
@@ -1151,7 +1105,6 @@ function guardarPlan() {
   };
 
   if (planEditandoId) {
-    // Actualizar el existente
     var idx = planes.findIndex(function(p) { return p.id === planEditandoId; });
     if (idx !== -1) {
       planes[idx] = plan;
@@ -1160,7 +1113,6 @@ function guardarPlan() {
     }
     showAlert('plan-success', '✅ Borrador "' + unidad + '" actualizado.');
   } else {
-    // Nuevo plan
     planEditandoId = plan.id;
     planes.unshift(plan);
     showAlert('plan-success', '✅ Borrador "' + unidad + '" guardado. Puedes continuar editando.');
@@ -1181,7 +1133,6 @@ function clearPlanForm() {
     document.getElementById(id).value = '';
   });
   document.getElementById('plan-area').innerHTML = '<option value="">Seleccionar área...</option>';
-  document.getElementById('plan-unidad').innerHTML = '<option value="">Seleccionar unidad temática...</option>';
   document.getElementById('plan-grado').value = '';
   document.getElementById('plan-nivel').value = '';
   document.getElementById('plan-tipo').value = 'Diaria';
@@ -1218,7 +1169,6 @@ function cargarPlanEnFormulario(id) {
 
   planEditandoId = p.id;
 
-  // Cargar nivel primero para que se pueble el select de áreas
   document.getElementById('plan-nivel').value = p.nivel || '';
   actualizarAreasPorNivel();
 
@@ -1246,7 +1196,6 @@ function cargarPlanEnFormulario(id) {
   document.getElementById('plan-edit-label').style.display = 'inline';
   document.getElementById('btn-guardar-plan').textContent = '💾 Actualizar borrador';
 
-  // Ir al formulario
   showPlanTab('nuevo');
   document.getElementById('section-planificacion').scrollIntoView({ behavior: 'smooth' });
 }
@@ -1267,7 +1216,7 @@ function eliminarPlan(id) {
 function imprimirPlan() {
   var area = document.getElementById('plan-area').value;
   var grado = document.getElementById('plan-grado').value;
-  var unidad = document.getElementById('plan-unidad').value;
+  var unidad = document.getElementById('plan-unidad').value.trim();
   if (!area || !grado || !unidad) { showAlert('plan-error', 'Completa al menos área, grado y unidad antes de imprimir.'); return; }
   var w = window.open('', '_blank');
   w.document.write(generarHTMLPlan({
