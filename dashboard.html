@@ -31,74 +31,61 @@
     display: flex; align-items: center; justify-content: center;
     padding: 20px;
   }
-
   .login-card {
-    background: var(--blanco);
-    border-radius: 16px;
-    padding: 40px 36px;
-    width: 100%; max-width: 420px;
+    background: var(--blanco); border-radius: 16px;
+    padding: 40px 36px; width: 100%; max-width: 420px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.10);
   }
-
   .logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
-  .logo-icon {
-    width: 48px; height: 48px; background: var(--verde);
-    border-radius: 12px; display: flex; align-items: center; justify-content: center;
-    font-size: 24px;
-  }
+  .logo-icon { width: 48px; height: 48px; background: var(--verde); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
   .logo-text h1 { font-size: 20px; font-weight: 700; color: var(--texto); }
   .logo-text p { font-size: 12px; color: var(--gris); }
-
   .login-card h2 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
   .login-card .subtitle { color: var(--gris); font-size: 14px; margin-bottom: 28px; }
-
   .form-group { margin-bottom: 18px; }
   .form-group label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
   .form-group input {
     width: 100%; padding: 12px 14px;
     border: 1.5px solid var(--borde); border-radius: 10px;
-    font-size: 15px; outline: none; transition: border-color .2s;
-    background: #f9fafb;
+    font-size: 15px; outline: none; transition: border-color .2s; background: #f9fafb;
   }
   .form-group input:focus { border-color: var(--verde); background: var(--blanco); }
-
   .btn-login {
-    width: 100%; padding: 13px;
-    background: var(--verde); color: var(--blanco);
-    border: none; border-radius: 10px;
-    font-size: 16px; font-weight: 600; cursor: pointer;
-    transition: background .2s; margin-top: 4px;
+    width: 100%; padding: 13px; background: var(--verde); color: var(--blanco);
+    border: none; border-radius: 10px; font-size: 16px; font-weight: 600;
+    cursor: pointer; transition: background .2s; margin-top: 4px;
   }
   .btn-login:hover { background: var(--verde-claro); }
   .btn-login:disabled { background: #9ca3af; cursor: not-allowed; }
-
   .login-footer { text-align: center; color: var(--gris); font-size: 13px; margin-top: 20px; }
   .error-msg {
-    background: #fef2f2; border: 1px solid #fecaca;
-    color: var(--rojo); padding: 10px 14px; border-radius: 8px;
-    font-size: 14px; margin-bottom: 16px; display: none;
+    background: #fef2f2; border: 1px solid #fecaca; color: var(--rojo);
+    padding: 10px 14px; border-radius: 8px; font-size: 14px; margin-bottom: 16px; display: none;
   }
 
   /* ====== APP ====== */
   #app-screen { display: none; min-height: 100vh; }
+
+  /* Overlay móvil */
+  .sidebar-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5); z-index: 99;
+  }
+  .sidebar-overlay.active { display: block; }
 
   /* Sidebar */
   .sidebar {
     position: fixed; top: 0; left: 0; bottom: 0;
     width: 240px; background: var(--azul-marino);
     padding: 0; z-index: 100; overflow-y: auto;
+    transition: transform .25s ease;
   }
   .sidebar-logo {
-    background: #fff;
-    border-radius: 0 0 10px 10px;
-    margin-bottom: 8px;
-    padding: 20px 20px 16px;
+    background: #fff; border-radius: 0 0 10px 10px;
+    margin-bottom: 8px; padding: 20px 20px 16px;
     border-bottom: 1px solid rgba(255,255,255,0.1);
   }
-  .sidebar-logo h1 { color: var(--blanco); font-size: 18px; font-weight: 700; }
-  .sidebar-logo span { color: #22a25e; }
-  .sidebar-logo p { color: rgba(255,255,255,0.5); font-size: 11px; margin-top: 2px; }
-
+  .sidebar-logo p { color: #666; font-size: 10px; margin-top: 4px; letter-spacing: 1px; font-weight: 600; text-align: center; }
   .sidebar-section { padding: 16px 12px 4px; }
   .sidebar-section-label {
     color: rgba(255,255,255,0.35); font-size: 10px;
@@ -119,12 +106,15 @@
   .main { margin-left: 240px; padding: 24px; min-height: 100vh; }
 
   /* Topbar */
-  .topbar {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 24px;
-  }
+  .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+  .topbar-left { display: flex; align-items: center; gap: 12px; }
   .topbar h2 { font-size: 22px; font-weight: 700; }
   .topbar-right { display: flex; align-items: center; gap: 12px; }
+  .btn-hamburger {
+    display: none; background: none; border: none;
+    font-size: 24px; cursor: pointer; color: var(--azul-marino);
+    padding: 4px 8px;
+  }
   .user-badge {
     display: flex; align-items: center; gap: 8px;
     background: var(--blanco); padding: 8px 14px;
@@ -134,20 +124,13 @@
   .btn-logout {
     padding: 8px 16px; background: transparent;
     border: 1.5px solid var(--borde); border-radius: 8px;
-    font-size: 13px; cursor: pointer; color: var(--gris);
-    transition: all .15s;
+    font-size: 13px; cursor: pointer; color: var(--gris); transition: all .15s;
   }
   .btn-logout:hover { border-color: var(--rojo); color: var(--rojo); }
 
   /* Cards métricas */
-  .metrics-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px; margin-bottom: 24px;
-  }
-  .metric-card {
-    background: var(--blanco); border-radius: 12px;
-    padding: 20px 22px; border: 1px solid var(--borde);
-  }
+  .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .metric-card { background: var(--blanco); border-radius: 12px; padding: 20px 22px; border: 1px solid var(--borde); }
   .metric-label { font-size: 11px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; color: var(--gris); margin-bottom: 8px; }
   .metric-value { font-size: 32px; font-weight: 800; color: var(--azul-marino); line-height: 1; }
   .metric-value.verde { color: var(--verde); }
@@ -155,15 +138,9 @@
   .metric-value.amarillo { color: var(--amarillo); }
   .metric-sub { font-size: 12px; color: var(--gris); margin-top: 6px; }
 
-  /* Panel contenido */
-  .panel {
-    background: var(--blanco); border-radius: 12px;
-    border: 1px solid var(--borde); margin-bottom: 20px;
-  }
-  .panel-header {
-    padding: 18px 22px; border-bottom: 1px solid var(--borde);
-    display: flex; align-items: center; justify-content: space-between;
-  }
+  /* Panel */
+  .panel { background: var(--blanco); border-radius: 12px; border: 1px solid var(--borde); margin-bottom: 20px; }
+  .panel-header { padding: 18px 22px; border-bottom: 1px solid var(--borde); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
   .panel-header h3 { font-size: 16px; font-weight: 600; }
   .panel-body { padding: 22px; }
 
@@ -174,74 +151,74 @@
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: #fafafa; }
 
-  .badge {
-    display: inline-block; padding: 3px 10px; border-radius: 20px;
-    font-size: 12px; font-weight: 600;
-  }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
   .badge-verde { background: #d1fae5; color: #065f46; }
   .badge-azul { background: #dbeafe; color: #1e40af; }
   .badge-rojo { background: #fee2e2; color: #991b1b; }
   .badge-gris { background: #f3f4f6; color: #374151; }
+  .badge-amarillo { background: #fef3c7; color: #92400e; }
 
-  /* Módulos grid */
-  .modules-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 16px;
-  }
-  .module-card {
-    background: var(--blanco); border: 1.5px solid var(--borde);
-    border-radius: 12px; padding: 24px 20px;
-    cursor: pointer; transition: all .2s; text-align: center;
-  }
-  .module-card:hover { border-color: var(--verde); box-shadow: 0 4px 16px rgba(26,122,74,0.12); transform: translateY(-2px); }
-  .module-card .mod-icon { font-size: 36px; margin-bottom: 12px; }
-  .module-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-  .module-card p { font-size: 13px; color: var(--gris); }
-  .module-card .mod-status { margin-top: 12px; }
-
-  /* Form crear */
+  /* Form */
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
   .form-field label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 5px; }
-  .form-field input, .form-field select {
+  .form-field input, .form-field select, .form-field textarea {
     width: 100%; padding: 10px 12px;
     border: 1.5px solid var(--borde); border-radius: 8px;
-    font-size: 14px; outline: none;
+    font-size: 14px; outline: none; font-family: inherit;
   }
-  .form-field input:focus, .form-field select:focus { border-color: var(--verde); }
-  .btn-primary {
-    padding: 11px 22px; background: var(--verde);
-    color: var(--blanco); border: none; border-radius: 8px;
-    font-size: 14px; font-weight: 600; cursor: pointer;
-  }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--verde); }
+  .btn-primary { padding: 11px 22px; background: var(--verde); color: var(--blanco); border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
   .btn-primary:hover { background: var(--verde-claro); }
-  .btn-secondary {
-    padding: 11px 22px; background: transparent;
-    color: var(--gris); border: 1.5px solid var(--borde); border-radius: 8px;
-    font-size: 14px; cursor: pointer; margin-right: 8px;
-  }
+  .btn-secondary { padding: 11px 22px; background: transparent; color: var(--gris); border: 1.5px solid var(--borde); border-radius: 8px; font-size: 14px; cursor: pointer; margin-right: 8px; }
 
   /* Alerta */
-  .alert {
-    padding: 12px 16px; border-radius: 8px; font-size: 14px;
-    margin-bottom: 16px; display: none;
-  }
+  .alert { padding: 12px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 16px; display: none; }
   .alert-success { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
   .alert-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
 
   /* Loading */
   .loading { text-align: center; padding: 40px; color: var(--gris); font-size: 15px; }
-  .spinner {
-    display: inline-block; width: 28px; height: 28px;
-    border: 3px solid var(--borde); border-top-color: var(--verde);
-    border-radius: 50%; animation: spin .7s linear infinite; margin-bottom: 10px;
-  }
+  .spinner { display: inline-block; width: 28px; height: 28px; border: 3px solid var(--borde); border-top-color: var(--verde); border-radius: 50%; animation: spin .7s linear infinite; margin-bottom: 10px; }
   @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Calendario */
+  .cal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .cal-mes { background: var(--blanco); border: 1px solid var(--borde); border-radius: 10px; overflow: hidden; }
+  .cal-mes-header { background: var(--azul-marino); color: #fff; padding: 10px 16px; font-weight: 600; font-size: 14px; }
+  .cal-evento { padding: 8px 16px; border-bottom: 1px solid var(--borde); font-size: 13px; display: flex; gap: 10px; align-items: flex-start; }
+  .cal-evento:last-child { border-bottom: none; }
+  .cal-fecha { font-weight: 700; color: var(--verde); min-width: 50px; font-size: 12px; }
+  .cal-tipo-feriado { color: var(--rojo); }
+  .cal-tipo-inicio { color: var(--verde); }
+  .cal-tipo-receso { color: var(--amarillo); }
+
+  /* Asistencia */
+  .asist-btn { padding: 6px 12px; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; }
+  .asist-P { background: #d1fae5; color: #065f46; }
+  .asist-A { background: #fee2e2; color: #991b1b; }
+  .asist-T { background: #fef3c7; color: #92400e; }
+  .asist-E { background: #dbeafe; color: #1e40af; }
+  .asist-btn.selected { outline: 3px solid var(--azul-marino); }
+
+  /* Comunicaciones */
+  .anuncio-card { border: 1px solid var(--borde); border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+  .anuncio-card.tipo-logro { border-left: 4px solid var(--verde); }
+  .anuncio-card.tipo-evento { border-left: 4px solid var(--azul-medio); }
+  .anuncio-card.tipo-reunion { border-left: 4px solid var(--amarillo); }
+  .anuncio-card.tipo-aviso { border-left: 4px solid var(--gris); }
+  .anuncio-titulo { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+  .anuncio-meta { font-size: 12px; color: var(--gris); margin-bottom: 8px; }
+  .anuncio-cuerpo { font-size: 14px; color: var(--texto); }
 
   /* Responsive */
   @media (max-width: 768px) {
     .sidebar { transform: translateX(-240px); }
+    .sidebar.open { transform: translateX(0); }
     .main { margin-left: 0; padding: 16px; }
     .form-row { grid-template-columns: 1fr; }
+    .btn-hamburger { display: block; }
+    .user-badge span { display: none; }
+    .topbar h2 { font-size: 18px; }
   }
 </style>
 </head>
@@ -259,17 +236,15 @@
     </div>
     <h2>Iniciar sesión</h2>
     <p class="subtitle">Accede a tu plataforma educativa</p>
-
     <div class="error-msg" id="login-error">Credenciales incorrectas. Verifica tu correo y contraseña.</div>
-
     <form onsubmit="event.preventDefault(); doLogin()">
       <div class="form-group">
         <label>Correo electrónico</label>
-        <input type="email" id="login-email" placeholder="admin@eduactiva360.do" value="admin@eduactiva360.do">
+        <input type="email" id="login-email" placeholder="admin@eduactiva360.do" value="admin@eduactiva360.do" autocomplete="username">
       </div>
       <div class="form-group">
         <label>Contraseña</label>
-        <input type="password" id="login-password" placeholder="••••••••">
+        <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
       </div>
       <button type="submit" class="btn-login" id="btn-login">Entrar</button>
     </form>
@@ -280,54 +255,47 @@
 <!-- ====== APP ====== -->
 <div id="app-screen">
 
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="cerrarSidebar()"></div>
+
   <!-- Sidebar -->
-  <nav class="sidebar">
+  <nav class="sidebar" id="sidebar">
     <div class="sidebar-logo">
       <img src="logo.png" alt="EduActiva 360" style="height:64px;object-fit:contain;display:block;margin:0 auto;">
-      <p style="color:#666;font-size:10px;margin-top:4px;letter-spacing:1px;font-weight:600;text-align:center;">SUPER ADMIN PANEL</p>
+      <p>SUPER ADMIN PANEL</p>
     </div>
-
     <div class="sidebar-section">
       <div class="sidebar-section-label">Principal</div>
-      <div class="nav-item active" onclick="showSection('dashboard', this)">
-        <span class="icon">📊</span> Dashboard
-      </div>
-      <div class="nav-item" onclick="showSection('instituciones', this)">
-        <span class="icon">🏫</span> Instituciones
-      </div>
-      <div class="nav-item" onclick="showSection('usuarios', this)">
-        <span class="icon">👥</span> Usuarios
-      </div>
-      <div class="nav-item" onclick="showSection('licencias', this)">
-        <span class="icon">🔑</span> Licencias
-      </div>
+      <div class="nav-item active" onclick="showSection('dashboard', this)"><span class="icon">📊</span> Dashboard</div>
+      <div class="nav-item" onclick="showSection('instituciones', this)"><span class="icon">🏫</span> Instituciones</div>
+      <div class="nav-item" onclick="showSection('usuarios', this)"><span class="icon">👥</span> Usuarios</div>
+      <div class="nav-item" onclick="showSection('licencias', this)"><span class="icon">🔑</span> Licencias</div>
     </div>
-
     <div class="sidebar-section">
       <div class="sidebar-section-label">Académico</div>
-      <div class="nav-item" onclick="showSection('planificacion', this)">
-        <span class="icon">📋</span> Planificación
-      </div>
-      <div class="nav-item" onclick="showSection('reportes', this)">
-        <span class="icon">📈</span> Reportes
-      </div>
+      <div class="nav-item" onclick="showSection('matricula', this)"><span class="icon">🎒</span> Matrícula</div>
+      <div class="nav-item" onclick="showSection('asistencia', this)"><span class="icon">✅</span> Asistencia</div>
+      <div class="nav-item" onclick="showSection('planificacion', this)"><span class="icon">📋</span> Planificación</div>
+      <div class="nav-item" onclick="showSection('reportes', this)"><span class="icon">📈</span> Reportes</div>
     </div>
-
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Centro</div>
+      <div class="nav-item" onclick="showSection('comunicaciones', this)"><span class="icon">📢</span> Comunicaciones</div>
+      <div class="nav-item" onclick="showSection('calendario', this)"><span class="icon">📅</span> Calendario</div>
+    </div>
     <div class="sidebar-section">
       <div class="sidebar-section-label">Sistema</div>
-      <div class="nav-item" onclick="showSection('configuracion', this)">
-        <span class="icon">⚙️</span> Configuración
-      </div>
-      <div class="nav-item" onclick="abrirKiosco()">
-        <span class="icon">📟</span> Kiosco
-      </div>
+      <div class="nav-item" onclick="showSection('configuracion', this)"><span class="icon">⚙️</span> Configuración</div>
+      <div class="nav-item" onclick="abrirKiosco()"><span class="icon">📟</span> Kiosco</div>
     </div>
   </nav>
 
   <!-- Main -->
   <main class="main">
     <div class="topbar">
-      <h2 id="page-title">Dashboard Global</h2>
+      <div class="topbar-left">
+        <button class="btn-hamburger" onclick="toggleSidebar()">☰</button>
+        <h2 id="page-title">Dashboard Global</h2>
+      </div>
       <div class="topbar-right">
         <div class="user-badge">👤 <span id="user-email-display">—</span></div>
         <button class="btn-logout" onclick="doLogout()">Cerrar sesión</button>
@@ -348,9 +316,9 @@
           <div class="metric-sub">Plan basico · EA-PILOT-2026</div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">Usuarios del sistema</div>
-          <div class="metric-value" id="m-usuarios">—</div>
-          <div class="metric-sub">Roles: admin, director, docente</div>
+          <div class="metric-label">Estudiantes matriculados</div>
+          <div class="metric-value" id="m-estudiantes">—</div>
+          <div class="metric-sub">Año escolar 2026-2027</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Versión</div>
@@ -358,7 +326,6 @@
           <div class="metric-sub">🚀 Fase piloto · Julio 2026</div>
         </div>
       </div>
-
       <div class="panel">
         <div class="panel-header">
           <h3>🏫 Instituciones registradas</h3>
@@ -368,7 +335,6 @@
           <div class="loading"><div class="spinner"></div><br>Cargando datos...</div>
         </div>
       </div>
-
       <div class="panel">
         <div class="panel-header"><h3>⚡ Estado del sistema</h3></div>
         <div class="panel-body">
@@ -390,35 +356,20 @@
           <div class="alert alert-success" id="inst-success"></div>
           <div class="alert alert-error" id="inst-error"></div>
           <div class="form-row">
-            <div class="form-field">
-              <label>Nombre del centro</label>
-              <input type="text" id="inst-name" placeholder="Ej: Liceo Juan Pablo Duarte">
-            </div>
-            <div class="form-field">
-              <label>Código</label>
-              <input type="text" id="inst-code" placeholder="Ej: LJP-001">
-            </div>
+            <div class="form-field"><label>Nombre del centro</label><input type="text" id="inst-name" placeholder="Ej: Liceo Juan Pablo Duarte"></div>
+            <div class="form-field"><label>Código</label><input type="text" id="inst-code" placeholder="Ej: LJP-001"></div>
           </div>
           <div class="form-row">
-            <div class="form-field">
-              <label>Dirección</label>
-              <input type="text" id="inst-address" placeholder="Santo Domingo, RD">
-            </div>
-            <div class="form-field">
-              <label>Director(a)</label>
-              <input type="text" id="inst-director" placeholder="Nombre completo">
-            </div>
+            <div class="form-field"><label>Dirección</label><input type="text" id="inst-address" placeholder="Santo Domingo, RD"></div>
+            <div class="form-field"><label>Director(a)</label><input type="text" id="inst-director" placeholder="Nombre completo"></div>
           </div>
           <button class="btn-secondary" onclick="clearInstForm()">Limpiar</button>
           <button class="btn-primary" onclick="crearInstitucion()">Registrar institución</button>
         </div>
       </div>
-
       <div class="panel">
         <div class="panel-header"><h3>📋 Lista de instituciones</h3></div>
-        <div class="panel-body" id="inst-list">
-          <div class="loading"><div class="spinner"></div><br>Cargando...</div>
-        </div>
+        <div class="panel-body" id="inst-list"><div class="loading"><div class="spinner"></div><br>Cargando...</div></div>
       </div>
     </div>
 
@@ -431,28 +382,15 @@
           <div class="alert alert-error" id="user-error"></div>
           <form onsubmit="event.preventDefault(); crearUsuario()">
             <div class="form-row">
-              <div class="form-field">
-                <label>Nombre</label>
-                <input type="text" id="user-firstname" placeholder="Ej: María">
-              </div>
-              <div class="form-field">
-                <label>Apellido</label>
-                <input type="text" id="user-lastname" placeholder="Ej: Pérez">
-              </div>
+              <div class="form-field"><label>Nombre</label><input type="text" id="user-firstname" placeholder="Ej: María"></div>
+              <div class="form-field"><label>Apellido</label><input type="text" id="user-lastname" placeholder="Ej: Pérez"></div>
             </div>
             <div class="form-row">
-              <div class="form-field">
-                <label>Correo electrónico</label>
-                <input type="email" id="user-email" placeholder="docente@centro.edu.do">
-              </div>
-              <div class="form-field">
-                <label>Contraseña</label>
-                <input type="password" id="user-password" placeholder="Mínimo 8 caracteres">
-              </div>
+              <div class="form-field"><label>Correo electrónico</label><input type="email" id="user-email" placeholder="docente@centro.edu.do" autocomplete="email"></div>
+              <div class="form-field"><label>Contraseña</label><input type="password" id="user-password" placeholder="Mínimo 8 caracteres" autocomplete="new-password"></div>
             </div>
             <div class="form-row">
-              <div class="form-field">
-                <label>Rol</label>
+              <div class="form-field"><label>Rol</label>
                 <select id="user-role">
                   <option value="director">Director</option>
                   <option value="docente">Docente</option>
@@ -460,10 +398,7 @@
                   <option value="padre">Padre/Tutor</option>
                 </select>
               </div>
-              <div class="form-field">
-                <label>Teléfono (opcional)</label>
-                <input type="text" id="user-phone" placeholder="809-000-0000">
-              </div>
+              <div class="form-field"><label>Teléfono (opcional)</label><input type="text" id="user-phone" placeholder="809-000-0000"></div>
             </div>
             <button class="btn-secondary" type="button" onclick="clearUserForm()">Limpiar</button>
             <button type="submit" class="btn-primary">Registrar usuario</button>
@@ -472,9 +407,7 @@
       </div>
       <div class="panel">
         <div class="panel-header"><h3>👥 Lista de usuarios</h3></div>
-        <div class="panel-body" id="users-list">
-          <div class="loading"><div class="spinner"></div><br>Cargando...</div>
-        </div>
+        <div class="panel-body" id="users-list"><div class="loading"><div class="spinner"></div><br>Cargando...</div></div>
       </div>
     </div>
 
@@ -482,207 +415,249 @@
     <div id="section-licencias" style="display:none">
       <div class="panel">
         <div class="panel-header"><h3>🔑 Licencias activas</h3></div>
-        <div class="panel-body" id="licencias-list">
-          <div class="loading"><div class="spinner"></div><br>Cargando...</div>
+        <div class="panel-body" id="licencias-list"><div class="loading"><div class="spinner"></div><br>Cargando...</div></div>
+      </div>
+    </div>
+
+    <!-- MATRICULA -->
+    <div id="section-matricula" style="display:none">
+      <div class="panel">
+        <div class="panel-header"><h3>➕ Registrar estudiante</h3></div>
+        <div class="panel-body">
+          <div class="alert alert-success" id="mat-success"></div>
+          <div class="alert alert-error" id="mat-error"></div>
+          <div class="form-row">
+            <div class="form-field"><label>Nombre</label><input type="text" id="mat-nombre" placeholder="Nombre del estudiante"></div>
+            <div class="form-field"><label>Apellido</label><input type="text" id="mat-apellido" placeholder="Apellido del estudiante"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-field"><label>Fecha de nacimiento</label><input type="date" id="mat-nacimiento"></div>
+            <div class="form-field"><label>Sexo</label>
+              <select id="mat-sexo">
+                <option value="">Seleccionar...</option>
+                <option value="M">Masculino</option>
+                <option value="F">Femenino</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field"><label>Número de acta / cédula</label><input type="text" id="mat-documento" placeholder="Número de documento"></div>
+            <div class="form-field"><label>Nacionalidad</label>
+              <select id="mat-nacionalidad">
+                <option value="Dominicana">Dominicana</option>
+                <option value="Haitiana">Haitiana</option>
+                <option value="Otra">Otra</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field"><label>Grado</label>
+              <select id="mat-grado">
+                <option value="">Seleccionar grado...</option>
+                <optgroup label="Nivel Inicial">
+                  <option>Pre-Primario</option>
+                  <option>1er Ciclo Inicial</option>
+                  <option>2do Ciclo Inicial</option>
+                </optgroup>
+                <optgroup label="Nivel Primario">
+                  <option>1er grado</option><option>2do grado</option><option>3er grado</option>
+                  <option>4to grado</option><option>5to grado</option><option>6to grado</option>
+                </optgroup>
+                <optgroup label="Nivel Secundario">
+                  <option>1er grado Secundario</option><option>2do grado Secundario</option>
+                  <option>3er grado Secundario</option><option>4to grado Secundario</option>
+                  <option>5to grado Secundario</option><option>6to grado Secundario</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="form-field"><label>Sección</label>
+              <select id="mat-seccion">
+                <option value="A">A</option><option value="B">B</option>
+                <option value="C">C</option><option value="D">D</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field"><label>Condición</label>
+              <select id="mat-condicion">
+                <option value="Nuevo">Nuevo</option>
+                <option value="Repitente">Repitente</option>
+                <option value="Trasladado">Trasladado</option>
+              </select>
+            </div>
+            <div class="form-field"><label>Turno</label>
+              <select id="mat-turno">
+                <option value="Matutino">Matutino</option>
+                <option value="Vespertino">Vespertino</option>
+                <option value="Nocturno">Nocturno</option>
+              </select>
+            </div>
+          </div>
+          <p style="font-size:13px;font-weight:600;margin-bottom:12px;color:var(--azul-marino);">👨‍👩‍👦 Datos del tutor</p>
+          <div class="form-row">
+            <div class="form-field"><label>Nombre del padre/madre/tutor</label><input type="text" id="mat-tutor" placeholder="Nombre completo del tutor"></div>
+            <div class="form-field"><label>Cédula del tutor</label><input type="text" id="mat-tutor-cedula" placeholder="000-0000000-0"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-field"><label>Teléfono del tutor</label><input type="text" id="mat-tutor-tel" placeholder="809-000-0000"></div>
+            <div class="form-field"><label>Correo del tutor (opcional)</label><input type="email" id="mat-tutor-email" placeholder="tutor@correo.com"></div>
+          </div>
+          <div class="form-row" style="grid-template-columns:1fr;">
+            <div class="form-field"><label>Dirección</label><input type="text" id="mat-direccion" placeholder="Calle, sector, municipio"></div>
+          </div>
+          <button class="btn-secondary" type="button" onclick="clearMatForm()">Limpiar</button>
+          <button class="btn-primary" onclick="registrarEstudiante()">Registrar estudiante</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <h3>🎒 Estudiantes matriculados</h3>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <select id="filtro-grado-mat" onchange="renderMatricula()" style="padding:6px 10px;border:1px solid var(--borde);border-radius:6px;font-size:13px;">
+              <option value="">Todos los grados</option>
+              <option>1er grado</option><option>2do grado</option><option>3er grado</option>
+              <option>4to grado</option><option>5to grado</option><option>6to grado</option>
+            </select>
+          </div>
+        </div>
+        <div class="panel-body" id="mat-lista"></div>
+      </div>
+    </div>
+
+    <!-- ASISTENCIA -->
+    <div id="section-asistencia" style="display:none">
+      <div class="panel">
+        <div class="panel-header"><h3>✅ Toma de asistencia</h3></div>
+        <div class="panel-body">
+          <div class="form-row">
+            <div class="form-field"><label>Fecha</label><input type="date" id="asist-fecha"></div>
+            <div class="form-field"><label>Grado y sección</label>
+              <select id="asist-grado" onchange="cargarListaAsistencia()">
+                <option value="">Seleccionar grado...</option>
+                <option>1er grado - A</option><option>1er grado - B</option>
+                <option>2do grado - A</option><option>2do grado - B</option>
+                <option>3er grado - A</option><option>3er grado - B</option>
+                <option>4to grado - A</option><option>4to grado - B</option>
+                <option>5to grado - A</option><option>5to grado - B</option>
+                <option>6to grado - A</option><option>6to grado - B</option>
+              </select>
+            </div>
+          </div>
+          <div class="alert alert-success" id="asist-success"></div>
+          <div class="alert alert-error" id="asist-error"></div>
+          <div id="asist-lista" style="margin-top:8px;"></div>
+          <div id="asist-acciones" style="display:none;margin-top:16px;">
+            <button class="btn-primary" onclick="guardarAsistencia()">💾 Guardar asistencia</button>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><h3>📋 Registros guardados</h3></div>
+        <div class="panel-body" id="asist-historial">
+          <p style="color:var(--gris);text-align:center;padding:20px;">Selecciona grado para ver registros.</p>
         </div>
       </div>
     </div>
 
     <!-- PLANIFICACION -->
     <div id="section-planificacion" style="display:none">
-
-      <!-- Tabs -->
       <div style="display:flex;gap:8px;margin-bottom:20px;">
         <button class="btn-primary" id="tab-nuevo" onclick="showPlanTab('nuevo')">➕ Nuevo plan</button>
         <button class="btn-secondary" id="tab-lista" onclick="showPlanTab('lista')">📋 Mis planes</button>
       </div>
-
-      <!-- Formulario nuevo plan -->
       <div id="plan-form-section">
         <div class="panel">
           <div class="panel-header"><h3>📋 Plan de clase — Formato MINERD</h3></div>
           <div class="panel-body">
             <div class="alert alert-success" id="plan-success"></div>
             <div class="alert alert-error" id="plan-error"></div>
-
             <div class="form-row">
-              <div class="form-field">
-                <label>Nombre del centro</label>
-                <input type="text" id="plan-centro" placeholder="Ej: Centro Piloto EduActiva">
-              </div>
-              <div class="form-field">
-                <label>Nombre del docente</label>
-                <input type="text" id="plan-docente" placeholder="Ej: María Pérez">
+              <div class="form-field"><label>Nombre del centro</label><input type="text" id="plan-centro" placeholder="Ej: Centro Piloto EduActiva"></div>
+              <div class="form-field"><label>Nombre del docente</label><input type="text" id="plan-docente" placeholder="Ej: María Pérez"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-field"><label>Curso y sección</label><input type="text" id="plan-curso" placeholder="Ej: 3er grado · Sección A"></div>
+              <div class="form-field"><label>Tipo de planificación</label>
+                <select id="plan-tipo"><option value="Diaria">Diaria</option><option value="De unidad">De unidad</option></select>
               </div>
             </div>
-
             <div class="form-row">
-              <div class="form-field">
-                <label>Curso y sección</label>
-                <input type="text" id="plan-curso" placeholder="Ej: 3er grado · Sección A">
-              </div>
-              <div class="form-field">
-                <label>Tipo de planificación</label>
-                <select id="plan-tipo">
-                  <option value="Diaria">Diaria</option>
-                  <option value="De unidad">De unidad</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-field">
-                <label>Nivel educativo</label>
+              <div class="form-field"><label>Nivel educativo</label>
                 <select id="plan-nivel" onchange="actualizarAreasPorNivel(); cargarUnidadesCurriculares();">
                   <option value="">Seleccionar nivel...</option>
-                  <option>Inicial</option>
-                  <option>Primaria</option>
-                  <option>Media (Académica)</option>
-                  <option>Media (Técnico-Profesional)</option>
+                  <option>Inicial</option><option>Primaria</option>
+                  <option>Media (Académica)</option><option>Media (Técnico-Profesional)</option>
                 </select>
               </div>
-              <div class="form-field">
-                <label>Área técnica <span style="color:var(--gris);font-weight:400;">(solo politécnicos)</span></label>
+              <div class="form-field"><label>Área técnica <span style="color:var(--gris);font-weight:400;">(solo politécnicos)</span></label>
                 <select id="plan-tecnica">
-                  <option value="">No aplica</option>
-                  <option>Informática</option>
-                  <option>Contabilidad</option>
-                  <option>Administración</option>
-                  <option>Electrónica</option>
-                  <option>Electricidad</option>
-                  <option>Mecánica Automotriz</option>
-                  <option>Refrigeración y Aire Acondicionado</option>
-                  <option>Costura y Modas</option>
-                  <option>Belleza y Cosmetología</option>
-                  <option>Turismo y Hotelería</option>
-                  <option>Agropecuaria</option>
-                  <option>Salud</option>
+                  <option value="">No aplica</option><option>Informática</option><option>Contabilidad</option>
+                  <option>Administración</option><option>Electrónica</option><option>Electricidad</option>
+                  <option>Mecánica Automotriz</option><option>Refrigeración y Aire Acondicionado</option>
+                  <option>Costura y Modas</option><option>Belleza y Cosmetología</option>
+                  <option>Turismo y Hotelería</option><option>Agropecuaria</option><option>Salud</option>
                 </select>
               </div>
             </div>
-
             <div class="form-row">
-              <div class="form-field">
-                <label>Área curricular</label>
-                <select id="plan-area" onchange="cargarUnidadesCurriculares()">
-                  <option value="">Seleccionar área...</option>
-                </select>
+              <div class="form-field"><label>Área curricular</label>
+                <select id="plan-area" onchange="cargarUnidadesCurriculares()"><option value="">Seleccionar área...</option></select>
               </div>
-              <div class="form-field">
-                <label>Nivel y grado</label>
+              <div class="form-field"><label>Nivel y grado</label>
                 <select id="plan-grado">
                   <option value="">Seleccionar grado...</option>
                   <optgroup label="Nivel Primario">
-                    <option>1er grado - Primario</option>
-                    <option>2do grado - Primario</option>
-                    <option>3er grado - Primario</option>
-                    <option>4to grado - Primario</option>
-                    <option>5to grado - Primario</option>
-                    <option>6to grado - Primario</option>
+                    <option>1er grado - Primario</option><option>2do grado - Primario</option>
+                    <option>3er grado - Primario</option><option>4to grado - Primario</option>
+                    <option>5to grado - Primario</option><option>6to grado - Primario</option>
                   </optgroup>
                   <optgroup label="Nivel Secundario">
-                    <option>1er grado - Secundario</option>
-                    <option>2do grado - Secundario</option>
-                    <option>3er grado - Secundario</option>
-                    <option>4to grado - Secundario</option>
-                    <option>5to grado - Secundario</option>
-                    <option>6to grado - Secundario</option>
+                    <option>1er grado - Secundario</option><option>2do grado - Secundario</option>
+                    <option>3er grado - Secundario</option><option>4to grado - Secundario</option>
+                    <option>5to grado - Secundario</option><option>6to grado - Secundario</option>
                   </optgroup>
                 </select>
               </div>
             </div>
-
             <div class="form-row">
-              <div class="form-field">
-                <label>Unidad temática</label>
-                <select id="plan-unidad" onchange="completarPlanificacionSinIA()">
-                  <option value="">Seleccionar unidad temática...</option>
-                </select>
+              <div class="form-field"><label>Unidad temática</label>
+                <select id="plan-unidad" onchange="completarPlanificacionSinIA()"><option value="">Seleccionar unidad temática...</option></select>
               </div>
-              <div class="form-field">
-                <label>Tiempo (semanas)</label>
-                <input type="number" id="plan-tiempo" placeholder="Ej: 2" min="1" max="40">
-              </div>
+              <div class="form-field"><label>Tiempo (semanas)</label><input type="number" id="plan-tiempo" placeholder="Ej: 2" min="1" max="40"></div>
             </div>
-
-            <!-- Botón Completar Planificación Sin IA -->
             <div style="margin-bottom:20px;padding:16px;background:linear-gradient(135deg,#f0faf4,#e8f5e9);border:1.5px solid var(--verde);border-radius:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
               <div>
                 <div style="font-weight:700;color:var(--verde);font-size:14px;">⚡ Completar planificación</div>
-                <div style="font-size:12px;color:var(--gris);margin-top:2px;">Selecciona nivel, grado, área y unidad temática. El sistema llena el resto usando la biblioteca curricular MINERD.</div>
+                <div style="font-size:12px;color:var(--gris);margin-top:2px;">Selecciona nivel, grado, área y unidad. El sistema llena el resto con el currículo oficial MINERD.</div>
               </div>
-              <button type="button" id="btn-completar-plan" onclick="completarPlanificacionSinIA()" style="padding:10px 20px;background:var(--verde);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;">⚡ Completar planificación</button>
+              <button type="button" onclick="completarPlanificacionSinIA()" style="padding:10px 20px;background:var(--verde);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;">⚡ Completar planificación</button>
             </div>
-
             <div class="form-row" style="grid-template-columns:1fr;">
-              <div class="form-field">
-                <label>Situación de aprendizaje</label>
-                <textarea id="plan-situacion" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Describe el contexto o situación que motiva el aprendizaje..."></textarea>
-              </div>
+              <div class="form-field"><label>Situación de aprendizaje</label><textarea id="plan-situacion" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Describe el contexto o situación que motiva el aprendizaje..."></textarea></div>
             </div>
-
             <div class="form-row" style="grid-template-columns:1fr;">
-              <div class="form-field">
-                <label>Competencias específicas</label>
-                <textarea id="plan-competencias" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Lista las competencias específicas del área..."></textarea>
-              </div>
+              <div class="form-field"><label>Competencias específicas</label><textarea id="plan-competencias" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Lista las competencias específicas del área..."></textarea></div>
             </div>
-
             <div class="form-row" style="grid-template-columns:1fr;">
-              <div class="form-field">
-                <label>Indicadores de logro</label>
-                <textarea id="plan-indicadores" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="¿Qué debe demostrar el estudiante al finalizar?"></textarea>
-              </div>
+              <div class="form-field"><label>Indicadores de logro</label><textarea id="plan-indicadores" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="¿Qué debe demostrar el estudiante al finalizar?"></textarea></div>
             </div>
-
-            <!-- Tipos de contenido -->
             <div style="margin-bottom:16px;">
               <label style="display:block;font-size:13px;font-weight:600;margin-bottom:10px;">Tipos de contenidos</label>
               <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
-                <div class="form-field">
-                  <label style="color:var(--azul-medio);">📘 Conceptual</label>
-                  <textarea id="plan-conceptual" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:13px;resize:vertical;" placeholder="¿Qué sabe? (hechos, conceptos, principios)"></textarea>
-                </div>
-                <div class="form-field">
-                  <label style="color:var(--verde);">📗 Procedimental</label>
-                  <textarea id="plan-procedimental" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:13px;resize:vertical;" placeholder="¿Qué hace? (habilidades, técnicas, métodos)"></textarea>
-                </div>
-                <div class="form-field">
-                  <label style="color:var(--amarillo);">📙 Actitudinal</label>
-                  <textarea id="plan-actitudinal" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:13px;resize:vertical;" placeholder="¿Cómo es? (valores, normas, actitudes)"></textarea>
-                </div>
+                <div class="form-field"><label style="color:var(--azul-medio);">📘 Conceptual</label><textarea id="plan-conceptual" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:13px;resize:vertical;" placeholder="¿Qué sabe?"></textarea></div>
+                <div class="form-field"><label style="color:var(--verde);">📗 Procedimental</label><textarea id="plan-procedimental" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:13px;resize:vertical;" placeholder="¿Qué hace?"></textarea></div>
+                <div class="form-field"><label style="color:var(--amarillo);">📙 Actitudinal</label><textarea id="plan-actitudinal" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:13px;resize:vertical;" placeholder="¿Cómo es?"></textarea></div>
               </div>
             </div>
-
-            <div class="form-row" style="grid-template-columns:1fr;">
-              <div class="form-field">
-                <label>Estrategias de enseñanza</label>
-                <textarea id="plan-estrategias" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Trabajo cooperativo, aprendizaje basado en proyectos, debate..."></textarea>
-              </div>
-            </div>
-
+            <div class="form-row" style="grid-template-columns:1fr;"><div class="form-field"><label>Estrategias de enseñanza</label><textarea id="plan-estrategias" rows="3" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Trabajo cooperativo, aprendizaje basado en proyectos..."></textarea></div></div>
             <div class="form-row" style="grid-template-columns:1fr 1fr;gap:16px;">
-              <div class="form-field">
-                <label>Actividades</label>
-                <textarea id="plan-actividades" rows="4" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Describe las actividades principales de la clase..."></textarea>
-              </div>
-              <div class="form-field">
-                <label>Actividades de recuperación</label>
-                <textarea id="plan-recuperacion" rows="4" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Actividades para estudiantes que no alcanzaron los logros..."></textarea>
-              </div>
+              <div class="form-field"><label>Actividades</label><textarea id="plan-actividades" rows="4" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Actividades principales..."></textarea></div>
+              <div class="form-field"><label>Actividades de recuperación</label><textarea id="plan-recuperacion" rows="4" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Para estudiantes que no alcanzaron los logros..."></textarea></div>
             </div>
-
             <div class="form-row">
-              <div class="form-field">
-                <label>Recursos didácticos</label>
-                <textarea id="plan-recursos" rows="2" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Libros, materiales, tecnología, medioambiente..."></textarea>
-              </div>
-              <div class="form-field">
-                <label>Evaluación</label>
-                <textarea id="plan-evaluacion" rows="2" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Diagnóstica, formativa, sumativa..."></textarea>
-              </div>
+              <div class="form-field"><label>Recursos didácticos</label><textarea id="plan-recursos" rows="2" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Libros, materiales, tecnología..."></textarea></div>
+              <div class="form-field"><label>Evaluación</label><textarea id="plan-evaluacion" rows="2" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Diagnóstica, formativa, sumativa..."></textarea></div>
             </div>
-
             <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
               <button type="button" class="btn-secondary" onclick="clearPlanForm()">🆕 Nuevo</button>
               <button type="button" class="btn-primary" id="btn-guardar-plan" onclick="guardarPlan()">💾 Guardar borrador</button>
@@ -692,17 +667,12 @@
           </div>
         </div>
       </div>
-
-      <!-- Lista de planes -->
       <div id="plan-lista-section" style="display:none">
         <div class="panel">
           <div class="panel-header"><h3>📋 Planes guardados</h3></div>
-          <div class="panel-body" id="plan-lista-body">
-            <p style="color:var(--gris);text-align:center;padding:30px">No hay planes guardados aún.</p>
-          </div>
+          <div class="panel-body" id="plan-lista-body"><p style="color:var(--gris);text-align:center;padding:30px">No hay planes guardados aún.</p></div>
         </div>
       </div>
-
     </div>
 
     <!-- REPORTES -->
@@ -713,6 +683,61 @@
           <div style="font-size:48px; margin-bottom:16px">📈</div>
           <h3 style="color:var(--azul-marino); margin-bottom:8px">Módulo en desarrollo</h3>
           <p style="color:var(--gris)">Indicadores de gestión, asistencia y rendimiento académico.<br>Disponible en Fase 2.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMUNICACIONES -->
+    <div id="section-comunicaciones" style="display:none">
+      <div class="panel">
+        <div class="panel-header"><h3>➕ Publicar comunicado</h3></div>
+        <div class="panel-body">
+          <div class="alert alert-success" id="com-success"></div>
+          <div class="alert alert-error" id="com-error"></div>
+          <div class="form-row">
+            <div class="form-field"><label>Tipo</label>
+              <select id="com-tipo">
+                <option value="logro">🏆 Logro del centro</option>
+                <option value="evento">🎉 Evento</option>
+                <option value="reunion">👥 Reunión</option>
+                <option value="aviso">📌 Aviso general</option>
+              </select>
+            </div>
+            <div class="form-field"><label>Fecha del evento (opcional)</label><input type="date" id="com-fecha-evento"></div>
+          </div>
+          <div class="form-row" style="grid-template-columns:1fr;">
+            <div class="form-field"><label>Título</label><input type="text" id="com-titulo" placeholder="Ej: Reunión de padres — 1er grado"></div>
+          </div>
+          <div class="form-row" style="grid-template-columns:1fr;">
+            <div class="form-field"><label>Descripción</label><textarea id="com-cuerpo" rows="4" style="width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;font-size:14px;resize:vertical;" placeholder="Detalle del comunicado..."></textarea></div>
+          </div>
+          <button class="btn-primary" onclick="publicarComunicado()">📢 Publicar</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><h3>📋 Tablón de anuncios</h3>
+          <div style="display:flex;gap:8px;">
+            <button class="btn-secondary" style="padding:6px 12px;font-size:12px;" onclick="filtrarCom('')">Todos</button>
+            <button class="btn-secondary" style="padding:6px 12px;font-size:12px;" onclick="filtrarCom('logro')">🏆 Logros</button>
+            <button class="btn-secondary" style="padding:6px 12px;font-size:12px;" onclick="filtrarCom('evento')">🎉 Eventos</button>
+            <button class="btn-secondary" style="padding:6px 12px;font-size:12px;" onclick="filtrarCom('reunion')">👥 Reuniones</button>
+          </div>
+        </div>
+        <div class="panel-body" id="com-lista"></div>
+      </div>
+    </div>
+
+    <!-- CALENDARIO -->
+    <div id="section-calendario" style="display:none">
+      <div class="panel">
+        <div class="panel-header"><h3>📅 Calendario Escolar 2026-2027 — MINERD</h3></div>
+        <div class="panel-body">
+          <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px;font-size:13px;">
+            <span>🟢 Inicio/Fin de período</span>
+            <span>🔴 Feriado nacional</span>
+            <span>🟡 Receso escolar</span>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
         </div>
       </div>
     </div>
@@ -731,38 +756,24 @@
           </table>
         </div>
       </div>
-
       <div class="panel">
         <div class="panel-header"><h3>👤 Mi cuenta</h3></div>
         <div class="panel-body">
           <div class="alert alert-success" id="config-success"></div>
           <div class="alert alert-error" id="config-error"></div>
           <div class="form-row">
-            <div class="form-field">
-              <label>Correo actual</label>
-              <input type="text" id="config-email" disabled style="background:#f3f4f6;color:#6b7280;">
-            </div>
-            <div class="form-field">
-              <label>Rol</label>
-              <input type="text" id="config-role" disabled style="background:#f3f4f6;color:#6b7280;">
-            </div>
+            <div class="form-field"><label>Correo actual</label><input type="text" id="config-email" disabled style="background:#f3f4f6;color:#6b7280;"></div>
+            <div class="form-field"><label>Rol</label><input type="text" id="config-role" disabled style="background:#f3f4f6;color:#6b7280;"></div>
           </div>
           <form onsubmit="event.preventDefault(); cambiarPassword()">
             <div class="form-row">
-              <div class="form-field">
-                <label>Nueva contraseña</label>
-                <input type="password" id="config-newpass" placeholder="Mínimo 8 caracteres">
-              </div>
-              <div class="form-field">
-                <label>Confirmar contraseña</label>
-                <input type="password" id="config-confirmpass" placeholder="Repite la contraseña">
-              </div>
+              <div class="form-field"><label>Nueva contraseña</label><input type="password" id="config-newpass" placeholder="Mínimo 8 caracteres" autocomplete="new-password"></div>
+              <div class="form-field"><label>Confirmar contraseña</label><input type="password" id="config-confirmpass" placeholder="Repite la contraseña" autocomplete="new-password"></div>
             </div>
             <button type="submit" class="btn-primary">🔒 Cambiar contraseña</button>
           </form>
         </div>
       </div>
-
       <div class="panel">
         <div class="panel-header"><h3>💳 Solicitar plan</h3></div>
         <div class="panel-body">
@@ -796,144 +807,139 @@ const API = 'https://eduactiva360-backend-production.up.railway.app/api/v1';
 let token = localStorage.getItem('ea_token') || null;
 let currentUser = JSON.parse(localStorage.getItem('ea_user') || 'null');
 let planEditandoId = null;
+let asistenciaActual = {};
 
 window.onload = () => {
   if (token && currentUser) showApp();
+  // Fecha hoy para asistencia
+  var hoy = new Date().toISOString().split('T')[0];
+  var asistFecha = document.getElementById('asist-fecha');
+  if (asistFecha) asistFecha.value = hoy;
 };
 
+// ====== SIDEBAR MÓVIL ======
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('active');
+}
+function cerrarSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('active');
+}
+
+// ====== AUTH ======
 async function doLogin() {
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
   const btn = document.getElementById('btn-login');
-  const errDiv = document.getElementById('login-error');
-
   if (!email || !password) { showLoginError('Completa todos los campos.'); return; }
-
-  btn.disabled = true;
-  btn.textContent = 'Ingresando...';
-  errDiv.style.display = 'none';
-
+  btn.disabled = true; btn.textContent = 'Ingresando...';
+  document.getElementById('login-error').style.display = 'none';
   try {
-    const res = await fetch(`${API}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const res = await fetch(API + '/auth/login', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
     const data = await res.json();
     if (res.ok && data.access_token) {
-      token = data.access_token;
-      currentUser = data.user;
+      token = data.access_token; currentUser = data.user;
       localStorage.setItem('ea_token', token);
       localStorage.setItem('ea_user', JSON.stringify(currentUser));
       showApp();
-    } else {
-      showLoginError(data.message || 'Credenciales incorrectas.');
-    }
-  } catch(e) {
-    showLoginError('Error de conexión con el servidor.');
-  }
-
-  btn.disabled = false;
-  btn.textContent = 'Entrar';
+    } else { showLoginError(data.message || 'Credenciales incorrectas.'); }
+  } catch(e) { showLoginError('Error de conexión con el servidor.'); }
+  btn.disabled = false; btn.textContent = 'Entrar';
 }
-
 function showLoginError(msg) {
-  const el = document.getElementById('login-error');
-  el.textContent = msg;
-  el.style.display = 'block';
+  var el = document.getElementById('login-error');
+  el.textContent = msg; el.style.display = 'block';
 }
-
 function showApp() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app-screen').style.display = 'block';
   document.getElementById('user-email-display').textContent = currentUser?.email || '';
   loadDashboard();
+  renderMatricula();
+  renderComunicados('');
+  renderCalendario();
 }
-
 function doLogout() {
-  localStorage.removeItem('ea_token');
-  localStorage.removeItem('ea_user');
+  localStorage.removeItem('ea_token'); localStorage.removeItem('ea_user');
   token = null; currentUser = null;
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('app-screen').style.display = 'none';
 }
 
+// ====== NAVEGACIÓN ======
 function showSection(name, el) {
-  const sections = ['dashboard','instituciones','usuarios','licencias','planificacion','reportes','configuracion'];
-  sections.forEach(s => {
+  var sections = ['dashboard','instituciones','usuarios','licencias','matricula','asistencia','planificacion','reportes','comunicaciones','calendario','configuracion'];
+  sections.forEach(function(s) {
     document.getElementById('section-' + s).style.display = s === name ? 'block' : 'none';
   });
-  document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(function(item) { item.classList.remove('active'); });
   if (el) el.classList.add('active');
-
-  const titles = {
-    dashboard: 'Dashboard Global',
-    instituciones: 'Instituciones',
-    usuarios: 'Usuarios',
-    licencias: 'Licencias',
-    planificacion: 'Planificación académica',
-    reportes: 'Reportes e indicadores',
-    configuracion: 'Configuración'
+  var titles = {
+    dashboard:'Dashboard Global', instituciones:'Instituciones', usuarios:'Usuarios',
+    licencias:'Licencias', matricula:'Matrícula', asistencia:'Asistencia',
+    planificacion:'Planificación académica', reportes:'Reportes',
+    comunicaciones:'Comunicaciones', calendario:'Calendario Escolar',
+    configuracion:'Configuración'
   };
   document.getElementById('page-title').textContent = titles[name] || name;
-
+  cerrarSidebar();
   if (name === 'instituciones') loadInstituciones();
   if (name === 'usuarios') loadUsuarios();
   if (name === 'licencias') loadLicencias();
   if (name === 'configuracion') loadConfiguracion();
+  if (name === 'matricula') renderMatricula();
+  if (name === 'comunicaciones') renderComunicados('');
+  if (name === 'calendario') renderCalendario();
 }
 
 async function apiFetch(path, opts) {
   opts = opts || {};
-  const res = await fetch(API + path, Object.assign({}, opts, {
+  var res = await fetch(API + path, Object.assign({}, opts, {
     headers: Object.assign({ 'Authorization': 'Bearer ' + localStorage.getItem('ea_token'), 'Content-Type': 'application/json' }, opts.headers || {})
   }));
   if (res.status === 401) { doLogout(); throw new Error('Sesión expirada'); }
   return res.json();
 }
 
+// ====== DASHBOARD ======
 async function loadDashboard() {
   try {
-    const insts = await apiFetch('/institutions');
-    const list = Array.isArray(insts) ? insts : (insts.data || []);
+    var insts = await apiFetch('/institutions');
+    var list = Array.isArray(insts) ? insts : (insts.data || []);
     document.getElementById('m-instituciones').textContent = list.length;
-    document.getElementById('m-usuarios').textContent = '—';
     document.getElementById('m-licencias').textContent = list.length;
-    const tbody = list.length === 0
+    var estudiantes = JSON.parse(localStorage.getItem('ea_estudiantes') || '[]');
+    document.getElementById('m-estudiantes').textContent = estudiantes.length;
+    var tbody = list.length === 0
       ? '<p style="color:var(--gris);text-align:center;padding:20px">No hay instituciones registradas aún.</p>'
       : '<table><thead><tr><th>Institución</th><th>Código</th><th>Director</th><th>Estado</th></tr></thead><tbody>'
-        + list.map(function(i) {
-            return '<tr><td><strong>' + i.name + '</strong></td><td>' + (i.code || '—') + '</td><td>' + (i.director_name || '—') + '</td><td><span class="badge badge-verde">Activa</span></td></tr>';
-          }).join('')
-        + '</tbody></table>';
+        + list.map(function(i) { return '<tr><td><strong>' + i.name + '</strong></td><td>' + (i.code||'—') + '</td><td>' + (i.director_name||'—') + '</td><td><span class="badge badge-verde">Activa</span></td></tr>'; }).join('') + '</tbody></table>';
     document.getElementById('dashboard-instituciones-list').innerHTML = tbody;
   } catch(e) {
     document.getElementById('dashboard-instituciones-list').innerHTML = '<p style="color:var(--gris)">No se pudo cargar la información.</p>';
   }
 }
 
+// ====== INSTITUCIONES ======
 async function loadInstituciones() {
   document.getElementById('inst-list').innerHTML = '<div class="loading"><div class="spinner"></div><br>Cargando...</div>';
   try {
-    const data = await apiFetch('/institutions');
-    const list = Array.isArray(data) ? data : (data.data || []);
-    if (list.length === 0) {
-      document.getElementById('inst-list').innerHTML = '<p style="color:var(--gris);text-align:center;padding:20px">Sin instituciones registradas.</p>';
-      return;
-    }
+    var data = await apiFetch('/institutions');
+    var list = Array.isArray(data) ? data : (data.data || []);
+    if (list.length === 0) { document.getElementById('inst-list').innerHTML = '<p style="color:var(--gris);text-align:center;padding:20px">Sin instituciones registradas.</p>'; return; }
     document.getElementById('inst-list').innerHTML = '<table><thead><tr><th>Nombre</th><th>Código</th><th>Dirección</th><th>Director</th><th>Estado</th></tr></thead><tbody>'
       + list.map(function(i) {
           var status = i.licenses && i.licenses[0] ? i.licenses[0].status : '';
           var badge = status === 'active' ? 'badge-verde' : 'badge-azul';
           var label = {active:'Activa', trial:'Prueba'}[status] || 'Sin licencia';
-          return '<tr><td><strong>' + i.name + '</strong></td><td>' + (i.code || '—') + '</td><td>' + (i.address || '—') + '</td><td>' + (i.director_name || '—') + '</td><td><span class="badge ' + badge + '">' + label + '</span></td></tr>';
-        }).join('')
-      + '</tbody></table>';
-  } catch(e) {
-    document.getElementById('inst-list').innerHTML = '<p style="color:var(--rojo)">Error cargando instituciones.</p>';
-  }
+          return '<tr><td><strong>' + i.name + '</strong></td><td>' + (i.code||'—') + '</td><td>' + (i.address||'—') + '</td><td>' + (i.director_name||'—') + '</td><td><span class="badge ' + badge + '">' + label + '</span></td></tr>';
+        }).join('') + '</tbody></table>';
+  } catch(e) { document.getElementById('inst-list').innerHTML = '<p style="color:var(--rojo)">Error cargando instituciones.</p>'; }
 }
-
 async function crearInstitucion() {
   var name = document.getElementById('inst-name').value.trim();
   var code = document.getElementById('inst-code').value.trim();
@@ -941,43 +947,26 @@ async function crearInstitucion() {
   var director_name = document.getElementById('inst-director').value.trim();
   if (!name) { showAlert('inst-error', 'El nombre es obligatorio.'); return; }
   try {
-    var res = await apiFetch('/institutions', { method: 'POST', body: JSON.stringify({ name: name, code: code, address: address, director_name: director_name }) });
-    if (res.id || res.name) {
-      showAlert('inst-success', '✅ Institución "' + name + '" creada exitosamente.');
-      clearInstForm();
-      loadInstituciones();
-      loadDashboard();
-    } else {
-      showAlert('inst-error', res.message || 'Error al crear la institución.');
-    }
-  } catch(e) {
-    showAlert('inst-error', 'Error de conexión.');
-  }
+    var res = await apiFetch('/institutions', { method: 'POST', body: JSON.stringify({ name, code, address, director_name }) });
+    if (res.id || res.name) { showAlert('inst-success', '✅ Institución "' + name + '" creada.'); clearInstForm(); loadInstituciones(); loadDashboard(); }
+    else { showAlert('inst-error', res.message || 'Error al crear la institución.'); }
+  } catch(e) { showAlert('inst-error', 'Error de conexión.'); }
 }
+function clearInstForm() { ['inst-name','inst-code','inst-address','inst-director'].forEach(function(id) { document.getElementById(id).value = ''; }); }
 
-function clearInstForm() {
-  ['inst-name','inst-code','inst-address','inst-director'].forEach(function(id) { document.getElementById(id).value = ''; });
-}
-
+// ====== USUARIOS ======
 async function loadUsuarios() {
   document.getElementById('users-list').innerHTML = '<div class="loading"><div class="spinner"></div><br>Cargando...</div>';
   try {
     var data = await apiFetch('/users');
     var list = Array.isArray(data) ? data : (data.data || []);
-    if (list.length === 0) {
-      document.getElementById('users-list').innerHTML = '<p style="color:var(--gris);text-align:center;padding:20px">No hay usuarios registrados.</p>';
-      return;
-    }
+    if (list.length === 0) { document.getElementById('users-list').innerHTML = '<p style="color:var(--gris);text-align:center;padding:20px">No hay usuarios registrados.</p>'; return; }
     document.getElementById('users-list').innerHTML = '<table><thead><tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Estado</th></tr></thead><tbody>'
       + list.map(function(u) {
-          return '<tr><td><strong>' + (u.first_name || '') + ' ' + (u.last_name || '') + '</strong></td><td>' + u.email + '</td><td><span class="badge badge-azul">' + (u.role && u.role.name ? u.role.name : (u.role_name || u.role || '-')) + '</span></td><td><span class="badge badge-verde">Activo</span></td></tr>';
-        }).join('')
-      + '</tbody></table>';
-  } catch(e) {
-    document.getElementById('users-list').innerHTML = '<p style="color:var(--gris)">No se pudieron cargar los usuarios.</p>';
-  }
+          return '<tr><td><strong>' + (u.first_name||'') + ' ' + (u.last_name||'') + '</strong></td><td>' + u.email + '</td><td><span class="badge badge-azul">' + (u.role&&u.role.name ? u.role.name : (u.role_name||u.role||'-')) + '</span></td><td><span class="badge badge-verde">Activo</span></td></tr>';
+        }).join('') + '</tbody></table>';
+  } catch(e) { document.getElementById('users-list').innerHTML = '<p style="color:var(--gris)">No se pudieron cargar los usuarios.</p>'; }
 }
-
 async function crearUsuario() {
   var first_name = document.getElementById('user-firstname').value.trim();
   var last_name = document.getElementById('user-lastname').value.trim();
@@ -985,57 +974,272 @@ async function crearUsuario() {
   var password = document.getElementById('user-password').value;
   var role = document.getElementById('user-role').value;
   var phone = document.getElementById('user-phone').value.trim();
-  if (!first_name || !last_name || !email || !password) {
-    showAlert('user-error', 'Completa todos los campos obligatorios.');
-    return;
-  }
+  if (!first_name || !last_name || !email || !password) { showAlert('user-error', 'Completa todos los campos obligatorios.'); return; }
   try {
-    var body = { first_name: first_name, last_name: last_name, email: email, password: password, role: role };
+    var body = { first_name, last_name, email, password, role };
     if (phone) body.phone = phone;
     var res = await apiFetch('/auth/register', { method: 'POST', body: JSON.stringify(body) });
-    if (res.id || res.email) {
-      showAlert('user-success', '✅ Usuario "' + first_name + ' ' + last_name + '" registrado exitosamente.');
-      clearUserForm();
-      loadUsuarios();
-    } else {
-      showAlert('user-error', res.message || 'Error al registrar el usuario.');
-    }
-  } catch(e) {
-    showAlert('user-error', 'Error de conexión.');
-  }
+    if (res.id || res.email) { showAlert('user-success', '✅ Usuario "' + first_name + ' ' + last_name + '" registrado.'); clearUserForm(); loadUsuarios(); }
+    else { showAlert('user-error', res.message || 'Error al registrar el usuario.'); }
+  } catch(e) { showAlert('user-error', 'Error de conexión.'); }
 }
-
 function clearUserForm() {
-  ['user-firstname','user-lastname','user-email','user-password','user-phone'].forEach(function(id) {
-    var el = document.getElementById(id);
-    if (el) el.value = '';
-  });
+  ['user-firstname','user-lastname','user-email','user-password','user-phone'].forEach(function(id) { var el = document.getElementById(id); if (el) el.value = ''; });
   document.getElementById('user-role').value = 'docente';
 }
 
+// ====== LICENCIAS ======
 async function loadLicencias() {
   document.getElementById('licencias-list').innerHTML = '<div class="loading"><div class="spinner"></div><br>Cargando...</div>';
   try {
     var insts = await apiFetch('/institutions');
     var list = Array.isArray(insts) ? insts : (insts.data || []);
-    if (list.length === 0) {
-      document.getElementById('licencias-list').innerHTML = '<p style="color:var(--gris);text-align:center;padding:30px">No hay licencias registradas.</p>';
-      return;
-    }
+    if (list.length === 0) { document.getElementById('licencias-list').innerHTML = '<p style="color:var(--gris);text-align:center;padding:30px">No hay licencias registradas.</p>'; return; }
     var rows = list.map(function(inst) {
       var lic = inst.licenses && inst.licenses[0];
       if (!lic) return '';
       var vence = lic.expiration_date ? new Date(lic.expiration_date).toLocaleDateString('es-DO') : '-';
       var estado = lic.status || '-';
       var badgeColor = estado === 'active' ? 'badge-verde' : estado === 'trial' ? 'badge-azul' : 'badge-rojo';
-      return '<tr><td><strong>' + inst.name + '</strong></td><td><code>' + (lic.license_key || '-') + '</code></td><td><span class="badge badge-azul">' + (lic.plan_type || '-') + '</span></td><td>' + vence + '</td><td><span class="badge ' + badgeColor + '">' + estado + '</span></td></tr>';
+      return '<tr><td><strong>' + inst.name + '</strong></td><td><code>' + (lic.license_key||'-') + '</code></td><td><span class="badge badge-azul">' + (lic.plan_type||'-') + '</span></td><td>' + vence + '</td><td><span class="badge ' + badgeColor + '">' + estado + '</span></td></tr>';
     }).join('');
     document.getElementById('licencias-list').innerHTML = '<table><thead><tr><th>Institución</th><th>Clave</th><th>Plan</th><th>Vence</th><th>Estado</th></tr></thead><tbody>' + rows + '</tbody></table>';
-  } catch(e) {
-    document.getElementById('licencias-list').innerHTML = '<p style="color:var(--rojo);padding:20px">Error al cargar licencias.</p>';
-  }
+  } catch(e) { document.getElementById('licencias-list').innerHTML = '<p style="color:var(--rojo);padding:20px">Error al cargar licencias.</p>'; }
 }
 
+// ====== MATRÍCULA ======
+function registrarEstudiante() {
+  var nombre = document.getElementById('mat-nombre').value.trim();
+  var apellido = document.getElementById('mat-apellido').value.trim();
+  var grado = document.getElementById('mat-grado').value;
+  var seccion = document.getElementById('mat-seccion').value;
+  if (!nombre || !apellido || !grado) { showAlert('mat-error', '⚠️ Nombre, apellido y grado son obligatorios.'); return; }
+  var estudiantes = JSON.parse(localStorage.getItem('ea_estudiantes') || '[]');
+  var est = {
+    id: Date.now(),
+    nombre: nombre, apellido: apellido,
+    nacimiento: document.getElementById('mat-nacimiento').value,
+    sexo: document.getElementById('mat-sexo').value,
+    documento: document.getElementById('mat-documento').value.trim(),
+    nacionalidad: document.getElementById('mat-nacionalidad').value,
+    grado: grado, seccion: seccion,
+    condicion: document.getElementById('mat-condicion').value,
+    turno: document.getElementById('mat-turno').value,
+    tutor: document.getElementById('mat-tutor').value.trim(),
+    tutorCedula: document.getElementById('mat-tutor-cedula').value.trim(),
+    tutorTel: document.getElementById('mat-tutor-tel').value.trim(),
+    tutorEmail: document.getElementById('mat-tutor-email').value.trim(),
+    direccion: document.getElementById('mat-direccion').value.trim(),
+    fechaMatricula: new Date().toLocaleDateString('es-DO')
+  };
+  estudiantes.push(est);
+  localStorage.setItem('ea_estudiantes', JSON.stringify(estudiantes));
+  showAlert('mat-success', '✅ Estudiante "' + nombre + ' ' + apellido + '" matriculado correctamente.');
+  clearMatForm();
+  renderMatricula();
+  document.getElementById('m-estudiantes').textContent = estudiantes.length;
+}
+function clearMatForm() {
+  ['mat-nombre','mat-apellido','mat-nacimiento','mat-documento','mat-tutor','mat-tutor-cedula','mat-tutor-tel','mat-tutor-email','mat-direccion'].forEach(function(id) { document.getElementById(id).value = ''; });
+  document.getElementById('mat-sexo').value = '';
+  document.getElementById('mat-grado').value = '';
+  document.getElementById('mat-condicion').value = 'Nuevo';
+  document.getElementById('mat-turno').value = 'Matutino';
+}
+function renderMatricula() {
+  var filtro = document.getElementById('filtro-grado-mat') ? document.getElementById('filtro-grado-mat').value : '';
+  var estudiantes = JSON.parse(localStorage.getItem('ea_estudiantes') || '[]');
+  if (filtro) estudiantes = estudiantes.filter(function(e) { return e.grado === filtro; });
+  var el = document.getElementById('mat-lista');
+  if (!el) return;
+  if (estudiantes.length === 0) { el.innerHTML = '<p style="color:var(--gris);text-align:center;padding:30px;">No hay estudiantes matriculados aún.</p>'; return; }
+  el.innerHTML = '<table><thead><tr><th>Nombre</th><th>Grado</th><th>Secc.</th><th>Turno</th><th>Condición</th><th>Tutor</th><th>Acciones</th></tr></thead><tbody>'
+    + estudiantes.map(function(e) {
+        return '<tr><td><strong>' + e.nombre + ' ' + e.apellido + '</strong></td><td>' + e.grado + '</td><td>' + e.seccion + '</td><td>' + e.turno + '</td><td><span class="badge badge-azul">' + e.condicion + '</span></td><td>' + (e.tutor||'—') + '</td><td><button class="btn-secondary" style="padding:4px 10px;font-size:12px;color:var(--rojo);border-color:var(--rojo);" onclick="eliminarEstudiante(' + e.id + ')">🗑️</button></td></tr>';
+      }).join('') + '</tbody></table>';
+}
+function eliminarEstudiante(id) {
+  if (!confirm('¿Eliminar este estudiante del registro?')) return;
+  var est = JSON.parse(localStorage.getItem('ea_estudiantes') || '[]').filter(function(e) { return e.id !== id; });
+  localStorage.setItem('ea_estudiantes', JSON.stringify(est));
+  renderMatricula();
+  document.getElementById('m-estudiantes').textContent = est.length;
+}
+
+// ====== ASISTENCIA ======
+function cargarListaAsistencia() {
+  var gradoSec = document.getElementById('asist-grado').value;
+  if (!gradoSec) { document.getElementById('asist-lista').innerHTML = ''; document.getElementById('asist-acciones').style.display = 'none'; return; }
+  var partes = gradoSec.split(' - ');
+  var grado = partes[0]; var sec = partes[1] || 'A';
+  var estudiantes = JSON.parse(localStorage.getItem('ea_estudiantes') || '[]').filter(function(e) { return e.grado === grado && e.seccion === sec; });
+  asistenciaActual = {};
+  if (estudiantes.length === 0) {
+    document.getElementById('asist-lista').innerHTML = '<p style="color:var(--gris);padding:20px;">No hay estudiantes matriculados en este grado y sección. Ve a <strong>Matrícula</strong> para registrarlos.</p>';
+    document.getElementById('asist-acciones').style.display = 'none';
+    return;
+  }
+  estudiantes.forEach(function(e) { asistenciaActual[e.id] = 'P'; });
+  var html = '<table><thead><tr><th>Estudiante</th><th>Estado</th></tr></thead><tbody>';
+  html += estudiantes.map(function(e) {
+    return '<tr><td><strong>' + e.nombre + ' ' + e.apellido + '</strong></td><td><div style="display:flex;gap:6px;flex-wrap:wrap;">'
+      + ['P','A','T','E'].map(function(s) {
+          var labels = {P:'✅ Presente', A:'❌ Ausente', T:'⏰ Tardanza', E:'📄 Excusa'};
+          return '<button class="asist-btn asist-' + s + (s==='P'?' selected':'') + '" id="asist-' + e.id + '-' + s + '" onclick="marcarAsist(' + e.id + ',\'' + s + '\')">' + labels[s] + '</button>';
+        }).join('') + '</div></td></tr>';
+  }).join('');
+  html += '</tbody></table>';
+  document.getElementById('asist-lista').innerHTML = html;
+  document.getElementById('asist-acciones').style.display = 'block';
+  renderHistorialAsistencia();
+}
+function marcarAsist(id, estado) {
+  asistenciaActual[id] = estado;
+  ['P','A','T','E'].forEach(function(s) {
+    var btn = document.getElementById('asist-' + id + '-' + s);
+    if (btn) btn.classList.toggle('selected', s === estado);
+  });
+}
+function guardarAsistencia() {
+  var fecha = document.getElementById('asist-fecha').value;
+  var gradoSec = document.getElementById('asist-grado').value;
+  if (!fecha || !gradoSec) { showAlert('asist-error', '⚠️ Selecciona fecha y grado.'); return; }
+  var registros = JSON.parse(localStorage.getItem('ea_asistencia') || '[]');
+  // eliminar si ya existe ese día y grado
+  registros = registros.filter(function(r) { return !(r.fecha === fecha && r.gradoSec === gradoSec); });
+  registros.push({ fecha: fecha, gradoSec: gradoSec, datos: Object.assign({}, asistenciaActual) });
+  localStorage.setItem('ea_asistencia', JSON.stringify(registros));
+  showAlert('asist-success', '✅ Asistencia del ' + fecha + ' guardada para ' + gradoSec + '.');
+  renderHistorialAsistencia();
+}
+function renderHistorialAsistencia() {
+  var gradoSec = document.getElementById('asist-grado').value;
+  var registros = JSON.parse(localStorage.getItem('ea_asistencia') || '[]').filter(function(r) { return r.gradoSec === gradoSec; });
+  var el = document.getElementById('asist-historial');
+  if (!gradoSec || registros.length === 0) { el.innerHTML = '<p style="color:var(--gris);text-align:center;padding:20px;">No hay registros para este grado.</p>'; return; }
+  var estudiantes = JSON.parse(localStorage.getItem('ea_estudiantes') || '[]');
+  el.innerHTML = '<table><thead><tr><th>Fecha</th><th>Presentes</th><th>Ausentes</th><th>Tardanzas</th><th>Excusas</th></tr></thead><tbody>'
+    + registros.sort(function(a,b) { return b.fecha.localeCompare(a.fecha); }).map(function(r) {
+        var vals = Object.values(r.datos);
+        var P = vals.filter(function(v){return v==='P';}).length;
+        var A = vals.filter(function(v){return v==='A';}).length;
+        var T = vals.filter(function(v){return v==='T';}).length;
+        var E = vals.filter(function(v){return v==='E';}).length;
+        return '<tr><td>' + r.fecha + '</td><td><span class="badge badge-verde">' + P + '</span></td><td><span class="badge badge-rojo">' + A + '</span></td><td><span class="badge badge-amarillo">' + T + '</span></td><td><span class="badge badge-azul">' + E + '</span></td></tr>';
+      }).join('') + '</tbody></table>';
+}
+
+// ====== COMUNICACIONES ======
+function publicarComunicado() {
+  var titulo = document.getElementById('com-titulo').value.trim();
+  var cuerpo = document.getElementById('com-cuerpo').value.trim();
+  var tipo = document.getElementById('com-tipo').value;
+  if (!titulo || !cuerpo) { showAlert('com-error', '⚠️ Título y descripción son obligatorios.'); return; }
+  var coms = JSON.parse(localStorage.getItem('ea_comunicados') || '[]');
+  coms.unshift({
+    id: Date.now(), tipo: tipo, titulo: titulo, cuerpo: cuerpo,
+    fechaEvento: document.getElementById('com-fecha-evento').value,
+    fechaPublicacion: new Date().toLocaleDateString('es-DO'),
+    autor: currentUser ? currentUser.email : 'Admin'
+  });
+  localStorage.setItem('ea_comunicados', JSON.stringify(coms));
+  showAlert('com-success', '✅ Comunicado publicado.');
+  document.getElementById('com-titulo').value = '';
+  document.getElementById('com-cuerpo').value = '';
+  document.getElementById('com-fecha-evento').value = '';
+  renderComunicados('');
+}
+function filtrarCom(tipo) { renderComunicados(tipo); }
+function renderComunicados(filtro) {
+  var coms = JSON.parse(localStorage.getItem('ea_comunicados') || '[]');
+  if (filtro) coms = coms.filter(function(c) { return c.tipo === filtro; });
+  var el = document.getElementById('com-lista');
+  if (!el) return;
+  if (coms.length === 0) {
+    el.innerHTML = '<p style="color:var(--gris);text-align:center;padding:30px;">No hay comunicados publicados aún.</p>';
+    return;
+  }
+  var iconos = { logro:'🏆', evento:'🎉', reunion:'👥', aviso:'📌' };
+  var etiquetas = { logro:'Logro', evento:'Evento', reunion:'Reunión', aviso:'Aviso' };
+  el.innerHTML = coms.map(function(c) {
+    return '<div class="anuncio-card tipo-' + c.tipo + '">'
+      + '<div class="anuncio-titulo">' + (iconos[c.tipo]||'📌') + ' ' + c.titulo + '</div>'
+      + '<div class="anuncio-meta">' + (etiquetas[c.tipo]||'Aviso') + ' · ' + c.fechaPublicacion + (c.fechaEvento ? ' · Fecha del evento: ' + c.fechaEvento : '') + ' · ' + c.autor + '</div>'
+      + '<div class="anuncio-cuerpo">' + c.cuerpo + '</div>'
+      + '<div style="margin-top:10px;"><button class="btn-secondary" style="padding:4px 10px;font-size:12px;color:var(--rojo);border-color:var(--rojo);" onclick="eliminarComunicado(' + c.id + ')">🗑️ Eliminar</button></div>'
+      + '</div>';
+  }).join('');
+}
+function eliminarComunicado(id) {
+  if (!confirm('¿Eliminar este comunicado?')) return;
+  var coms = JSON.parse(localStorage.getItem('ea_comunicados') || '[]').filter(function(c) { return c.id !== id; });
+  localStorage.setItem('ea_comunicados', JSON.stringify(coms));
+  renderComunicados('');
+}
+
+// ====== CALENDARIO ESCOLAR 2026-2027 ======
+var CALENDARIO = [
+  { mes: 'Agosto 2026', eventos: [
+    { fecha: 'Ago 17', tipo: 'inicio', desc: 'Inicio año escolar 2026-2027' },
+    { fecha: 'Ago 16', tipo: 'feriado', desc: 'Restauración de la República' }
+  ]},
+  { mes: 'Septiembre 2026', eventos: [
+    { fecha: 'Sep 24', tipo: 'feriado', desc: 'Día de las Mercedes' }
+  ]},
+  { mes: 'Octubre 2026', eventos: [
+    { fecha: 'Oct 12', tipo: 'feriado', desc: 'Día de la Raza / Encuentro de dos Mundos' }
+  ]},
+  { mes: 'Noviembre 2026', eventos: [
+    { fecha: 'Nov 6', tipo: 'inicio', desc: 'Fin del 1er trimestre' },
+    { fecha: 'Nov 9-13', tipo: 'receso', desc: 'Receso entre trimestres' },
+    { fecha: 'Nov 16', tipo: 'inicio', desc: 'Inicio del 2do trimestre' }
+  ]},
+  { mes: 'Diciembre 2026', eventos: [
+    { fecha: 'Dic 19', tipo: 'inicio', desc: 'Fin del período — vacaciones navideñas' },
+    { fecha: 'Dic 25', tipo: 'feriado', desc: 'Navidad' }
+  ]},
+  { mes: 'Enero 2027', eventos: [
+    { fecha: 'Ene 1', tipo: 'feriado', desc: 'Año Nuevo' },
+    { fecha: 'Ene 6', tipo: 'inicio', desc: 'Regreso de vacaciones navideñas' },
+    { fecha: 'Ene 21', tipo: 'feriado', desc: 'Día de la Altagracia' },
+    { fecha: 'Ene 26', tipo: 'feriado', desc: 'Día de Duarte' }
+  ]},
+  { mes: 'Febrero 2027', eventos: [
+    { fecha: 'Feb 27', tipo: 'feriado', desc: 'Día de la Independencia' }
+  ]},
+  { mes: 'Marzo 2027', eventos: [
+    { fecha: 'Mar 5', tipo: 'inicio', desc: 'Fin del 2do trimestre' },
+    { fecha: 'Mar 8-12', tipo: 'receso', desc: 'Receso entre trimestres' },
+    { fecha: 'Mar 15', tipo: 'inicio', desc: 'Inicio del 3er trimestre' }
+  ]},
+  { mes: 'Abril 2027', eventos: [
+    { fecha: 'Abr 1-9', tipo: 'receso', desc: 'Semana Santa — Vacaciones de Pascua' },
+    { fecha: 'Abr 14', tipo: 'feriado', desc: 'Día de las Américas' }
+  ]},
+  { mes: 'Mayo 2027', eventos: [
+    { fecha: 'May 1', tipo: 'feriado', desc: 'Día del Trabajo' }
+  ]},
+  { mes: 'Junio 2027', eventos: [
+    { fecha: 'Jun 18', tipo: 'inicio', desc: 'Fin del año escolar 2026-2027' },
+    { fecha: 'Jun 21-Jul 9', tipo: 'receso', desc: 'Vacaciones de verano' }
+  ]},
+  { mes: 'Julio 2027', eventos: [
+    { fecha: 'Jul 10', tipo: 'inicio', desc: 'Inicio año escolar 2027-2028' }
+  ]}
+];
+
+function renderCalendario() {
+  var el = document.getElementById('cal-grid');
+  if (!el) return;
+  el.innerHTML = CALENDARIO.map(function(m) {
+    return '<div class="cal-mes"><div class="cal-mes-header">' + m.mes + '</div>'
+      + m.eventos.map(function(e) {
+          return '<div class="cal-evento"><span class="cal-fecha cal-tipo-' + e.tipo + '">' + e.fecha + '</span><span>' + e.desc + '</span></div>';
+        }).join('') + '</div>';
+  }).join('');
+}
+
+// ====== PLANIFICACIÓN ======
 function showPlanTab(tab) {
   document.getElementById('plan-form-section').style.display = tab === 'nuevo' ? 'block' : 'none';
   document.getElementById('plan-lista-section').style.display = tab === 'lista' ? 'block' : 'none';
@@ -1043,43 +1247,33 @@ function showPlanTab(tab) {
   document.getElementById('tab-lista').className = tab === 'lista' ? 'btn-primary' : 'btn-secondary';
   if (tab === 'lista') renderPlanLista();
 }
-
 function actualizarAreasPorNivel() {
   var nivel = document.getElementById('plan-nivel').value;
   var areaSelect = document.getElementById('plan-area');
   var tecnicaField = document.getElementById('plan-tecnica').closest('.form-field');
-
   var mallas = {
     'Inicial': ['Comunicación y Lenguaje','Matemática','Ciencias de la Naturaleza','Ciencias Sociales','Educación Artística','Educación Física','Formación Integral Humana y Religiosa'],
     'Primaria': ['Lengua Española','Matemática','Ciencias de la Naturaleza','Ciencias Sociales','Educación Artística','Educación Física','Formación Integral Humana y Religiosa','Lenguas Extranjeras (Inglés)','Lenguas Extranjeras (Francés)','Tecnología e Informática'],
     'Media (Académica)': ['Lengua Española','Matemática','Ciencias de la Naturaleza','Ciencias Sociales','Educación Artística','Educación Física','Formación Integral Humana y Religiosa','Lenguas Extranjeras (Inglés)','Lenguas Extranjeras (Francés)','Tecnología e Informática','Filosofía'],
     'Media (Técnico-Profesional)': ['Lengua Española','Matemática','Ciencias de la Naturaleza','Ciencias Sociales','Educación Artística','Educación Física','Formación Integral Humana y Religiosa','Lenguas Extranjeras (Inglés)','Tecnología e Informática','Área Técnica Específica']
   };
-
   areaSelect.innerHTML = '<option value="">Seleccionar área...</option>';
   if (nivel && mallas[nivel]) {
     mallas[nivel].forEach(function(area) {
-      var opt = document.createElement('option');
-      opt.value = area;
-      opt.textContent = area;
+      var opt = document.createElement('option'); opt.value = area; opt.textContent = area;
       areaSelect.appendChild(opt);
     });
   }
-
   tecnicaField.style.display = nivel === 'Media (Técnico-Profesional)' ? 'block' : 'none';
 }
-
 function guardarPlan() {
   var area = document.getElementById('plan-area').value;
   var grado = document.getElementById('plan-grado').value;
   var unidad = document.getElementById('plan-unidad').value.trim();
-
   if (!area) { showAlert('plan-error', '⚠️ Selecciona el Área curricular.'); return; }
   if (!grado) { showAlert('plan-error', '⚠️ Selecciona el Nivel y grado.'); return; }
   if (!unidad) { showAlert('plan-error', '⚠️ Selecciona la Unidad temática.'); document.getElementById('plan-unidad').focus(); return; }
-
   var planes = JSON.parse(localStorage.getItem('ea_planes') || '[]');
-
   var plan = {
     id: planEditandoId || Date.now(),
     fecha: new Date().toLocaleDateString('es-DO'),
@@ -1089,9 +1283,7 @@ function guardarPlan() {
     tipo: document.getElementById('plan-tipo').value,
     nivel: document.getElementById('plan-nivel').value,
     tecnica: document.getElementById('plan-tecnica').value,
-    area: area,
-    grado: grado,
-    unidad: unidad,
+    area: area, grado: grado, unidad: unidad,
     tiempo: document.getElementById('plan-tiempo').value,
     situacion: document.getElementById('plan-situacion').value,
     competencias: document.getElementById('plan-competencias').value,
@@ -1105,116 +1297,66 @@ function guardarPlan() {
     recursos: document.getElementById('plan-recursos').value,
     evaluacion: document.getElementById('plan-evaluacion').value
   };
-
   if (planEditandoId) {
     var idx = planes.findIndex(function(p) { return p.id === planEditandoId; });
-    if (idx !== -1) {
-      planes[idx] = plan;
-    } else {
-      planes.unshift(plan);
-    }
+    if (idx !== -1) planes[idx] = plan; else planes.unshift(plan);
     showAlert('plan-success', '✅ Borrador "' + unidad + '" actualizado.');
   } else {
-    planEditandoId = plan.id;
-    planes.unshift(plan);
-    showAlert('plan-success', '✅ Borrador "' + unidad + '" guardado. Puedes continuar editando.');
+    planEditandoId = plan.id; planes.unshift(plan);
+    showAlert('plan-success', '✅ Borrador "' + unidad + '" guardado.');
   }
-
   localStorage.setItem('ea_planes', JSON.stringify(planes));
   document.getElementById('plan-edit-label').style.display = 'inline';
   document.getElementById('btn-guardar-plan').textContent = '💾 Actualizar borrador';
 }
-
 function clearPlanForm() {
   planEditandoId = null;
   document.getElementById('plan-edit-label').style.display = 'none';
   document.getElementById('btn-guardar-plan').textContent = '💾 Guardar borrador';
-  ['plan-centro','plan-docente','plan-curso','plan-unidad','plan-tiempo','plan-situacion','plan-competencias','plan-indicadores',
-   'plan-conceptual','plan-procedimental','plan-actitudinal','plan-estrategias',
-   'plan-actividades','plan-recuperacion','plan-recursos','plan-evaluacion'].forEach(function(id) {
-    document.getElementById(id).value = '';
-  });
+  ['plan-centro','plan-docente','plan-curso','plan-unidad','plan-tiempo','plan-situacion','plan-competencias','plan-indicadores','plan-conceptual','plan-procedimental','plan-actitudinal','plan-estrategias','plan-actividades','plan-recuperacion','plan-recursos','plan-evaluacion'].forEach(function(id) { document.getElementById(id).value = ''; });
   document.getElementById('plan-area').innerHTML = '<option value="">Seleccionar área...</option>';
   document.getElementById('plan-grado').value = '';
   document.getElementById('plan-nivel').value = '';
   document.getElementById('plan-tipo').value = 'Diaria';
   document.getElementById('plan-tecnica').value = '';
 }
-
 function renderPlanLista() {
   var planes = JSON.parse(localStorage.getItem('ea_planes') || '[]');
   var body = document.getElementById('plan-lista-body');
-  if (planes.length === 0) {
-    body.innerHTML = '<p style="color:var(--gris);text-align:center;padding:30px">No hay planes guardados aún.</p>';
-    return;
-  }
+  if (planes.length === 0) { body.innerHTML = '<p style="color:var(--gris);text-align:center;padding:30px">No hay planes guardados aún.</p>'; return; }
   body.innerHTML = '<table><thead><tr><th>Unidad</th><th>Área</th><th>Grado</th><th>Fecha</th><th>Acciones</th></tr></thead><tbody>'
     + planes.map(function(p) {
-        return '<tr>'
-          + '<td><strong>' + p.unidad + '</strong></td>'
-          + '<td>' + p.area + '</td>'
-          + '<td>' + p.grado + '</td>'
-          + '<td>' + p.fecha + '</td>'
+        return '<tr><td><strong>' + p.unidad + '</strong></td><td>' + p.area + '</td><td>' + p.grado + '</td><td>' + p.fecha + '</td>'
           + '<td style="display:flex;gap:6px;flex-wrap:wrap;">'
           + '<button class="btn-primary" style="padding:5px 10px;font-size:12px;" onclick="cargarPlanEnFormulario(' + p.id + ')">✏️ Continuar</button>'
           + '<button class="btn-primary" style="padding:5px 10px;font-size:12px;background:var(--azul-medio);" onclick="imprimirPlanById(' + p.id + ')">🖨️ Imprimir</button>'
           + '<button class="btn-secondary" style="padding:5px 10px;font-size:12px;color:var(--rojo);border-color:var(--rojo);" onclick="eliminarPlan(' + p.id + ')">🗑️</button>'
           + '</td></tr>';
-      }).join('')
-    + '</tbody></table>';
+      }).join('') + '</tbody></table>';
 }
-
 function cargarPlanEnFormulario(id) {
-  var planes = JSON.parse(localStorage.getItem('ea_planes') || '[]');
-  var p = planes.find(function(x) { return x.id === id; });
+  var p = JSON.parse(localStorage.getItem('ea_planes') || '[]').find(function(x) { return x.id === id; });
   if (!p) return;
-
   planEditandoId = p.id;
-
   document.getElementById('plan-nivel').value = p.nivel || '';
   actualizarAreasPorNivel();
-
-  document.getElementById('plan-centro').value = p.centro || '';
-  document.getElementById('plan-docente').value = p.docente || '';
-  document.getElementById('plan-curso').value = p.curso || '';
+  ['centro','docente','curso','tecnica','area','grado','unidad','tiempo','situacion','competencias','indicadores','conceptual','procedimental','actitudinal','estrategias','actividades','recuperacion','recursos','evaluacion'].forEach(function(k) {
+    var el = document.getElementById('plan-' + k);
+    if (el) el.value = p[k] || '';
+  });
   document.getElementById('plan-tipo').value = p.tipo || 'Diaria';
-  document.getElementById('plan-tecnica').value = p.tecnica || '';
-  document.getElementById('plan-area').value = p.area || '';
-  document.getElementById('plan-grado').value = p.grado || '';
-  document.getElementById('plan-unidad').value = p.unidad || '';
-  document.getElementById('plan-tiempo').value = p.tiempo || '';
-  document.getElementById('plan-situacion').value = p.situacion || '';
-  document.getElementById('plan-competencias').value = p.competencias || '';
-  document.getElementById('plan-indicadores').value = p.indicadores || '';
-  document.getElementById('plan-conceptual').value = p.conceptual || '';
-  document.getElementById('plan-procedimental').value = p.procedimental || '';
-  document.getElementById('plan-actitudinal').value = p.actitudinal || '';
-  document.getElementById('plan-estrategias').value = p.estrategias || '';
-  document.getElementById('plan-actividades').value = p.actividades || '';
-  document.getElementById('plan-recuperacion').value = p.recuperacion || '';
-  document.getElementById('plan-recursos').value = p.recursos || '';
-  document.getElementById('plan-evaluacion').value = p.evaluacion || '';
-
   document.getElementById('plan-edit-label').style.display = 'inline';
   document.getElementById('btn-guardar-plan').textContent = '💾 Actualizar borrador';
-
   showPlanTab('nuevo');
   document.getElementById('section-planificacion').scrollIntoView({ behavior: 'smooth' });
 }
-
 function eliminarPlan(id) {
   if (!confirm('¿Eliminar este plan?')) return;
-  var planes = JSON.parse(localStorage.getItem('ea_planes') || '[]');
-  planes = planes.filter(function(p) { return p.id !== id; });
+  var planes = JSON.parse(localStorage.getItem('ea_planes') || '[]').filter(function(p) { return p.id !== id; });
   localStorage.setItem('ea_planes', JSON.stringify(planes));
-  if (planEditandoId === id) {
-    planEditandoId = null;
-    document.getElementById('plan-edit-label').style.display = 'none';
-    document.getElementById('btn-guardar-plan').textContent = '💾 Guardar borrador';
-  }
+  if (planEditandoId === id) { planEditandoId = null; document.getElementById('plan-edit-label').style.display = 'none'; document.getElementById('btn-guardar-plan').textContent = '💾 Guardar borrador'; }
   renderPlanLista();
 }
-
 function imprimirPlan() {
   var area = document.getElementById('plan-area').value;
   var grado = document.getElementById('plan-grado').value;
@@ -1243,60 +1385,54 @@ function imprimirPlan() {
     evaluacion: document.getElementById('plan-evaluacion').value,
     fecha: new Date().toLocaleDateString('es-DO')
   }));
-  w.document.close();
-  w.print();
+  w.document.close(); w.print();
 }
-
 function imprimirPlanById(id) {
-  var planes = JSON.parse(localStorage.getItem('ea_planes') || '[]');
-  var plan = planes.find(function(p) { return p.id === id; });
+  var plan = JSON.parse(localStorage.getItem('ea_planes') || '[]').find(function(p) { return p.id === id; });
   if (!plan) return;
   var w = window.open('', '_blank');
   w.document.write(generarHTMLPlan(plan));
-  w.document.close();
-  w.print();
+  w.document.close(); w.print();
 }
-
 function generarHTMLPlan(p) {
   return '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Plan de Clase - ' + p.unidad + '</title>'
     + '<style>body{font-family:Arial,sans-serif;padding:30px;color:#111;font-size:13px;}h1{color:#1a7a4a;font-size:18px;margin-bottom:4px;}h2{font-size:13px;color:#666;margin-bottom:20px;}table{width:100%;border-collapse:collapse;margin-bottom:16px;}th{background:#1a7a4a;color:#fff;padding:8px;text-align:left;font-size:12px;}td{padding:8px;border:1px solid #ddd;vertical-align:top;}.label{font-weight:bold;width:200px;background:#f9f9f9;}.section-title{background:#0f2d4a;color:#fff;padding:6px 10px;font-weight:bold;font-size:12px;margin:12px 0 0;}@media print{body{padding:15px;}}</style></head><body>'
     + '<h1>🎓 EduActiva 360 — Plan de Clase</h1>'
     + '<h2>Sistema de Gestión Educativa · República Dominicana · MINERD</h2>'
     + '<table>'
-    + '<tr><td class="label">Centro educativo</td><td colspan="3">' + (p.centro || '—') + '</td></tr>'
-    + '<tr><td class="label">Docente</td><td>' + (p.docente || '—') + '</td><td class="label">Fecha</td><td>' + p.fecha + '</td></tr>'
-    + '<tr><td class="label">Curso y sección</td><td>' + (p.curso || '—') + '</td><td class="label">Tipo de planificación</td><td>' + (p.tipo || '—') + '</td></tr>'
-    + '<tr><td class="label">Nivel educativo</td><td>' + (p.nivel || '—') + '</td><td class="label">Área técnica</td><td>' + (p.tecnica || 'No aplica') + '</td></tr>'
+    + '<tr><td class="label">Centro educativo</td><td colspan="3">' + (p.centro||'—') + '</td></tr>'
+    + '<tr><td class="label">Docente</td><td>' + (p.docente||'—') + '</td><td class="label">Fecha</td><td>' + p.fecha + '</td></tr>'
+    + '<tr><td class="label">Curso y sección</td><td>' + (p.curso||'—') + '</td><td class="label">Tipo de planificación</td><td>' + (p.tipo||'—') + '</td></tr>'
+    + '<tr><td class="label">Nivel educativo</td><td>' + (p.nivel||'—') + '</td><td class="label">Área técnica</td><td>' + (p.tecnica||'No aplica') + '</td></tr>'
     + '<tr><td class="label">Área curricular</td><td>' + p.area + '</td><td class="label">Grado</td><td>' + p.grado + '</td></tr>'
     + '<tr><td class="label">Unidad temática</td><td colspan="3">' + p.unidad + '</td></tr>'
     + '<tr><td class="label">Tiempo</td><td colspan="3">' + (p.tiempo ? p.tiempo + ' semanas' : '—') + '</td></tr>'
     + '</table>'
-    + '<div class="section-title">SITUACIÓN DE APRENDIZAJE</div><table><tr><td>' + (p.situacion || '—') + '</td></tr></table>'
-    + '<div class="section-title">COMPETENCIAS ESPECÍFICAS</div><table><tr><td>' + (p.competencias || '—') + '</td></tr></table>'
-    + '<div class="section-title">INDICADORES DE LOGRO</div><table><tr><td>' + (p.indicadores || '—') + '</td></tr></table>'
+    + '<div class="section-title">SITUACIÓN DE APRENDIZAJE</div><table><tr><td>' + (p.situacion||'—') + '</td></tr></table>'
+    + '<div class="section-title">COMPETENCIAS ESPECÍFICAS</div><table><tr><td>' + (p.competencias||'—') + '</td></tr></table>'
+    + '<div class="section-title">INDICADORES DE LOGRO</div><table><tr><td>' + (p.indicadores||'—') + '</td></tr></table>'
     + '<div class="section-title">TIPOS DE CONTENIDOS</div>'
     + '<table><tr><th>📘 Conceptual</th><th>📗 Procedimental</th><th>📙 Actitudinal</th></tr>'
-    + '<tr><td>' + (p.conceptual || '—') + '</td><td>' + (p.procedimental || '—') + '</td><td>' + (p.actitudinal || '—') + '</td></tr></table>'
-    + '<div class="section-title">ESTRATEGIAS DE ENSEÑANZA</div><table><tr><td>' + (p.estrategias || '—') + '</td></tr></table>'
-    + '<div class="section-title">ACTIVIDADES</div><table><tr><td>' + (p.actividades || '—') + '</td></tr></table>'
-    + '<div class="section-title">ACTIVIDADES DE RECUPERACIÓN</div><table><tr><td>' + (p.recuperacion || '—') + '</td></tr></table>'
-    + '<div class="section-title">RECURSOS DIDÁCTICOS</div><table><tr><td>' + (p.recursos || '—') + '</td></tr></table>'
-    + '<div class="section-title">EVALUACIÓN</div><table><tr><td>' + (p.evaluacion || '—') + '</td></tr></table>'
+    + '<tr><td>' + (p.conceptual||'—') + '</td><td>' + (p.procedimental||'—') + '</td><td>' + (p.actitudinal||'—') + '</td></tr></table>'
+    + '<div class="section-title">ESTRATEGIAS DE ENSEÑANZA</div><table><tr><td>' + (p.estrategias||'—') + '</td></tr></table>'
+    + '<div class="section-title">ACTIVIDADES</div><table><tr><td>' + (p.actividades||'—') + '</td></tr></table>'
+    + '<div class="section-title">ACTIVIDADES DE RECUPERACIÓN</div><table><tr><td>' + (p.recuperacion||'—') + '</td></tr></table>'
+    + '<div class="section-title">RECURSOS DIDÁCTICOS</div><table><tr><td>' + (p.recursos||'—') + '</td></tr></table>'
+    + '<div class="section-title">EVALUACIÓN</div><table><tr><td>' + (p.evaluacion||'—') + '</td></tr></table>'
     + '</body></html>';
 }
 
+// ====== UTILIDADES ======
 function showAlert(id, msg) {
   var el = document.getElementById(id);
-  el.textContent = msg;
-  el.style.display = 'block';
+  if (!el) return;
+  el.textContent = msg; el.style.display = 'block';
   setTimeout(function() { el.style.display = 'none'; }, 4000);
 }
-
 function loadConfiguracion() {
   document.getElementById('config-email').value = (currentUser && currentUser.email) || '-';
   document.getElementById('config-role').value = (currentUser && currentUser.role && currentUser.role.name) || (currentUser && currentUser.role) || '-';
 }
-
 function cambiarPassword() {
   var newpass = document.getElementById('config-newpass').value;
   var confirm = document.getElementById('config-confirmpass').value;
@@ -1304,19 +1440,16 @@ function cambiarPassword() {
   if (newpass !== confirm) { showAlert('config-error', 'Las contraseñas no coinciden.'); return; }
   showAlert('config-success', '✅ Funcionalidad disponible en la próxima versión.');
 }
-
 function solicitarPlan(plan, precio) {
   var msg = encodeURIComponent('Hola, estoy interesado/a en el plan *' + plan + '* (' + precio + '/mes) de EduActiva 360. ¿Me pueden enviar los datos de pago?');
   window.open('https://wa.me/18493677000?text=' + msg, '_blank');
 }
-
 function abrirKiosco() {
   var user = JSON.parse(localStorage.getItem('ea_user') || 'null');
   var institution_id = (user && user.institution_id) || '';
   localStorage.setItem('ea_institution_id', institution_id);
   window.open('kiosco.html', '_blank');
 }
-
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Enter' && document.getElementById('login-screen').style.display !== 'none') doLogin();
 });
