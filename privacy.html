@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Políticas de Privacidad — EduActiva 360</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --verde: #1a7a4a;
+    --verde-claro: #22a25e;
+    --verde-bg: #f0faf4;
+    --azul-marino: #0f2d4a;
+    --gris: #6b7280;
+    --borde: #e5e7eb;
+    --blanco: #ffffff;
+    --texto: #111827;
+  }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f9fafb; color: var(--texto); line-height: 1.7; }
+
+  /* Header */
+  .header {
+    background: var(--azul-marino);
+    padding: 20px 0;
+    text-align: center;
+  }
+  .header-inner {
+    max-width: 860px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+  .logo-row { display: flex; align-items: center; gap: 12px; }
+  .logo-icon { width: 44px; height: 44px; background: var(--verde); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+  .logo-text h1 { color: #fff; font-size: 18px; font-weight: 700; }
+  .logo-text p { color: rgba(255,255,255,0.6); font-size: 11px; }
+  .btn-volver {
+    padding: 8px 18px; background: transparent;
+    border: 1.5px solid rgba(255,255,255,0.4); border-radius: 8px;
+    color: rgba(255,255,255,0.8); font-size: 13px; cursor: pointer;
+    text-decoration: none; transition: all .2s;
+  }
+  .btn-volver:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, var(--verde-bg) 0%, #e8f5e9 100%);
+    padding: 48px 24px; text-align: center;
+    border-bottom: 1px solid var(--borde);
+  }
+  .hero h2 { font-size: 28px; font-weight: 800; color: var(--azul-marino); margin-bottom: 8px; }
+  .hero p { color: var(--gris); font-size: 15px; max-width: 600px; margin: 0 auto; }
+  .hero .fecha { margin-top: 16px; display: inline-block; background: var(--verde); color: #fff; padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+
+  /* Contenido */
+  .contenido { max-width: 860px; margin: 0 auto; padding: 48px 24px; }
+
+  .seccion { margin-bottom: 40px; }
+  .seccion h3 {
+    font-size: 18px; font-weight: 700; color: var(--azul-marino);
+    margin-bottom: 14px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--verde-bg);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .seccion h3 .num {
+    width: 30px; height: 30px; background: var(--verde); color: #fff;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; flex-shrink: 0;
+  }
+  .seccion p { color: #374151; font-size: 15px; margin-bottom: 12px; }
+  .seccion ul { padding-left: 20px; margin-bottom: 12px; }
+  .seccion ul li { color: #374151; font-size: 15px; margin-bottom: 6px; }
+
+  .destacado {
+    background: var(--verde-bg); border-left: 4px solid var(--verde);
+    padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0;
+    font-size: 14px; color: #065f46;
+  }
+
+  .tabla-datos {
+    width: 100%; border-collapse: collapse; margin: 16px 0;
+    font-size: 14px;
+  }
+  .tabla-datos th {
+    background: var(--azul-marino); color: #fff;
+    padding: 10px 14px; text-align: left; font-size: 12px;
+    font-weight: 600; text-transform: uppercase; letter-spacing: .5px;
+  }
+  .tabla-datos td { padding: 10px 14px; border-bottom: 1px solid var(--borde); }
+  .tabla-datos tr:last-child td { border-bottom: none; }
+  .tabla-datos tr:hover td { background: #f9fafb; }
+
+  /* Footer */
+  .footer {
+    background: var(--azul-marino); color: rgba(255,255,255,0.6);
+    text-align: center; padding: 32px 24px; font-size: 13px;
+  }
+  .footer a { color: var(--verde-claro); text-decoration: none; }
+  .footer strong { color: #fff; }
+
+  @media (max-width: 600px) {
+    .hero h2 { font-size: 22px; }
+    .contenido { padding: 32px 16px; }
+    .header-inner { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-icon">🎓</div>
+      <div class="logo-text">
+        <h1>EduActiva 360</h1>
+        <p>Sistema de Gestión Educativa</p>
+      </div>
+    </div>
+    <a href="/" class="btn-volver">← Volver al inicio</a>
+  </div>
+</header>
+
+<!-- Hero -->
+<div class="hero">
+  <h2>🔒 Políticas de Privacidad</h2>
+  <p>En EduActiva 360 protegemos los datos personales de estudiantes, docentes e instituciones educativas conforme a la legislación dominicana vigente.</p>
+  <span class="fecha">Última actualización: Junio 2026</span>
+</div>
+
+<!-- Contenido -->
+<div class="contenido">
+
+  <div class="seccion">
+    <h3><span class="num">1</span> Responsable del tratamiento de datos</h3>
+    <p><strong>EduActiva 360</strong> es una plataforma de gestión educativa desarrollada en República Dominicana, operada bajo la dirección de su equipo fundador.</p>
+    <p>Correo de contacto para asuntos de privacidad: <strong>admin@eduactiva360.do</strong></p>
+    <div class="destacado">
+      Esta política se rige por la <strong>Ley 172-13</strong> sobre Protección de Datos de Carácter Personal de la República Dominicana y sus normativas complementarias.
+    </div>
+  </div>
+
+  <div class="seccion">
+    <h3><span class="num">2</span> Datos que recopilamos</h3>
+    <p>EduActiva 360 recopila únicamente los datos necesarios para la gestión educativa del centro:</p>
+
+    <table class="tabla-datos">
+      <thead>
+        <tr><th>Categoría</th><th>Datos recopilados</th><th>Finalidad</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Acceso al sistema</strong></td>
+          <td>Correo electrónico, contraseña (cifrada)</td>
+          <td>Autenticación segura</td>
+        </tr>
+        <tr>
+          <td><strong>Usuarios del sistema</strong></td>
+          <td>Nombre, apellido, correo, rol, teléfono</td>
+          <td>Gestión de personal del centro</td>
+        </tr>
+        <tr>
+          <td><strong>Instituciones</strong></td>
+          <td>Nombre del centro, código, dirección, director(a)</td>
+          <td>Registro institucional</td>
+        </tr>
+        <tr>
+          <td><strong>Estudiantes</strong></td>
+          <td>Nombre, apellido, fecha de nacimiento, número de documento, grado, sección, turno</td>
+          <td>Matrícula y registro escolar</td>
+        </tr>
+        <tr>
+          <td><strong>Tutores</strong></td>
+          <td>Nombre, cédula, teléfono, correo, dirección</td>
+          <td>Comunicación familia-escuela</td>
+        </tr>
+        <tr>
+          <td><strong>Asistencia</strong></td>
+          <td>Registro diario por estudiante (presente, ausente, tardanza, excusa)</td>
+          <td>Control de asistencia escolar</td>
+        </tr>
+        <tr>
+          <td><strong>Planificación</strong></td>
+          <td>Planes de clase, contenidos curriculares</td>
+          <td>Gestión pedagógica</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="seccion">
+    <h3><span class="num">3</span> Cómo usamos los datos</h3>
+    <p>Los datos recopilados se utilizan exclusivamente para:</p>
+    <ul>
+      <li>Gestionar el acceso al sistema de directores y docentes</li>
+      <li>Mantener el registro de matrícula de estudiantes</li>
+      <li>Registrar y reportar la asistencia escolar</li>
+      <li>Facilitar la planificación académica conforme al currículo MINERD</li>
+      <li>Emitir reportes internos del centro educativo</li>
+      <li>Comunicar anuncios y eventos del centro a la comunidad escolar</li>
+    </ul>
+    <div class="destacado">
+      <strong>EduActiva 360 NO vende, comparte ni transfiere datos personales a terceros</strong> con fines comerciales o publicitarios.
+    </div>
+  </div>
+
+  <div class="seccion">
+    <h3><span class="num">4</span> Almacenamiento y seguridad</h3>
+    <p>Los datos se almacenan en servidores seguros con las siguientes medidas de protección:</p>
+    <ul>
+      <li>Las contraseñas se almacenan cifradas con algoritmo <strong>bcrypt</strong> — nunca en texto plano</li>
+      <li>Las comunicaciones se protegen con <strong>protocolo HTTPS/TLS</strong></li>
+      <li>El acceso al sistema requiere autenticación mediante <strong>tokens JWT</strong></li>
+      <li>Los servidores se alojan en infraestructura de <strong>Railway</strong> (base de datos) y <strong>Vercel</strong> (frontend), con altos estándares de seguridad</li>
+      <li>El acceso a los datos está restringido por roles: Super Admin, Director y Docente</li>
+    </ul>
+  </div>
+
+  <div class="seccion">
+    <h3><span class="num">5</span> Datos de menores de edad</h3>
+    <p>EduActiva 360 maneja datos de estudiantes que pueden ser menores de edad. Para estos datos aplicamos protecciones adicionales:</p>
+    <ul>
+      <li>Los datos de estudiantes solo son accesibles por el personal autorizado del centro</li>
+      <li>No se publican datos de estudiantes en espacios públicos o accesibles sin autenticación</li>
+      <li>El registro de estudiantes requiere la información del tutor legal responsable</li>
+      <li>Los padres o tutores pueden solicitar acceso, corrección o eliminación de los datos de sus hijos</li>
+    </ul>
+    <div class="destacado">
+      El tratamiento de datos de menores se realiza conforme al <strong>Código para el Sistema de Protección y los Derechos Fundamentales de los Niños, Niñas y Adolescentes (Ley 136-03)</strong> de República Dominicana.
+    </div>
+  </div>
+
+  <div class="seccion">
+    <h3><span class="num">6</span> Derechos de los titulares</h3>
+    <p>Conforme a la Ley 172-13, usted tiene derecho a:</p>
+    <ul>
+      <li><strong>Acceso:</strong> Solicitar información sobre los datos que tenemos de usted</li>
+      <li><strong>Rectificación:</strong> Corregir datos inexactos o incompletos</li>
+      <li><strong>Cancelación:</strong> Solicitar la eliminación de sus datos cuando ya no sean necesarios</li>
+      <li><strong>Oposición:</strong> Oponerse al tratamiento de sus datos en casos justificados</li>
+    </ul>
+    <p>Para ejercer estos derechos, comuníquese con el administrador de su centro educativo o escríbanos a <strong>admin@eduactiva360.do</strong>.</p>
+  </div>
+
+  <div class="seccion">
+    <h3><span class="num">7</span> Retención de datos</h3>
+    <p>Los datos se conservan durante el tiempo que el centro educativo mantenga su licencia activa en EduActiva 360. Al finalizar la relación contractual:</p>
+    <ul>
+      <li>El centro tiene un plazo de 30 días para exportar su información</li>
+      <li>Transcurrido ese plazo, los datos son eliminados de forma segura de nuestros servidores</li>
+      <li>Los datos de asistencia y matrícula pueden conservarse por el tiempo que exija la normativa educativa del MINERD</li>
+    </ul>
+  </div>
+
+  <div class="seccion">
+    <h3><span class="num">8</span> Cookies y datos de navegación</h3>
+    <p>EduActiva 360 utiliza:</p>
+    <ul>
+      <li><strong>localStorage:</strong> Para mantener la sesión activa del usuario (token de autenticación)</li>
+      <li><strong>Datos de planificación local:</strong> Los planes de clase y registros de asistencia se almacenan temporalmente en el navegador del usuario</li>
+    </ul>
+    <p>No utilizamos cookies de seguimiento publicitario ni compartimos datos de navegación con terceros.</p>
+  </div>
+
+  <div class="seccion">
+    <h3><span class="num">9</span> Cambios a esta política</h3>
+    <p>EduActiva 360 se reserva el derecho de actualizar esta política de privacidad. Los cambios serán notificados a los administradores de los centros registrados con al menos 15 días de anticipación.</p>
+    <p>La versión vigente siempre estará disponible en <strong>https://app.eduactiva360.do/privacy.html</strong>.</p>
+  </div>
+
+  <div class="seccion">
+    <h3><span class="num">10</span> Contacto</h3>
+    <p>Para cualquier consulta sobre el tratamiento de sus datos personales:</p>
+    <ul>
+      <li>📧 Correo: <strong>admin@eduactiva360.do</strong></li>
+      <li>🌐 Sitio web: <strong>https://app.eduactiva360.do</strong></li>
+      <li>🇩🇴 País: República Dominicana</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <p><strong>EduActiva 360</strong> — Sistema de Gestión Educativa</p>
+  <p style="margin-top:8px;">República Dominicana · MINERD · <a href="/">Volver al sistema</a></p>
+  <p style="margin-top:8px;">© 2026 EduActiva 360. Todos los derechos reservados.</p>
+</footer>
+
+</body>
+</html>
