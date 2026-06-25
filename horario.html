@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generador de Horarios — EduActiva 360</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --verde:#1a7a4a; --verde-claro:#22a25e; --verde-bg:#f0faf4;
+  --azul-marino:#0f2d4a; --azul-medio:#1b4f72;
+  --gris:#6b7280; --gris-claro:#f3f4f6; --borde:#e5e7eb;
+  --rojo:#dc2626; --amarillo:#d97706; --blanco:#ffffff; --texto:#111827;
+}
+body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--gris-claro); color:var(--texto); }
+
+.header { background:var(--azul-marino); padding:16px 24px; display:flex; align-items:center; justify-content:space-between; }
+.header-logo { display:flex; align-items:center; gap:10px; }
+.header-logo .icon { width:36px; height:36px; background:var(--verde); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:18px; }
+.header-logo h1 { color:#fff; font-size:16px; font-weight:700; }
+.header-logo p { color:rgba(255,255,255,0.5); font-size:11px; }
+.btn-back { color:rgba(255,255,255,0.7); text-decoration:none; font-size:13px; border:1px solid rgba(255,255,255,0.3); padding:6px 14px; border-radius:6px; }
+
+.container { max-width:1100px; margin:0 auto; padding:24px; }
+
+.panel { background:var(--blanco); border-radius:12px; border:1px solid var(--borde); margin-bottom:20px; }
+.panel-header { padding:18px 22px; border-bottom:1px solid var(--borde); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+.panel-header h3 { font-size:16px; font-weight:600; }
+.panel-body { padding:22px; }
+
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+.form-row-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:16px; }
+.form-field label { display:block; font-size:13px; font-weight:500; margin-bottom:5px; color:var(--azul-marino); }
+.form-field input, .form-field select {
+  width:100%; padding:10px 12px;
+  border:1.5px solid var(--borde); border-radius:8px;
+  font-size:14px; outline:none;
+}
+.form-field input:focus, .form-field select:focus { border-color:var(--verde); }
+
+.btn-primary { padding:11px 22px; background:var(--verde); color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; }
+.btn-primary:hover { background:var(--verde-claro); }
+.btn-secondary { padding:11px 22px; background:transparent; color:var(--gris); border:1.5px solid var(--borde); border-radius:8px; font-size:14px; cursor:pointer; margin-right:8px; }
+.btn-imprimir { padding:10px 20px; background:var(--azul-medio); color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; }
+
+.alert { padding:12px 16px; border-radius:8px; font-size:14px; margin-bottom:16px; display:none; }
+.alert-success { background:#d1fae5; color:#065f46; border:1px solid #a7f3d0; }
+.alert-error { background:#fee2e2; color:#991b1b; border:1px solid #fecaca; }
+
+/* Tabla de horario */
+.horario-tabla { width:100%; border-collapse:collapse; font-size:13px; }
+.horario-tabla th {
+  background:var(--azul-marino); color:#fff;
+  padding:10px 8px; text-align:center; font-size:12px;
+  font-weight:600; border:1px solid #1e3a5f;
+}
+.horario-tabla td {
+  padding:8px; border:1px solid var(--borde);
+  text-align:center; vertical-align:middle; min-height:50px;
+}
+.horario-tabla .hora-col { background:#f8fafc; font-size:11px; color:var(--gris); font-weight:600; min-width:80px; }
+.horario-tabla .recreo-row td { background:#fef3c7; color:#92400e; font-style:italic; font-size:12px; }
+.horario-tabla .almuerzo-row td { background:#dbeafe; color:#1e40af; font-style:italic; font-size:12px; }
+.horario-tabla .especial-row td { background:#f0faf4; color:var(--verde); font-style:italic; font-size:12px; }
+
+.clase-cell {
+  background:var(--blanco); border-radius:6px;
+  padding:4px 6px; font-size:12px; font-weight:600;
+  display:inline-block; width:100%;
+}
+.clase-Lengua\ Española { background:#dbeafe; color:#1e40af; }
+.clase-Matemática { background:#fce7f3; color:#9d174d; }
+.clase-Ciencias\ Sociales { background:#d1fae5; color:#065f46; }
+.clase-Ciencias\ de\ la\ Naturaleza { background:#ecfdf5; color:#047857; }
+.clase-Educación\ Física { background:#fef3c7; color:#92400e; }
+.clase-Educación\ Artística { background:#ede9fe; color:#6d28d9; }
+.clase-Formación\ Integral\ Humana\ y\ Religiosa { background:#fee2e2; color:#991b1b; }
+.clase-Lenguas\ Extranjeras\ (Inglés) { background:#e0f2fe; color:#0369a1; }
+.clase-Lenguas\ Extranjeras\ (Francés) { background:#f0f9ff; color:#0c4a6e; }
+.clase-Tecnología\ e\ Informática { background:#f3f4f6; color:#374151; }
+.clase-Cursos\ y\ talleres\ optativos { background:#fdf4ff; color:#7e22ce; }
+.clase-Filosofía { background:#fff7ed; color:#c2410c; }
+
+.leyenda { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+.leyenda-item { display:flex; align-items:center; gap:6px; font-size:11px; }
+.leyenda-color { width:14px; height:14px; border-radius:3px; }
+
+/* Tags de docentes en el horario */
+.docente-tag { font-size:10px; color:var(--gris); display:block; margin-top:2px; font-weight:400; }
+
+/* Tabla de carga docente */
+.carga-tabla { width:100%; border-collapse:collapse; font-size:13px; }
+.carga-tabla th { background:var(--verde); color:#fff; padding:8px 12px; text-align:left; font-size:12px; }
+.carga-tabla td { padding:8px 12px; border-bottom:1px solid var(--borde); }
+.carga-tabla tr:last-child td { border-bottom:none; }
+
+@media print {
+  .header, .no-print { display:none !important; }
+  .panel { border:none; box-shadow:none; }
+  body { background:#fff; }
+}
+@media (max-width:768px) {
+  .form-row, .form-row-3 { grid-template-columns:1fr; }
+  .container { padding:16px; }
+  .horario-tabla { font-size:11px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">
+    <div class="icon">🗓️</div>
+    <div>
+      <h1>Generador de Horarios</h1>
+      <p>EduActiva 360 · MINERD</p>
+    </div>
+  </div>
+  <a href="dashboard.html" class="btn-back">← Volver al Dashboard</a>
+</div>
+
+<div class="container">
+
+  <!-- CONFIGURACIÓN -->
+  <div class="panel no-print">
+    <div class="panel-header"><h3>⚙️ Configuración del horario</h3></div>
+    <div class="panel-body">
+      <div class="alert alert-success" id="cfg-success"></div>
+      <div class="alert alert-error" id="cfg-error"></div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>Nombre del centro</label>
+          <input type="text" id="cfg-centro" placeholder="Ej: Centro Piloto EduActiva">
+        </div>
+        <div class="form-field">
+          <label>Año escolar</label>
+          <input type="text" id="cfg-anio" value="2026-2027">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>Tipo de jornada</label>
+          <select id="cfg-jornada" onchange="actualizarJornada()">
+            <option value="extendida">Jornada Extendida (40h/semana)</option>
+            <option value="regular">Jornada Regular (25h/semana)</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Nivel educativo</label>
+          <select id="cfg-nivel" onchange="actualizarGrados()">
+            <option value="primaria-1">Primaria — 1er Ciclo (1ro, 2do, 3ro)</option>
+            <option value="primaria-2">Primaria — 2do Ciclo (4to, 5to, 6to)</option>
+            <option value="secundaria-1">Secundaria — 1er Ciclo</option>
+            <option value="secundaria-2-academica">Secundaria — 2do Ciclo Académico</option>
+            <option value="secundaria-2-tecnico">Secundaria — 2do Ciclo Técnico-Profesional</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>Grado</label>
+          <select id="cfg-grado">
+            <option>1er grado</option>
+            <option>2do grado</option>
+            <option>3er grado</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Sección</label>
+          <select id="cfg-seccion">
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn-primary" onclick="generarHorario()">⚡ Generar horario automático</button>
+        <button class="btn-secondary" onclick="limpiarHorario()">🆕 Limpiar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div id="resultado-panel" style="display:none;">
+    <div class="panel">
+      <div class="panel-header">
+        <h3 id="horario-titulo">📅 Horario semanal</h3>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;" class="no-print">
+          <button class="btn-imprimir" onclick="window.print()">🖨️ Imprimir / PDF</button>
+          <button class="btn-secondary" onclick="guardarHorario()">💾 Guardar</button>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div id="horario-info" style="font-size:13px;color:var(--gris);margin-bottom:16px;"></div>
+        <div style="overflow-x:auto;">
+          <table class="horario-tabla" id="horario-tabla"></table>
+        </div>
+        <div class="leyenda" id="leyenda"></div>
+      </div>
+    </div>
+
+    <!-- CARGA DOCENTE -->
+    <div class="panel no-print">
+      <div class="panel-header"><h3>👨‍🏫 Resumen de carga horaria semanal</h3></div>
+      <div class="panel-body">
+        <table class="carga-tabla" id="carga-tabla"></table>
+      </div>
+    </div>
+  </div>
+
+  <!-- HORARIOS GUARDADOS -->
+  <div class="panel no-print">
+    <div class="panel-header"><h3>📋 Horarios guardados</h3></div>
+    <div class="panel-body" id="guardados-lista">
+      <p style="color:var(--gris);text-align:center;padding:20px;">No hay horarios guardados aún.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ====== DATOS CURRICULARES MINERD ======
+const MALLAS = {
+  'primaria-1': {
+    nombre: 'Primaria — 1er Ciclo',
+    areas: [
+      { nombre: 'Lengua Española', horas: 9, color: '#dbeafe' },
+      { nombre: 'Matemática', horas: 9, color: '#fce7f3' },
+      { nombre: 'Ciencias Sociales', horas: 5, color: '#d1fae5' },
+      { nombre: 'Ciencias de la Naturaleza', horas: 5, color: '#ecfdf5' },
+      { nombre: 'Formación Integral Humana y Religiosa', horas: 2, color: '#fee2e2' },
+      { nombre: 'Educación Física', horas: 3, color: '#fef3c7' },
+      { nombre: 'Educación Artística', horas: 3, color: '#ede9fe' },
+      { nombre: 'Cursos y talleres optativos', horas: 4, color: '#fdf4ff' }
+    ],
+    totalHoras: 40,
+    grados: ['1er grado', '2do grado', '3er grado']
+  },
+  'primaria-2': {
+    nombre: 'Primaria — 2do Ciclo',
+    areas: [
+      { nombre: 'Lengua Española', horas: 7, color: '#dbeafe' },
+      { nombre: 'Lenguas Extranjeras (Inglés)', horas: 4, color: '#e0f2fe' },
+      { nombre: 'Matemática', horas: 7, color: '#fce7f3' },
+      { nombre: 'Ciencias Sociales', horas: 5, color: '#d1fae5' },
+      { nombre: 'Ciencias de la Naturaleza', horas: 5, color: '#ecfdf5' },
+      { nombre: 'Formación Integral Humana y Religiosa', horas: 2, color: '#fee2e2' },
+      { nombre: 'Educación Física', horas: 3, color: '#fef3c7' },
+      { nombre: 'Educación Artística', horas: 3, color: '#ede9fe' },
+      { nombre: 'Cursos y talleres optativos', horas: 4, color: '#fdf4ff' }
+    ],
+    totalHoras: 40,
+    grados: ['4to grado', '5to grado', '6to grado']
+  },
+  'secundaria-1': {
+    nombre: 'Secundaria — 1er Ciclo',
+    areas: [
+      { nombre: 'Lengua Española', horas: 6, color: '#dbeafe' },
+      { nombre: 'Lenguas Extranjeras (Inglés)', horas: 4, color: '#e0f2fe' },
+      { nombre: 'Lenguas Extranjeras (Francés)', horas: 2, color: '#f0f9ff' },
+      { nombre: 'Matemática', horas: 7, color: '#fce7f3' },
+      { nombre: 'Ciencias Sociales', horas: 5, color: '#d1fae5' },
+      { nombre: 'Ciencias de la Naturaleza', horas: 6, color: '#ecfdf5' },
+      { nombre: 'Formación Integral Humana y Religiosa', horas: 2, color: '#fee2e2' },
+      { nombre: 'Educación Física', horas: 2, color: '#fef3c7' },
+      { nombre: 'Educación Artística', horas: 2, color: '#ede9fe' },
+      { nombre: 'Cursos y talleres optativos', horas: 4, color: '#fdf4ff' }
+    ],
+    totalHoras: 40,
+    grados: ['1er grado Secundario', '2do grado Secundario', '3er grado Secundario']
+  },
+  'secundaria-2-academica': {
+    nombre: 'Secundaria — 2do Ciclo Académico',
+    areas: [
+      { nombre: 'Lengua Española', horas: 6, color: '#dbeafe' },
+      { nombre: 'Lenguas Extranjeras (Inglés)', horas: 4, color: '#e0f2fe' },
+      { nombre: 'Lenguas Extranjeras (Francés)', horas: 2, color: '#f0f9ff' },
+      { nombre: 'Matemática', horas: 7, color: '#fce7f3' },
+      { nombre: 'Ciencias Sociales', horas: 5, color: '#d1fae5' },
+      { nombre: 'Ciencias de la Naturaleza', horas: 6, color: '#ecfdf5' },
+      { nombre: 'Formación Integral Humana y Religiosa', horas: 2, color: '#fee2e2' },
+      { nombre: 'Educación Física', horas: 2, color: '#fef3c7' },
+      { nombre: 'Educación Artística', horas: 2, color: '#ede9fe' },
+      { nombre: 'Cursos y talleres optativos', horas: 4, color: '#fdf4ff' }
+    ],
+    totalHoras: 40,
+    grados: ['4to grado Secundario', '5to grado Secundario', '6to grado Secundario']
+  },
+  'secundaria-2-tecnico': {
+    nombre: 'Secundaria — 2do Ciclo Técnico-Profesional',
+    areas: [
+      { nombre: 'Lengua Española', horas: 3, color: '#dbeafe' },
+      { nombre: 'Lenguas Extranjeras (Inglés)', horas: 4, color: '#e0f2fe' },
+      { nombre: 'Matemática', horas: 3, color: '#fce7f3' },
+      { nombre: 'Ciencias Sociales', horas: 2, color: '#d1fae5' },
+      { nombre: 'Ciencias de la Naturaleza', horas: 3, color: '#ecfdf5' },
+      { nombre: 'Formación Integral Humana y Religiosa', horas: 1, color: '#fee2e2' },
+      { nombre: 'Educación Física', horas: 1, color: '#fef3c7' },
+      { nombre: 'Educación Artística', horas: 1, color: '#ede9fe' },
+      { nombre: 'Formación Técnico-Profesional', horas: 22, color: '#f3f4f6' }
+    ],
+    totalHoras: 40,
+    grados: ['4to grado Secundario', '5to grado Secundario', '6to grado Secundario']
+  }
+};
+
+// Malla jornada regular (primaria)
+const MALLAS_REGULAR = {
+  'primaria-1': {
+    areas: [
+      { nombre: 'Lengua Española', horas: 6 },
+      { nombre: 'Matemática', horas: 6 },
+      { nombre: 'Ciencias Sociales', horas: 3 },
+      { nombre: 'Ciencias de la Naturaleza', horas: 3 },
+      { nombre: 'Formación Integral Humana y Religiosa', horas: 1 },
+      { nombre: 'Educación Física', horas: 3 },
+      { nombre: 'Educación Artística', horas: 3 }
+    ],
+    totalHoras: 25
+  },
+  'primaria-2': {
+    areas: [
+      { nombre: 'Lengua Española', horas: 5 },
+      { nombre: 'Lenguas Extranjeras (Inglés)', horas: 4 },
+      { nombre: 'Matemática', horas: 5 },
+      { nombre: 'Ciencias Sociales', horas: 3 },
+      { nombre: 'Ciencias de la Naturaleza', horas: 3 },
+      { nombre: 'Formación Integral Humana y Religiosa', horas: 1 },
+      { nombre: 'Educación Física', horas: 2 },
+      { nombre: 'Educación Artística', horas: 2 }
+    ],
+    totalHoras: 25
+  }
+};
+
+// Horarios de la jornada
+const HORARIO_EXTENDIDO = [
+  { hora: '7:30 - 8:00', tipo: 'especial', label: 'Desayuno' },
+  { hora: '8:00 - 8:15', tipo: 'especial', label: 'Acto de la bandera' },
+  { hora: '8:15 - 9:00', tipo: 'clase', periodo: 1 },
+  { hora: '9:00 - 9:45', tipo: 'clase', periodo: 2 },
+  { hora: '9:45 - 10:15', tipo: 'recreo', label: 'Recreo 1' },
+  { hora: '10:15 - 11:00', tipo: 'clase', periodo: 3 },
+  { hora: '11:00 - 11:45', tipo: 'clase', periodo: 4 },
+  { hora: '11:45 - 12:45', tipo: 'almuerzo', label: 'Almuerzo' },
+  { hora: '12:45 - 13:30', tipo: 'clase', periodo: 5 },
+  { hora: '13:30 - 14:15', tipo: 'clase', periodo: 6 },
+  { hora: '14:15 - 14:30', tipo: 'recreo', label: 'Recreo 2' },
+  { hora: '14:30 - 15:15', tipo: 'clase', periodo: 7 },
+  { hora: '15:15 - 16:00', tipo: 'clase', periodo: 8 }
+];
+
+const HORARIO_REGULAR = [
+  { hora: '7:30 - 8:00', tipo: 'especial', label: 'Entrada / Matrícula' },
+  { hora: '8:00 - 8:45', tipo: 'clase', periodo: 1 },
+  { hora: '8:45 - 9:30', tipo: 'clase', periodo: 2 },
+  { hora: '9:30 - 10:15', tipo: 'clase', periodo: 3 },
+  { hora: '10:15 - 10:30', tipo: 'recreo', label: 'Recreo' },
+  { hora: '10:30 - 11:15', tipo: 'clase', periodo: 4 },
+  { hora: '11:15 - 12:00', tipo: 'clase', periodo: 5 },
+  { hora: '12:00 - 12:15', tipo: 'especial', label: 'Salida' }
+];
+
+const DIAS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+const COLORES_AREA = {
+  'Lengua Española': '#dbeafe',
+  'Matemática': '#fce7f3',
+  'Ciencias Sociales': '#d1fae5',
+  'Ciencias de la Naturaleza': '#ecfdf5',
+  'Formación Integral Humana y Religiosa': '#fee2e2',
+  'Educación Física': '#fef3c7',
+  'Educación Artística': '#ede9fe',
+  'Lenguas Extranjeras (Inglés)': '#e0f2fe',
+  'Lenguas Extranjeras (Francés)': '#f0f9ff',
+  'Tecnología e Informática': '#f3f4f6',
+  'Cursos y talleres optativos': '#fdf4ff',
+  'Formación Técnico-Profesional': '#f3f4f6',
+  'Filosofía': '#fff7ed'
+};
+
+function actualizarGrados() {
+  var nivel = document.getElementById('cfg-nivel').value;
+  var gradoSel = document.getElementById('cfg-grado');
+  var malla = MALLAS[nivel];
+  gradoSel.innerHTML = '';
+  if (malla) {
+    malla.grados.forEach(function(g) {
+      var opt = document.createElement('option');
+      opt.value = g; opt.textContent = g;
+      gradoSel.appendChild(opt);
+    });
+  }
+}
+
+function actualizarJornada() {
+  actualizarGrados();
+}
+
+function generarHorario() {
+  var jornada = document.getElementById('cfg-jornada').value;
+  var nivel = document.getElementById('cfg-nivel').value;
+  var grado = document.getElementById('cfg-grado').value;
+  var seccion = document.getElementById('cfg-seccion').value;
+  var centro = document.getElementById('cfg-centro').value || 'Centro Educativo';
+  var anio = document.getElementById('cfg-anio').value;
+
+  var malla = jornada === 'extendida' ? MALLAS[nivel] : (MALLAS_REGULAR[nivel] || MALLAS[nivel]);
+  if (!malla) { showAlert('cfg-error', '⚠️ Selecciona una combinación válida.'); return; }
+
+  var horario = jornada === 'extendida' ? HORARIO_EXTENDIDO : HORARIO_REGULAR;
+  var periodos = horario.filter(function(h) { return h.tipo === 'clase'; }).length;
+  var totalClasesSemana = periodos * 5; // 5 días
+
+  // Distribuir áreas en los períodos
+  var asignaciones = distribuirAreas(malla.areas, periodos, jornada);
+
+  // Título
+  document.getElementById('horario-titulo').textContent = '📅 Horario ' + grado + ' · Sección ' + seccion;
+  document.getElementById('horario-info').innerHTML =
+    '<strong>' + centro + '</strong> · Año escolar ' + anio + ' · ' +
+    malla.nombre + ' · ' + (jornada === 'extendida' ? 'Jornada Extendida (40h)' : 'Jornada Regular (25h)');
+
+  // Construir tabla
+  var tabla = document.getElementById('horario-tabla');
+  var html = '<thead><tr><th style="min-width:90px;">Hora</th>';
+  DIAS.forEach(function(d) { html += '<th>' + d + '</th>'; });
+  html += '</tr></thead><tbody>';
+
+  var clasePorDia = [0,0,0,0,0]; // contador de período por día
+
+  horario.forEach(function(fila) {
+    if (fila.tipo === 'especial') {
+      html += '<tr class="especial-row"><td class="hora-col">' + fila.hora + '</td>';
+      for (var d = 0; d < 5; d++) html += '<td>' + fila.label + '</td>';
+      html += '</tr>';
+    } else if (fila.tipo === 'recreo') {
+      html += '<tr class="recreo-row"><td class="hora-col">' + fila.hora + '</td>';
+      for (var d = 0; d < 5; d++) html += '<td>🏃 ' + fila.label + '</td>';
+      html += '</tr>';
+    } else if (fila.tipo === 'almuerzo') {
+      html += '<tr class="almuerzo-row"><td class="hora-col">' + fila.hora + '</td>';
+      for (var d = 0; d < 5; d++) html += '<td>🍽️ Almuerzo</td>';
+      html += '</tr>';
+    } else {
+      html += '<tr><td class="hora-col">' + fila.hora + '<br><small>Período ' + fila.periodo + '</small></td>';
+      for (var d = 0; d < 5; d++) {
+        var area = asignaciones[d][clasePorDia[d]] || '—';
+        var color = COLORES_AREA[area] || '#f3f4f6';
+        var textColor = '#374151';
+        html += '<td><span style="background:' + color + ';color:' + textColor + ';display:block;padding:6px 4px;border-radius:6px;font-size:12px;font-weight:600;">' + area + '</span></td>';
+        clasePorDia[d]++;
+      }
+      html += '</tr>';
+    }
+  });
+
+  html += '</tbody>';
+  tabla.innerHTML = html;
+
+  // Leyenda
+  var leyendaHTML = '';
+  malla.areas.forEach(function(a) {
+    var color = COLORES_AREA[a.nombre] || '#f3f4f6';
+    leyendaHTML += '<div class="leyenda-item"><div class="leyenda-color" style="background:' + color + ';border:1px solid #e5e7eb;"></div><span>' + a.nombre + ' (' + a.horas + 'h/sem)</span></div>';
+  });
+  document.getElementById('leyenda').innerHTML = leyendaHTML;
+
+  // Tabla de carga
+  var cargaHTML = '<thead><tr><th>Área curricular</th><th>Horas/semana</th><th>Períodos/semana</th></tr></thead><tbody>';
+  malla.areas.forEach(function(a) {
+    cargaHTML += '<tr><td>' + a.nombre + '</td><td><strong>' + a.horas + '</strong></td><td>' + a.horas + '</td></tr>';
+  });
+  cargaHTML += '<tr style="background:#f0faf4;font-weight:700;"><td>TOTAL</td><td>' + malla.totalHoras + '</td><td>' + malla.totalHoras + '</td></tr>';
+  cargaHTML += '</tbody>';
+  document.getElementById('carga-tabla').innerHTML = cargaHTML;
+
+  document.getElementById('resultado-panel').style.display = 'block';
+  document.getElementById('resultado-panel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function distribuirAreas(areas, periodosAlDia, jornada) {
+  // Crear lista de períodos expandida por horas semanales
+  var listaPeriodos = [];
+  areas.forEach(function(a) {
+    for (var i = 0; i < a.horas; i++) listaPeriodos.push(a.nombre);
+  });
+
+  // Barajar para distribución variada pero evitar mismo área dos veces seguidas
+  listaPeriodos = barajar(listaPeriodos);
+
+  // Distribuir en 5 días × periodosAlDia períodos
+  var asignaciones = [[],[],[],[],[]];
+  var idx = 0;
+  for (var dia = 0; dia < 5; dia++) {
+    for (var per = 0; per < periodosAlDia; per++) {
+      asignaciones[dia].push(listaPeriodos[idx % listaPeriodos.length]);
+      idx++;
+    }
+  }
+  return asignaciones;
+}
+
+function barajar(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function guardarHorario() {
+  var grado = document.getElementById('cfg-grado').value;
+  var seccion = document.getElementById('cfg-seccion').value;
+  var jornada = document.getElementById('cfg-jornada').value;
+  var horarios = JSON.parse(localStorage.getItem('ea_horarios') || '[]');
+  horarios.unshift({
+    id: Date.now(),
+    grado: grado, seccion: seccion, jornada: jornada,
+    fecha: new Date().toLocaleDateString('es-DO'),
+    tabla: document.getElementById('horario-tabla').innerHTML
+  });
+  localStorage.setItem('ea_horarios', JSON.stringify(horarios));
+  showAlert('cfg-success', '✅ Horario guardado.');
+  renderGuardados();
+}
+
+function renderGuardados() {
+  var horarios = JSON.parse(localStorage.getItem('ea_horarios') || '[]');
+  var el = document.getElementById('guardados-lista');
+  if (horarios.length === 0) {
+    el.innerHTML = '<p style="color:var(--gris);text-align:center;padding:20px;">No hay horarios guardados aún.</p>';
+    return;
+  }
+  el.innerHTML = '<table style="width:100%;border-collapse:collapse;font-size:14px;"><thead><tr><th style="text-align:left;padding:8px;border-bottom:2px solid var(--borde);">Grado</th><th style="text-align:left;padding:8px;border-bottom:2px solid var(--borde);">Sección</th><th style="text-align:left;padding:8px;border-bottom:2px solid var(--borde);">Jornada</th><th style="text-align:left;padding:8px;border-bottom:2px solid var(--borde);">Fecha</th><th style="padding:8px;border-bottom:2px solid var(--borde);">Acciones</th></tr></thead><tbody>'
+    + horarios.map(function(h) {
+        return '<tr><td style="padding:10px 8px;">' + h.grado + '</td><td style="padding:10px 8px;">Sección ' + h.seccion + '</td><td style="padding:10px 8px;">' + h.jornada + '</td><td style="padding:10px 8px;">' + h.fecha + '</td><td style="padding:10px 8px;"><button onclick="eliminarHorario(' + h.id + ')" style="padding:4px 10px;font-size:12px;color:var(--rojo);border:1px solid var(--rojo);border-radius:6px;background:transparent;cursor:pointer;">🗑️</button></td></tr>';
+      }).join('') + '</tbody></table>';
+}
+
+function eliminarHorario(id) {
+  if (!confirm('¿Eliminar este horario?')) return;
+  var horarios = JSON.parse(localStorage.getItem('ea_horarios') || '[]').filter(function(h) { return h.id !== id; });
+  localStorage.setItem('ea_horarios', JSON.stringify(horarios));
+  renderGuardados();
+}
+
+function limpiarHorario() {
+  document.getElementById('resultado-panel').style.display = 'none';
+  document.getElementById('cfg-centro').value = '';
+}
+
+function showAlert(id, msg) {
+  var el = document.getElementById(id);
+  el.textContent = msg; el.style.display = 'block';
+  setTimeout(function() { el.style.display = 'none'; }, 4000);
+}
+
+// Inicializar
+actualizarGrados();
+renderGuardados();
+</script>
+</body>
+</html>
