@@ -1,258 +1,345 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>EduActiva 360 — Acceso</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduActiva 360 — Sistema de Gestión Educativa</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --verde:#4CAF50;
+  --verde-claro:#2ecc71;
+  --azul-noche:#1a2a5e;
+  --azul-noche-claro:#243580;
+  --azul-cielo:#29ABE2;
+  --naranja:#F7941D;
+  --gris:#6b7280;
+  --gris-claro:#f5f6f8;
+  --borde:#dde3f0;
+  --blanco:#ffffff;
+  --texto:#111827;
+}
+html { scroll-behavior:smooth; }
+body { font-family:'Segoe UI',system-ui,sans-serif; color:var(--texto); background:var(--blanco); }
 
-    :root {
-      --verde:    #1A7F5A;
-      --verde-claro: #23A876;
-      --verde-bg: #F0FAF5;
-      --gris:     #6B7280;
-      --gris-borde: #D1D5DB;
-      --negro:    #111827;
-      --blanco:   #FFFFFF;
-      --error:    #DC2626;
-    }
+/* NAV */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  background:rgba(58,171,94,0.97); backdrop-filter:blur(8px);
+  padding:12px 32px; display:flex; align-items:center; justify-content:space-between;
+}
+.nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+.nav-logo img { height:38px; object-fit:contain; }
+.nav-logo span { color:#fff; font-size:15px; font-weight:700; }
+.nav-links { display:flex; align-items:center; gap:24px; }
+.nav-links a { color:rgba(255,255,255,0.75); text-decoration:none; font-size:13px; transition:color .15s; }
+.nav-links a:hover { color:var(--azul-cielo); }
+.btn-entrar {
+  padding:9px 22px; background:var(--verde); color:#fff;
+  border:none; border-radius:8px; font-size:14px; font-weight:600;
+  cursor:pointer; text-decoration:none; transition:background .15s;
+}
+.btn-entrar:hover { background:var(--verde-claro); }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--verde-bg);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-    }
+/* HERO */
+.hero {
+  min-height:100vh;
+  background: linear-gradient(160deg, #1a2a5e 0%, #243580 45%, #1e3d6b 100%);
+  display:flex; align-items:center; justify-content:center;
+  text-align:center; padding:120px 24px 80px; position:relative; overflow:hidden;
+}
+.hero::before {
+  content:'';
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(41,171,226,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 30%, rgba(76,175,80,0.10) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 90%, rgba(247,148,29,0.08) 0%, transparent 50%);
+}
+.hero-inner { position:relative; max-width:720px; margin:0 auto; }
 
-    .tarjeta {
-      background: var(--blanco);
-      border-radius: 16px;
-      box-shadow: 0 4px 24px rgba(26,127,90,0.10);
-      padding: 2.5rem 2rem;
-      width: 100%;
-      max-width: 420px;
-    }
+/* Logo hero */
+.hero-logo {
+  width:190px; height:190px;
+  margin:0 auto 32px;
+  background:rgba(255,255,255,0.95);
+  border-radius:50%;
+  padding:18px;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 0 4px rgba(41,171,226,0.3);
+}
+.hero-logo img { width:100%; height:100%; object-fit:contain; }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      margin-bottom: 2rem;
-    }
+.hero h1 {
+  font-size:clamp(30px,5vw,52px); font-weight:800; color:#fff;
+  line-height:1.1; margin-bottom:16px;
+}
+.hero h1 .verde { color:#4ade80; }
+.hero h1 .cielo { color:var(--azul-cielo); }
+.hero p { font-size:17px; color:rgba(255,255,255,0.78); margin-bottom:40px; line-height:1.65; max-width:520px; margin-left:auto; margin-right:auto; }
+.hero-btns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-bottom:56px; }
+.btn-hero-primary {
+  padding:14px 34px; background:var(--verde); color:#fff;
+  border:none; border-radius:10px; font-size:16px; font-weight:700;
+  cursor:pointer; text-decoration:none; transition:all .2s;
+  box-shadow:0 4px 20px rgba(76,175,80,0.4);
+}
+.btn-hero-primary:hover { background:var(--verde-claro); transform:translateY(-2px); }
+.btn-hero-secondary {
+  padding:14px 34px; background:transparent; color:#fff;
+  border:2px solid rgba(255,255,255,0.35); border-radius:10px;
+  font-size:16px; font-weight:600; cursor:pointer; text-decoration:none; transition:all .2s;
+}
+.btn-hero-secondary:hover { border-color:var(--azul-cielo); color:var(--azul-cielo); }
 
-    .logo-icono {
-      width: 40px;
-      height: 40px;
-      background: var(--verde);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+.hero-stats { display:flex; gap:40px; justify-content:center; flex-wrap:wrap; }
+.hero-stat .num { font-size:28px; font-weight:800; color:var(--naranja); }
+.hero-stat .lbl { font-size:12px; color:rgba(255,255,255,0.55); margin-top:2px; }
 
-    .logo-icono svg { width: 22px; height: 22px; fill: white; }
+/* SECCIONES */
+section { padding:80px 24px; }
+.section-inner { max-width:1100px; margin:0 auto; }
+.section-tag { font-size:12px; font-weight:700; color:var(--azul-cielo); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:10px; }
+.section-titulo { font-size:clamp(24px,3vw,36px); font-weight:800; color:var(--azul-noche); margin-bottom:14px; line-height:1.2; }
+.section-sub { font-size:16px; color:var(--gris); max-width:560px; line-height:1.6; }
 
-    .logo-texto {
-      font-family: 'Sora', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--negro);
-      line-height: 1.1;
-    }
+/* MÓDULOS */
+#modulos { background:var(--gris-claro); }
+.modulos-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:20px; margin-top:48px; }
+.modulo-card {
+  background:var(--blanco); border-radius:14px; padding:24px;
+  border:1.5px solid var(--borde); transition:all .2s;
+}
+.modulo-card:hover { border-color:var(--azul-cielo); box-shadow:0 8px 24px rgba(41,171,226,.12); transform:translateY(-3px); }
+.modulo-icon { font-size:32px; margin-bottom:14px; }
+.modulo-nombre { font-size:16px; font-weight:700; color:var(--azul-noche); margin-bottom:8px; }
+.modulo-desc { font-size:13px; color:var(--gris); line-height:1.6; }
+.modulo-badge { display:inline-block; margin-top:12px; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:600; background:#e8f5e9; color:var(--verde); }
 
-    .logo-texto span {
-      display: block;
-      font-size: 0.7rem;
-      font-weight: 400;
-      font-family: 'Inter', sans-serif;
-      color: var(--gris);
-      letter-spacing: 0.04em;
-    }
+/* PARA QUIÉN */
+#para-quien { background:var(--blanco); }
+.quien-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; margin-top:48px; }
+.quien-card { text-align:center; padding:32px 20px; border-radius:14px; border:1.5px solid var(--borde); transition:all .2s; }
+.quien-card:hover { border-color:var(--verde); background:#f2fbf4; }
+.quien-icon { font-size:40px; margin-bottom:14px; }
+.quien-rol { font-size:15px; font-weight:700; color:var(--azul-noche); margin-bottom:8px; }
+.quien-desc { font-size:13px; color:var(--gris); line-height:1.5; }
 
-    h1 {
-      font-family: 'Sora', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--negro);
-      margin-bottom: 0.3rem;
-    }
+/* PLANES */
+#planes { background:var(--gris-claro); }
+.planes-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; margin-top:48px; max-width:900px; margin-left:auto; margin-right:auto; }
+.plan-card {
+  background:var(--blanco); border-radius:16px; padding:32px 28px;
+  border:2px solid var(--borde); transition:all .2s; position:relative;
+}
+.plan-card.destacado { border-color:var(--naranja); box-shadow:0 8px 32px rgba(247,148,29,.15); }
+.plan-badge-top { position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--naranja); color:#fff; padding:4px 16px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap; }
+.plan-nombre { font-size:18px; font-weight:800; color:var(--azul-noche); margin-bottom:8px; }
+.plan-precio { font-size:36px; font-weight:800; color:var(--verde); line-height:1; margin-bottom:4px; }
+.plan-precio span { font-size:14px; font-weight:400; color:var(--gris); }
+.plan-desc { font-size:13px; color:var(--gris); margin-bottom:20px; margin-top:8px; }
+.plan-features { list-style:none; margin-bottom:24px; }
+.plan-features li { font-size:13px; padding:6px 0; border-bottom:1px solid var(--borde); display:flex; gap:8px; align-items:flex-start; }
+.plan-features li:last-child { border-bottom:none; }
+.plan-features li::before { content:'✓'; color:var(--verde); font-weight:700; flex-shrink:0; }
+.btn-plan { width:100%; padding:12px; border:none; border-radius:9px; font-size:14px; font-weight:700; cursor:pointer; transition:all .2s; }
+.btn-plan-verde { background:var(--verde); color:#fff; }
+.btn-plan-verde:hover { background:var(--verde-claro); }
+.btn-plan-outline { background:transparent; color:var(--azul-noche); border:2px solid var(--azul-noche); }
+.btn-plan-outline:hover { background:var(--azul-noche); color:#fff; }
 
-    .subtitulo {
-      color: var(--gris);
-      font-size: 0.9rem;
-      margin-bottom: 1.8rem;
-    }
+/* CONTACTO */
+#contacto {
+  background: linear-gradient(135deg, #1a2a5e 0%, #243580 100%);
+  text-align:center;
+}
+#contacto .section-tag { color:var(--azul-cielo); }
+#contacto .section-titulo { color:#fff; }
+#contacto .section-sub { color:rgba(255,255,255,0.65); margin:0 auto 40px; }
+.contacto-opciones { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+.btn-whatsapp {
+  display:flex; align-items:center; gap:10px;
+  padding:14px 28px; background:#25D366; color:#fff;
+  border:none; border-radius:10px; font-size:15px; font-weight:700;
+  cursor:pointer; text-decoration:none; transition:all .2s;
+}
+.btn-whatsapp:hover { background:#1ebe5d; transform:translateY(-2px); }
+.btn-email {
+  display:flex; align-items:center; gap:10px;
+  padding:14px 28px; background:rgba(255,255,255,0.1); color:#fff;
+  border:2px solid rgba(255,255,255,0.3); border-radius:10px;
+  font-size:15px; font-weight:600; cursor:pointer; text-decoration:none; transition:all .2s;
+}
+.btn-email:hover { border-color:var(--azul-cielo); color:var(--azul-cielo); }
 
-    label {
-      display: block;
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--negro);
-      margin-bottom: 0.4rem;
-    }
+/* FOOTER */
+footer {
+  background:#111d3d; padding:24px 32px;
+  display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+  border-top:1px solid rgba(255,255,255,0.08);
+}
+.footer-logo { display:flex; align-items:center; gap:10px; }
+.footer-logo img { height:30px; object-fit:contain; }
+footer p { color:rgba(255,255,255,0.45); font-size:13px; }
+footer a { color:rgba(255,255,255,0.45); text-decoration:none; font-size:13px; transition:color .15s; }
+footer a:hover { color:var(--azul-cielo); }
+.footer-links { display:flex; gap:20px; }
 
-    input {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border: 1.5px solid var(--gris-borde);
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-family: 'Inter', sans-serif;
-      color: var(--negro);
-      background: var(--blanco);
-      outline: none;
-      transition: border-color 0.2s;
-      margin-bottom: 1.1rem;
-    }
-
-    input:focus { border-color: var(--verde); }
-
-    .btn {
-      width: 100%;
-      padding: 0.85rem;
-      background: var(--verde);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
-      font-family: 'Inter', sans-serif;
-      cursor: pointer;
-      transition: background 0.2s;
-      margin-top: 0.5rem;
-    }
-
-    .btn:hover { background: var(--verde-claro); }
-    .btn:disabled { background: var(--gris-borde); cursor: not-allowed; }
-
-    .mensaje-error {
-      background: #FEF2F2;
-      border: 1px solid #FECACA;
-      color: var(--error);
-      border-radius: 8px;
-      padding: 0.75rem 1rem;
-      font-size: 0.875rem;
-      margin-top: 1rem;
-      display: none;
-    }
-
-    .mensaje-error.visible { display: block; }
-
-    .pie {
-      text-align: center;
-      margin-top: 1.5rem;
-      font-size: 0.8rem;
-      color: var(--gris);
-    }
-
-    .spinner {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(255,255,255,0.4);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      vertical-align: middle;
-      margin-right: 6px;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-  </style>
+@media (max-width:768px) {
+  nav { padding:12px 20px; }
+  .nav-links { display:none; }
+  .hero { padding:100px 20px 60px; }
+  .hero-logo { width:150px; height:150px; }
+  .hero-stats { gap:24px; }
+  section { padding:60px 20px; }
+  footer { flex-direction:column; text-align:center; }
+}
+</style>
 </head>
 <body>
 
-<div class="tarjeta">
-  <div class="logo">
-    <div class="logo-icono">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
-      </svg>
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="logo.png" alt="EduActiva 360">
+    <span>EduActiva 360</span>
+  </a>
+  <div class="nav-links">
+    <a href="#modulos">Módulos</a>
+    <a href="#planes">Planes</a>
+    <a href="#contacto">Contacto</a>
+    <a href="dashboard.html" class="btn-entrar">Entrar al sistema</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-logo">
+      <img src="logo.png" alt="EduActiva 360">
     </div>
-    <div class="logo-texto">
-      EduActiva 360
-      <span>Sistema de Gestión Educativa</span>
+    <h1>Gestión educativa<br><span class="verde">sin papeles,</span> <span class="cielo">sin excusas</span></h1>
+    <p>EduActiva 360 es la plataforma de gestión educativa diseñada para los centros dominicanos. Todo lo que el MINERD pide, en un solo lugar.</p>
+    <div class="hero-btns">
+      <a href="dashboard.html" class="btn-hero-primary">🎓 Entrar al sistema</a>
+      <a href="#modulos" class="btn-hero-secondary">Ver módulos</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">360°</div><div class="lbl">Gestión integral</div></div>
+      <div class="hero-stat"><div class="num">MINERD</div><div class="lbl">Alineado al currículo</div></div>
+      <div class="hero-stat"><div class="num">100%</div><div class="lbl">Hecho en RD</div></div>
     </div>
   </div>
+</section>
 
-  <h1>Iniciar sesión</h1>
-  <p class="subtitulo">Accede a tu plataforma educativa</p>
-
-  <div>
-    <label for="email">Correo electrónico</label>
-    <input type="email" id="email" placeholder="director@centro.edu.do" autocomplete="email"/>
-
-    <label for="password">Contraseña</label>
-    <input type="password" id="password" placeholder="••••••••" autocomplete="current-password"/>
-
-    <button class="btn" id="btnLogin" onclick="iniciarSesion()">Entrar</button>
-
-    <div class="mensaje-error" id="error"></div>
+<!-- MÓDULOS -->
+<section id="modulos">
+  <div class="section-inner">
+    <div class="section-tag">Lo que incluye</div>
+    <h2 class="section-titulo">Todo lo que tu centro necesita</h2>
+    <p class="section-sub">Módulos diseñados según la realidad de los centros educativos dominicanos y los requerimientos del MINERD.</p>
+    <div class="modulos-grid">
+      <div class="modulo-card"><div class="modulo-icon">🎒</div><div class="modulo-nombre">Matrícula</div><div class="modulo-desc">Registro completo de estudiantes con foto 2x2, datos del tutor y todos los niveles del sistema educativo dominicano.</div><span class="modulo-badge">✅ Activo</span></div>
+      <div class="modulo-card"><div class="modulo-icon">✅</div><div class="modulo-nombre">Asistencia</div><div class="modulo-desc">Toma de asistencia diaria por grado y sección. Registros históricos con estadísticas de presencia, tardanzas y excusas.</div><span class="modulo-badge">✅ Activo</span></div>
+      <div class="modulo-card"><div class="modulo-icon">📋</div><div class="modulo-nombre">Planificación</div><div class="modulo-desc">Planes de clase en formato MINERD con 81 unidades curriculares. Se completan automáticamente con el currículo oficial.</div><span class="modulo-badge">✅ Activo</span></div>
+      <div class="modulo-card"><div class="modulo-icon">📁</div><div class="modulo-nombre">Documentos de Gestión</div><div class="modulo-desc">PEC, POA, Plan de Mejora, actas, informes y más. Plantillas adaptables listas para completar y entregar al Distrito.</div><span class="modulo-badge">✅ Activo</span></div>
+      <div class="modulo-card"><div class="modulo-icon">📸</div><div class="modulo-nombre">Banco de Evidencias</div><div class="modulo-desc">Registro fotográfico organizado por área: gestión, docentes, orientación y coordinación. Con fecha, propósito y resumen.</div><span class="modulo-badge">✅ Activo</span></div>
+      <div class="modulo-card"><div class="modulo-icon">🗓️</div><div class="modulo-nombre">Horarios</div><div class="modulo-desc">Generador automático de horarios para jornada extendida y regular. Todos los niveles y ciclos MINERD.</div><span class="modulo-badge">✅ Activo</span></div>
+      <div class="modulo-card"><div class="modulo-icon">👨‍🏫</div><div class="modulo-nombre">Perfil Docente</div><div class="modulo-desc">Registro del personal docente con áreas que imparte, grados asignados, carga horaria y foto institucional.</div><span class="modulo-badge">✅ Activo</span></div>
+      <div class="modulo-card"><div class="modulo-icon">📢</div><div class="modulo-nombre">Comunicaciones</div><div class="modulo-desc">Tablón de anuncios institucional para publicar logros, eventos, reuniones y avisos a la comunidad educativa.</div><span class="modulo-badge">✅ Activo</span></div>
+      <div class="modulo-card"><div class="modulo-icon">📅</div><div class="modulo-nombre">Calendario Escolar</div><div class="modulo-desc">Calendario 2026-2027 con feriados, trimestres, recesos y eventos importantes según el MINERD.</div><span class="modulo-badge">✅ Activo</span></div>
+    </div>
   </div>
+</section>
 
-  <p class="pie">República Dominicana · MINERD</p>
-</div>
+<!-- PARA QUIÉN -->
+<section id="para-quien">
+  <div class="section-inner">
+    <div class="section-tag">¿Para quién es?</div>
+    <h2 class="section-titulo">Diseñado para toda la comunidad educativa</h2>
+    <p class="section-sub">Cada rol tiene su espacio dentro de la plataforma.</p>
+    <div class="quien-grid">
+      <div class="quien-card"><div class="quien-icon">👩‍💼</div><div class="quien-rol">Directores(as)</div><div class="quien-desc">Gestiona todo el centro: matrícula, personal, documentos institucionales y comunicaciones.</div></div>
+      <div class="quien-card"><div class="quien-icon">👨‍🏫</div><div class="quien-rol">Docentes</div><div class="quien-desc">Registra asistencia, crea planificaciones con el currículo oficial y sube evidencias de tu práctica.</div></div>
+      <div class="quien-card"><div class="quien-icon">📋</div><div class="quien-rol">Coordinadores</div><div class="quien-desc">Supervisa planificaciones, registra acompañamientos y mantiene evidencias del proceso pedagógico.</div></div>
+      <div class="quien-card"><div class="quien-icon">🧠</div><div class="quien-rol">Orientadores</div><div class="quien-desc">Documenta intervenciones, talleres con estudiantes y escuelas de padres con su banco de evidencias propio.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PLANES -->
+<section id="planes">
+  <div class="section-inner">
+    <div class="section-tag">Inversión</div>
+    <h2 class="section-titulo">Planes para cada centro</h2>
+    <p class="section-sub">Sin contratos largos. Cancela cuando quieras. Soporte directo por WhatsApp.</p>
+    <div class="planes-grid">
+      <div class="plan-card">
+        <div class="plan-nombre">Básico</div>
+        <div class="plan-precio">RD$3,500<span>/mes</span></div>
+        <div class="plan-desc">Para centros pequeños que están comenzando.</div>
+        <ul class="plan-features">
+          <li>Hasta 200 estudiantes</li><li>Matrícula y asistencia</li><li>Planificación docente</li><li>Calendario escolar</li><li>Soporte por WhatsApp</li>
+        </ul>
+        <button class="btn-plan btn-plan-outline" onclick="contactarPlan('Básico','RD$3,500')">Solicitar</button>
+      </div>
+      <div class="plan-card destacado">
+        <div class="plan-badge-top">⭐ Más popular</div>
+        <div class="plan-nombre">Profesional</div>
+        <div class="plan-precio">RD$6,500<span>/mes</span></div>
+        <div class="plan-desc">Para centros que necesitan gestión completa.</div>
+        <ul class="plan-features">
+          <li>Estudiantes ilimitados</li><li>Todos los módulos activos</li><li>Documentos de gestión (PEC, POA)</li><li>Banco de evidencias</li><li>Horarios y docentes</li><li>Soporte prioritario</li>
+        </ul>
+        <button class="btn-plan btn-plan-verde" onclick="contactarPlan('Profesional','RD$6,500')">Solicitar</button>
+      </div>
+      <div class="plan-card">
+        <div class="plan-nombre">Institucional</div>
+        <div class="plan-precio">RD$10,500<span>/mes</span></div>
+        <div class="plan-desc">Para redes de centros y distritos educativos.</div>
+        <ul class="plan-features">
+          <li>Múltiples centros</li><li>Panel de administración central</li><li>Todos los módulos</li><li>Capacitación incluida</li><li>Soporte dedicado</li>
+        </ul>
+        <button class="btn-plan btn-plan-outline" onclick="contactarPlan('Institucional','RD$10,500')">Solicitar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="section-inner">
+    <div class="section-tag">¿Listo para empezar?</div>
+    <h2 class="section-titulo">Hablemos</h2>
+    <p class="section-sub">Escríbenos por WhatsApp o correo. Te respondemos el mismo día.</p>
+    <div class="contacto-opciones">
+      <a href="https://wa.me/18493677000?text=Hola,%20quiero%20información%20sobre%20EduActiva%20360" target="_blank" class="btn-whatsapp">
+        <span style="font-size:20px;">💬</span> WhatsApp
+      </a>
+      <a href="mailto:admin@eduactiva360.do" class="btn-email">
+        <span style="font-size:18px;">✉️</span> admin@eduactiva360.do
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <img src="logo.png" alt="EduActiva 360">
+    <p>© 2026 EduActiva 360 · República Dominicana · MINERD</p>
+  </div>
+  <div class="footer-links">
+    <a href="privacy.html">Políticas de Privacidad</a>
+    <a href="dashboard.html">Entrar al sistema</a>
+  </div>
+</footer>
 
 <script>
-  const API = 'https://eduactiva360-backend-production.up.railway.app';
-
-  async function iniciarSesion() {
-    const email    = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
-    const btn      = document.getElementById('btnLogin');
-    const errorEl  = document.getElementById('error');
-
-    errorEl.classList.remove('visible');
-
-    if (!email || !password) {
-      mostrarError('Completa todos los campos.');
-      return;
-    }
-
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span>Verificando...';
-
-    try {
-      const res = await fetch(`${API}/api/v1/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        mostrarError(data.message || 'Credenciales incorrectas.');
-        return;
-      }
-
-      localStorage.setItem('token', data.access_token);
-      localStorage.setItem('usuario', JSON.stringify(data.user || {}));
-      window.location.href = 'dashboard.html';
-
-    } catch (err) {
-      mostrarError('No se pudo conectar con el servidor. Intenta de nuevo.');
-    } finally {
-      btn.disabled = false;
-      btn.innerHTML = 'Entrar';
-    }
-  }
-
-  function mostrarError(msg) {
-    const el = document.getElementById('error');
-    el.textContent = msg;
-    el.classList.add('visible');
-  }
-
-  document.getElementById('password').addEventListener('keydown', e => {
-    if (e.key === 'Enter') iniciarSesion();
-  });
+function contactarPlan(plan, precio) {
+  var msg = encodeURIComponent('Hola, estoy interesado/a en el plan *' + plan + '* (' + precio + '/mes) de EduActiva 360. ¿Me pueden enviar los datos de pago?');
+  window.open('https://wa.me/18493677000?text=' + msg, '_blank');
+}
 </script>
-
 </body>
 </html>
