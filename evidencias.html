@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evidencias — EduActiva 360</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --verde:#1a7a4a; --verde-claro:#22a25e; --verde-bg:#f0faf4;
+  --azul-marino:#0f2d4a; --azul-medio:#1b4f72;
+  --gris:#6b7280; --gris-claro:#f3f4f6; --borde:#e5e7eb;
+  --rojo:#dc2626; --amarillo:#d97706; --blanco:#ffffff; --texto:#111827;
+}
+body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--gris-claro); color:var(--texto); }
+
+.header { background:var(--azul-marino); padding:16px 24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+.header-logo { display:flex; align-items:center; gap:10px; }
+.header-logo .icon { width:36px; height:36px; background:var(--verde); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:18px; }
+.header-logo h1 { color:#fff; font-size:16px; font-weight:700; }
+.header-logo p { color:rgba(255,255,255,0.5); font-size:11px; }
+.btn-back { color:rgba(255,255,255,0.7); text-decoration:none; font-size:13px; border:1px solid rgba(255,255,255,0.3); padding:6px 14px; border-radius:6px; }
+
+.container { max-width:1100px; margin:0 auto; padding:24px; }
+
+/* Tabs de categorías */
+.cats-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px; }
+.cat-tab { padding:10px 20px; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; border:2px solid var(--borde); background:var(--blanco); color:var(--gris); transition:all .15s; display:flex; align-items:center; gap:8px; }
+.cat-tab:hover { border-color:var(--verde); color:var(--verde); }
+.cat-tab.active { background:var(--verde); color:#fff; border-color:var(--verde); }
+.cat-tab .count { background:rgba(255,255,255,0.3); padding:2px 8px; border-radius:20px; font-size:11px; }
+.cat-tab:not(.active) .count { background:var(--gris-claro); color:var(--gris); }
+
+.cat-section { display:none; }
+.cat-section.active { display:block; }
+
+.panel { background:var(--blanco); border-radius:12px; border:1px solid var(--borde); margin-bottom:20px; }
+.panel-header { padding:16px 22px; border-bottom:1px solid var(--borde); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+.panel-header h3 { font-size:15px; font-weight:700; }
+.panel-body { padding:20px; }
+
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+.form-row-1 { margin-bottom:14px; }
+.form-field label { display:block; font-size:12px; font-weight:600; margin-bottom:4px; color:var(--azul-marino); }
+.form-field input, .form-field select, .form-field textarea {
+  width:100%; padding:9px 11px; border:1.5px solid var(--borde); border-radius:8px;
+  font-size:13px; outline:none; font-family:inherit;
+}
+.form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color:var(--verde); }
+
+.btn-primary { padding:10px 20px; background:var(--verde); color:#fff; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; }
+.btn-primary:hover { background:var(--verde-claro); }
+.btn-secondary { padding:10px 20px; background:transparent; color:var(--gris); border:1.5px solid var(--borde); border-radius:8px; font-size:13px; cursor:pointer; margin-right:8px; }
+
+.alert { padding:10px 14px; border-radius:8px; font-size:13px; margin-bottom:14px; display:none; }
+.alert-success { background:#d1fae5; color:#065f46; border:1px solid #a7f3d0; }
+.alert-error { background:#fee2e2; color:#991b1b; border:1px solid #fecaca; }
+
+/* Upload area */
+.upload-area { border:2px dashed var(--borde); border-radius:10px; padding:28px; text-align:center; cursor:pointer; transition:all .2s; background:#fafafa; }
+.upload-area:hover { border-color:var(--verde); background:var(--verde-bg); }
+.upload-area .upload-icon { font-size:40px; margin-bottom:10px; }
+.upload-area p { font-size:13px; color:var(--gris); }
+.upload-area small { font-size:11px; color:#9ca3af; }
+.fotos-preview { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.foto-thumb { position:relative; width:80px; height:80px; }
+.foto-thumb img { width:80px; height:80px; object-fit:cover; border-radius:8px; border:2px solid var(--borde); }
+.foto-thumb .remove { position:absolute; top:-6px; right:-6px; width:18px; height:18px; background:var(--rojo); color:#fff; border-radius:50%; border:none; cursor:pointer; font-size:10px; display:flex; align-items:center; justify-content:center; }
+
+/* Galería de evidencias */
+.buscar-row { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
+.buscar-row input, .buscar-row select { padding:8px 12px; border:1.5px solid var(--borde); border-radius:8px; font-size:13px; outline:none; }
+.buscar-row input:focus, .buscar-row select:focus { border-color:var(--verde); }
+.buscar-row input { flex:1; min-width:180px; }
+
+.evidencias-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px; }
+.ev-card { background:var(--blanco); border:1px solid var(--borde); border-radius:10px; overflow:hidden; transition:box-shadow .15s; }
+.ev-card:hover { box-shadow:0 4px 16px rgba(0,0,0,.08); }
+.ev-fotos { display:grid; height:160px; overflow:hidden; }
+.ev-fotos.f1 { grid-template-columns:1fr; }
+.ev-fotos.f2 { grid-template-columns:1fr 1fr; }
+.ev-fotos.f3 { grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; }
+.ev-foto { background:#f3f4f6; display:flex; align-items:center; justify-content:center; font-size:32px; overflow:hidden; }
+.ev-foto img { width:100%; height:100%; object-fit:cover; }
+.ev-foto.placeholder { color:#d1d5db; }
+.ev-info { padding:12px 14px; }
+.ev-titulo { font-size:14px; font-weight:700; margin-bottom:4px; color:var(--azul-marino); }
+.ev-meta { font-size:11px; color:var(--gris); margin-bottom:6px; display:flex; gap:10px; flex-wrap:wrap; }
+.ev-resumen { font-size:12px; color:#374151; line-height:1.5; margin-bottom:10px; }
+.ev-footer { display:flex; align-items:center; justify-content:space-between; }
+.tag-categoria { padding:3px 10px; border-radius:20px; font-size:11px; font-weight:600; }
+.tag-gestion { background:#d1fae5; color:#065f46; }
+.tag-docente { background:#dbeafe; color:#1e40af; }
+.tag-orientacion { background:#ede9fe; color:#6d28d9; }
+.tag-coordinacion { background:#fef3c7; color:#92400e; }
+.btn-del-ev { padding:4px 10px; font-size:11px; color:var(--rojo); border:1px solid var(--rojo); border-radius:6px; background:transparent; cursor:pointer; }
+
+.empty-state { text-align:center; padding:48px 20px; color:var(--gris); }
+.empty-state .icon { font-size:48px; margin-bottom:12px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">
+    <div class="icon">📸</div>
+    <div>
+      <h1>Banco de Evidencias</h1>
+      <p>EduActiva 360 · Centro Educativo</p>
+    </div>
+  </div>
+  <a href="dashboard.html" class="btn-back">← Dashboard</a>
+</div>
+
+<div class="container">
+
+  <!-- TABS -->
+  <div class="cats-tabs">
+    <div class="cat-tab active" onclick="mostrarCat('gestion',this)">🏛️ Gestión <span class="count" id="cnt-gestion">0</span></div>
+    <div class="cat-tab" onclick="mostrarCat('docente',this)">👨‍🏫 Docentes <span class="count" id="cnt-docente">0</span></div>
+    <div class="cat-tab" onclick="mostrarCat('orientacion',this)">🧠 Orientación <span class="count" id="cnt-orientacion">0</span></div>
+    <div class="cat-tab" onclick="mostrarCat('coordinacion',this)">📋 Coordinación <span class="count" id="cnt-coordinacion">0</span></div>
+  </div>
+
+  <!-- SECCIÓN GESTIÓN -->
+  <div id="cat-gestion" class="cat-section active">
+    <div class="panel">
+      <div class="panel-header"><h3>➕ Subir evidencia — Gestión</h3></div>
+      <div class="panel-body">
+        <div class="alert alert-success" id="ev-success-gestion"></div>
+        <div class="alert alert-error" id="ev-error-gestion"></div>
+        <div id="upload-form-gestion">
+          <div class="form-row">
+            <div class="form-field"><label>Nombre / Título de la evidencia *</label><input type="text" id="ev-titulo-gestion" placeholder="Ej: Reunión de equipo de gestión — 1er trimestre"></div>
+            <div class="form-field"><label>Fecha *</label><input type="date" id="ev-fecha-gestion"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-field"><label>Propósito *</label>
+              <select id="ev-proposito-gestion">
+                <option value="">Seleccionar propósito...</option>
+                <option>Reunión de equipo directivo</option>
+                <option>Asamblea APMAE</option>
+                <option>Jornada de planificación</option>
+                <option>Visita del Distrito</option>
+                <option>Actividad institucional</option>
+                <option>Ejecución del POA</option>
+                <option>Ejecución del PEC</option>
+                <option>Capacitación docente</option>
+                <option>Entrega de reconocimientos</option>
+                <option>Otro</option>
+              </select>
+            </div>
+            <div class="form-field"><label>Propósito personalizado (si seleccionó "Otro")</label><input type="text" id="ev-proposito-custom-gestion" placeholder="Describe el propósito específico"></div>
+          </div>
+          <div class="form-row-1"><div class="form-field"><label>Resumen / Descripción *</label><textarea id="ev-resumen-gestion" rows="3" placeholder="Describe brevemente qué ocurrió, quiénes participaron y cuál fue el resultado o impacto..."></textarea></div></div>
+          <div class="form-field" style="margin-bottom:14px;">
+            <label>Fotos de evidencia</label>
+            <div class="upload-area" onclick="document.getElementById('ev-fotos-input-gestion').click()">
+              <div class="upload-icon">📷</div>
+              <p>Clic para seleccionar fotos</p>
+              <small>JPG, PNG · Puedes seleccionar varias a la vez</small>
+            </div>
+            <input type="file" id="ev-fotos-input-gestion" accept="image/*" multiple style="display:none" onchange="previsualizarFotos(this,'gestion')">
+            <div class="fotos-preview" id="fotos-preview-gestion"></div>
+          </div>
+          <button class="btn-secondary" onclick="limpiarFormEv('gestion')">Limpiar</button>
+          <button class="btn-primary" onclick="guardarEvidencia('gestion')">💾 Guardar evidencia</button>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header"><h3>📸 Evidencias de Gestión</h3></div>
+      <div class="panel-body">
+        <div class="buscar-row">
+          <input type="text" id="buscar-gestion" oninput="renderEvidencias('gestion')" placeholder="🔍 Buscar por título o propósito...">
+          <select id="filtro-mes-gestion" onchange="renderEvidencias('gestion')" style="min-width:150px;">
+            <option value="">Todos los meses</option>
+            <option value="08">Agosto</option><option value="09">Septiembre</option><option value="10">Octubre</option>
+            <option value="11">Noviembre</option><option value="12">Diciembre</option><option value="01">Enero</option>
+            <option value="02">Febrero</option><option value="03">Marzo</option><option value="04">Abril</option>
+            <option value="05">Mayo</option><option value="06">Junio</option><option value="07">Julio</option>
+          </select>
+        </div>
+        <div class="evidencias-grid" id="grid-gestion"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN DOCENTES -->
+  <div id="cat-docente" class="cat-section">
+    <div class="panel">
+      <div class="panel-header"><h3>➕ Subir evidencia — Docentes</h3></div>
+      <div class="panel-body">
+        <div class="alert alert-success" id="ev-success-docente"></div>
+        <div class="alert alert-error" id="ev-error-docente"></div>
+        <div class="form-row">
+          <div class="form-field"><label>Nombre / Título *</label><input type="text" id="ev-titulo-docente" placeholder="Ej: Clase modelo de Matemática — 3er grado"></div>
+          <div class="form-field"><label>Fecha *</label><input type="date" id="ev-fecha-docente"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-field"><label>Docente responsable</label><input type="text" id="ev-docente-nombre" placeholder="Nombre del docente"></div>
+          <div class="form-field"><label>Propósito *</label>
+            <select id="ev-proposito-docente">
+              <option value="">Seleccionar...</option>
+              <option>Clase modelo / innovadora</option>
+              <option>Proyecto de aula (PPA)</option>
+              <option>Proyecto de vida (PDV)</option>
+              <option>Actividad extracurricular</option>
+              <option>Acompañamiento pedagógico</option>
+              <option>Feria científica</option>
+              <option>Jornada de lectura</option>
+              <option>Efeméride trabajada</option>
+              <option>Otro</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field"><label>Grado y sección</label><input type="text" id="ev-grado-docente" placeholder="Ej: 4to grado — Sección A"></div>
+          <div class="form-field"><label>Área curricular</label><input type="text" id="ev-area-docente" placeholder="Ej: Matemática"></div>
+        </div>
+        <div class="form-row-1"><div class="form-field"><label>Resumen / Descripción *</label><textarea id="ev-resumen-docente" rows="3" placeholder="Describe la actividad, los estudiantes involucrados y el resultado de aprendizaje..."></textarea></div></div>
+        <div class="form-field" style="margin-bottom:14px;">
+          <label>Fotos de evidencia</label>
+          <div class="upload-area" onclick="document.getElementById('ev-fotos-input-docente').click()">
+            <div class="upload-icon">📷</div>
+            <p>Clic para seleccionar fotos</p>
+            <small>JPG, PNG · Puedes seleccionar varias a la vez</small>
+          </div>
+          <input type="file" id="ev-fotos-input-docente" accept="image/*" multiple style="display:none" onchange="previsualizarFotos(this,'docente')">
+          <div class="fotos-preview" id="fotos-preview-docente"></div>
+        </div>
+        <button class="btn-secondary" onclick="limpiarFormEv('docente')">Limpiar</button>
+        <button class="btn-primary" onclick="guardarEvidencia('docente')">💾 Guardar evidencia</button>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header"><h3>📸 Evidencias de Docentes</h3></div>
+      <div class="panel-body">
+        <div class="buscar-row">
+          <input type="text" id="buscar-docente" oninput="renderEvidencias('docente')" placeholder="🔍 Buscar...">
+          <select id="filtro-mes-docente" onchange="renderEvidencias('docente')" style="min-width:150px;">
+            <option value="">Todos los meses</option>
+            <option value="08">Agosto</option><option value="09">Septiembre</option><option value="10">Octubre</option>
+            <option value="11">Noviembre</option><option value="12">Diciembre</option><option value="01">Enero</option>
+            <option value="02">Febrero</option><option value="03">Marzo</option><option value="04">Abril</option>
+            <option value="05">Mayo</option><option value="06">Junio</option><option value="07">Julio</option>
+          </select>
+        </div>
+        <div class="evidencias-grid" id="grid-docente"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN ORIENTACIÓN -->
+  <div id="cat-orientacion" class="cat-section">
+    <div class="panel">
+      <div class="panel-header"><h3>➕ Subir evidencia — Orientación</h3></div>
+      <div class="panel-body">
+        <div class="alert alert-success" id="ev-success-orientacion"></div>
+        <div class="alert alert-error" id="ev-error-orientacion"></div>
+        <div class="form-row">
+          <div class="form-field"><label>Título *</label><input type="text" id="ev-titulo-orientacion" placeholder="Ej: Taller de manejo de emociones — 5to grado"></div>
+          <div class="form-field"><label>Fecha *</label><input type="date" id="ev-fecha-orientacion"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-field"><label>Orientador(a)</label><input type="text" id="ev-orientador-nombre" placeholder="Nombre del orientador/psicólogo"></div>
+          <div class="form-field"><label>Propósito *</label>
+            <select id="ev-proposito-orientacion">
+              <option value="">Seleccionar...</option>
+              <option>Escuela de padres</option>
+              <option>Taller con estudiantes</option>
+              <option>Charla de prevención</option>
+              <option>Intervención individual</option>
+              <option>Proyecto de vida (PDV)</option>
+              <option>Jornada de salud mental</option>
+              <option>Seguimiento de caso</option>
+              <option>Actividad de convivencia</option>
+              <option>Otro</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field"><label>Población atendida</label><input type="text" id="ev-poblacion-orientacion" placeholder="Ej: 3er grado sección A — 32 estudiantes"></div>
+          <div class="form-field"><label>Cantidad de participantes</label><input type="number" id="ev-participantes-orientacion" placeholder="Ej: 45"></div>
+        </div>
+        <div class="form-row-1"><div class="form-field"><label>Resumen / Descripción *</label><textarea id="ev-resumen-orientacion" rows="3" placeholder="Describe la actividad, la población atendida y el impacto observado..."></textarea></div></div>
+        <div class="form-field" style="margin-bottom:14px;">
+          <label>Fotos de evidencia</label>
+          <div class="upload-area" onclick="document.getElementById('ev-fotos-input-orientacion').click()">
+            <div class="upload-icon">📷</div><p>Clic para seleccionar fotos</p><small>JPG, PNG</small>
+          </div>
+          <input type="file" id="ev-fotos-input-orientacion" accept="image/*" multiple style="display:none" onchange="previsualizarFotos(this,'orientacion')">
+          <div class="fotos-preview" id="fotos-preview-orientacion"></div>
+        </div>
+        <button class="btn-secondary" onclick="limpiarFormEv('orientacion')">Limpiar</button>
+        <button class="btn-primary" onclick="guardarEvidencia('orientacion')">💾 Guardar evidencia</button>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header"><h3>📸 Evidencias de Orientación</h3></div>
+      <div class="panel-body">
+        <div class="buscar-row">
+          <input type="text" id="buscar-orientacion" oninput="renderEvidencias('orientacion')" placeholder="🔍 Buscar...">
+          <select id="filtro-mes-orientacion" onchange="renderEvidencias('orientacion')" style="min-width:150px;">
+            <option value="">Todos los meses</option>
+            <option value="08">Agosto</option><option value="09">Septiembre</option><option value="10">Octubre</option>
+            <option value="11">Noviembre</option><option value="12">Diciembre</option><option value="01">Enero</option>
+            <option value="02">Febrero</option><option value="03">Marzo</option><option value="04">Abril</option>
+            <option value="05">Mayo</option><option value="06">Junio</option><option value="07">Julio</option>
+          </select>
+        </div>
+        <div class="evidencias-grid" id="grid-orientacion"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN COORDINACIÓN -->
+  <div id="cat-coordinacion" class="cat-section">
+    <div class="panel">
+      <div class="panel-header"><h3>➕ Subir evidencia — Coordinación Pedagógica</h3></div>
+      <div class="panel-body">
+        <div class="alert alert-success" id="ev-success-coordinacion"></div>
+        <div class="alert alert-error" id="ev-error-coordinacion"></div>
+        <div class="form-row">
+          <div class="form-field"><label>Título *</label><input type="text" id="ev-titulo-coordinacion" placeholder="Ej: Acompañamiento a docentes — Bloque 1"></div>
+          <div class="form-field"><label>Fecha *</label><input type="date" id="ev-fecha-coordinacion"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-field"><label>Coordinador(a)</label><input type="text" id="ev-coordinador-nombre" placeholder="Nombre del coordinador"></div>
+          <div class="form-field"><label>Propósito *</label>
+            <select id="ev-proposito-coordinacion">
+              <option value="">Seleccionar...</option>
+              <option>Acompañamiento pedagógico</option>
+              <option>Observación de clase</option>
+              <option>Jornada de planificación docente</option>
+              <option>Revisión de planificaciones</option>
+              <option>Reunión por área curricular</option>
+              <option>Jornada de retroalimentación</option>
+              <option>Entrega de informes trimestrales</option>
+              <option>Capacitación docente</option>
+              <option>Otro</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field"><label>Docentes involucrados</label><input type="text" id="ev-docentes-coord" placeholder="Ej: 5 docentes del 1er ciclo"></div>
+          <div class="form-field"><label>Área o ciclo</label><input type="text" id="ev-ciclo-coord" placeholder="Ej: 2do ciclo Primaria"></div>
+        </div>
+        <div class="form-row-1"><div class="form-field"><label>Resumen / Descripción *</label><textarea id="ev-resumen-coordinacion" rows="3" placeholder="Describe la actividad de acompañamiento, los docentes involucrados y los acuerdos o compromisos establecidos..."></textarea></div></div>
+        <div class="form-field" style="margin-bottom:14px;">
+          <label>Fotos de evidencia</label>
+          <div class="upload-area" onclick="document.getElementById('ev-fotos-input-coordinacion').click()">
+            <div class="upload-icon">📷</div><p>Clic para seleccionar fotos</p><small>JPG, PNG</small>
+          </div>
+          <input type="file" id="ev-fotos-input-coordinacion" accept="image/*" multiple style="display:none" onchange="previsualizarFotos(this,'coordinacion')">
+          <div class="fotos-preview" id="fotos-preview-coordinacion"></div>
+        </div>
+        <button class="btn-secondary" onclick="limpiarFormEv('coordinacion')">Limpiar</button>
+        <button class="btn-primary" onclick="guardarEvidencia('coordinacion')">💾 Guardar evidencia</button>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header"><h3>📸 Evidencias de Coordinación</h3></div>
+      <div class="panel-body">
+        <div class="buscar-row">
+          <input type="text" id="buscar-coordinacion" oninput="renderEvidencias('coordinacion')" placeholder="🔍 Buscar...">
+          <select id="filtro-mes-coordinacion" onchange="renderEvidencias('coordinacion')" style="min-width:150px;">
+            <option value="">Todos los meses</option>
+            <option value="08">Agosto</option><option value="09">Septiembre</option><option value="10">Octubre</option>
+            <option value="11">Noviembre</option><option value="12">Diciembre</option><option value="01">Enero</option>
+            <option value="02">Febrero</option><option value="03">Marzo</option><option value="04">Abril</option>
+            <option value="05">Mayo</option><option value="06">Junio</option><option value="07">Julio</option>
+          </select>
+        </div>
+        <div class="evidencias-grid" id="grid-coordinacion"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var fotosTemp = { gestion:[], docente:[], orientacion:[], coordinacion:[] };
+var CATEGORIAS = ['gestion','docente','orientacion','coordinacion'];
+var TAG_LABELS = { gestion:'Gestión', docente:'Docente', orientacion:'Orientación', coordinacion:'Coordinación' };
+var TAG_CLASES = { gestion:'tag-gestion', docente:'tag-docente', orientacion:'tag-orientacion', coordinacion:'tag-coordinacion' };
+
+function mostrarCat(cat, el) {
+  CATEGORIAS.forEach(function(c) { document.getElementById('cat-' + c).classList.remove('active'); });
+  document.querySelectorAll('.cat-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.getElementById('cat-' + cat).classList.add('active');
+  el.classList.add('active');
+}
+
+function previsualizarFotos(input, cat) {
+  if (!input.files || !input.files.length) return;
+  var preview = document.getElementById('fotos-preview-' + cat);
+  fotosTemp[cat] = [];
+  Array.from(input.files).forEach(function(file) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      fotosTemp[cat].push(e.target.result);
+      var div = document.createElement('div');
+      div.className = 'foto-thumb';
+      div.innerHTML = '<img src="' + e.target.result + '"><button class="remove" onclick="quitarFoto(\'' + cat + '\',' + (fotosTemp[cat].length-1) + ',this)">✕</button>';
+      preview.appendChild(div);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function quitarFoto(cat, idx, btn) {
+  fotosTemp[cat].splice(idx, 1);
+  btn.closest('.foto-thumb').remove();
+}
+
+function getFieldVal(id) {
+  var el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+function guardarEvidencia(cat) {
+  var titulo = getFieldVal('ev-titulo-' + cat);
+  var fecha = getFieldVal('ev-fecha-' + cat);
+  var resumen = getFieldVal('ev-resumen-' + cat);
+  var proposito = getFieldVal('ev-proposito-' + cat);
+  if (!titulo) { showAlert('ev-error-' + cat, '⚠️ El título es obligatorio.'); return; }
+  if (!fecha) { showAlert('ev-error-' + cat, '⚠️ La fecha es obligatoria.'); return; }
+  if (!resumen) { showAlert('ev-error-' + cat, '⚠️ El resumen es obligatorio.'); return; }
+
+  var ev = {
+    id: Date.now(),
+    cat: cat,
+    titulo: titulo,
+    fecha: fecha,
+    proposito: proposito || getFieldVal('ev-proposito-custom-' + cat),
+    resumen: resumen,
+    fotos: fotosTemp[cat].slice(),
+    extra: {}
+  };
+
+  // Campos extra por categoría
+  if (cat === 'docente') { ev.extra.docente = getFieldVal('ev-docente-nombre'); ev.extra.grado = getFieldVal('ev-grado-docente'); ev.extra.area = getFieldVal('ev-area-docente'); }
+  if (cat === 'orientacion') { ev.extra.orientador = getFieldVal('ev-orientador-nombre'); ev.extra.poblacion = getFieldVal('ev-poblacion-orientacion'); ev.extra.participantes = getFieldVal('ev-participantes-orientacion'); }
+  if (cat === 'coordinacion') { ev.extra.coordinador = getFieldVal('ev-coordinador-nombre'); ev.extra.docentes = getFieldVal('ev-docentes-coord'); ev.extra.ciclo = getFieldVal('ev-ciclo-coord'); }
+
+  var key = 'ea_evidencias_' + cat;
+  var lista = JSON.parse(localStorage.getItem(key) || '[]');
+  lista.unshift(ev);
+  localStorage.setItem(key, JSON.stringify(lista));
+
+  showAlert('ev-success-' + cat, '✅ Evidencia guardada correctamente.');
+  limpiarFormEv(cat);
+  renderEvidencias(cat);
+  actualizarContadores();
+}
+
+function limpiarFormEv(cat) {
+  ['ev-titulo-','ev-fecha-','ev-resumen-','ev-proposito-'].forEach(function(prefix) {
+    var el = document.getElementById(prefix + cat);
+    if (el) el.value = '';
+  });
+  var campos = { docente:['ev-docente-nombre','ev-grado-docente','ev-area-docente'], orientacion:['ev-orientador-nombre','ev-poblacion-orientacion','ev-participantes-orientacion'], coordinacion:['ev-coordinador-nombre','ev-docentes-coord','ev-ciclo-coord'], gestion:['ev-proposito-custom-gestion'] };
+  if (campos[cat]) campos[cat].forEach(function(id) { var el = document.getElementById(id); if (el) el.value = ''; });
+  fotosTemp[cat] = [];
+  var preview = document.getElementById('fotos-preview-' + cat);
+  if (preview) preview.innerHTML = '';
+  var input = document.getElementById('ev-fotos-input-' + cat);
+  if (input) input.value = '';
+}
+
+function renderEvidencias(cat) {
+  var buscar = (document.getElementById('buscar-' + cat) ? document.getElementById('buscar-' + cat).value : '').toLowerCase();
+  var mes = document.getElementById('filtro-mes-' + cat) ? document.getElementById('filtro-mes-' + cat).value : '';
+  var lista = JSON.parse(localStorage.getItem('ea_evidencias_' + cat) || '[]');
+
+  if (buscar) lista = lista.filter(function(e) { return (e.titulo + e.proposito + e.resumen).toLowerCase().includes(buscar); });
+  if (mes) lista = lista.filter(function(e) { return e.fecha && e.fecha.substring(5,7) === mes; });
+
+  var grid = document.getElementById('grid-' + cat);
+  if (!grid) return;
+
+  if (lista.length === 0) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="icon">📷</div><p>No hay evidencias registradas aún.</p></div>';
+    return;
+  }
+
+  grid.innerHTML = lista.map(function(ev) {
+    var fotos = ev.fotos || [];
+    var nf = fotos.length;
+    var fotosClass = nf >= 3 ? 'f3' : nf === 2 ? 'f2' : 'f1';
+    var fotosHTML = '';
+    if (nf === 0) {
+      fotosHTML = '<div class="ev-foto placeholder">📷</div>';
+    } else {
+      var show = nf >= 3 ? fotos.slice(0,3) : fotos;
+      fotosHTML = show.map(function(f) { return '<div class="ev-foto"><img src="' + f + '" loading="lazy"></div>'; }).join('');
+      if (nf >= 3 && nf > 3) fotosHTML = fotosHTML.replace('</div>', '<div style="position:absolute;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;">+' + (nf-3) + '</div></div>');
+    }
+
+    var extraHTML = '';
+    if (ev.extra) {
+      if (ev.extra.docente) extraHTML += '<span>' + ev.extra.docente + '</span>';
+      if (ev.extra.grado) extraHTML += '<span>' + ev.extra.grado + '</span>';
+      if (ev.extra.orientador) extraHTML += '<span>' + ev.extra.orientador + '</span>';
+      if (ev.extra.participantes) extraHTML += '<span>' + ev.extra.participantes + ' participantes</span>';
+      if (ev.extra.coordinador) extraHTML += '<span>' + ev.extra.coordinador + '</span>';
+      if (ev.extra.ciclo) extraHTML += '<span>' + ev.extra.ciclo + '</span>';
+    }
+
+    var fechaDisplay = ev.fecha ? new Date(ev.fecha + 'T00:00:00').toLocaleDateString('es-DO', {day:'numeric',month:'short',year:'numeric'}) : '—';
+
+    return '<div class="ev-card">'
+      + '<div class="ev-fotos ' + fotosClass + '">' + fotosHTML + '</div>'
+      + '<div class="ev-info">'
+      + '<div class="ev-titulo">' + ev.titulo + '</div>'
+      + '<div class="ev-meta"><span>📅 ' + fechaDisplay + '</span>' + (ev.proposito ? '<span>🎯 ' + ev.proposito + '</span>' : '') + extraHTML + '</div>'
+      + '<div class="ev-resumen">' + ev.resumen.substring(0,120) + (ev.resumen.length > 120 ? '...' : '') + '</div>'
+      + '<div class="ev-footer"><span class="tag-categoria ' + TAG_CLASES[cat] + '">' + TAG_LABELS[cat] + '</span>'
+      + '<button class="btn-del-ev" onclick="eliminarEvidencia(\'' + cat + '\',' + ev.id + ')">🗑️</button></div>'
+      + '</div></div>';
+  }).join('');
+}
+
+function eliminarEvidencia(cat, id) {
+  if (!confirm('¿Eliminar esta evidencia?')) return;
+  var lista = JSON.parse(localStorage.getItem('ea_evidencias_' + cat) || '[]').filter(function(e) { return e.id !== id; });
+  localStorage.setItem('ea_evidencias_' + cat, JSON.stringify(lista));
+  renderEvidencias(cat);
+  actualizarContadores();
+}
+
+function actualizarContadores() {
+  CATEGORIAS.forEach(function(cat) {
+    var lista = JSON.parse(localStorage.getItem('ea_evidencias_' + cat) || '[]');
+    var el = document.getElementById('cnt-' + cat);
+    if (el) el.textContent = lista.length;
+  });
+}
+
+function showAlert(id, msg) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg; el.style.display = 'block';
+  setTimeout(function() { el.style.display = 'none'; }, 4000);
+}
+
+// Inicializar
+CATEGORIAS.forEach(function(cat) { renderEvidencias(cat); });
+actualizarContadores();
+
+// Fecha hoy por defecto
+var hoy = new Date().toISOString().split('T')[0];
+CATEGORIAS.forEach(function(cat) {
+  var el = document.getElementById('ev-fecha-' + cat);
+  if (el) el.value = hoy;
+});
+</script>
+</body>
+</html>
