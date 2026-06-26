@@ -23,74 +23,40 @@ body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--gris-claro)
 
 .container { max-width:1100px; margin:0 auto; padding:24px; }
 
-/* Tabs de documentos */
-.docs-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px; }
-.doc-tab { padding:10px 20px; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; border:2px solid var(--borde); background:var(--blanco); color:var(--gris); transition:all .15s; }
-.doc-tab:hover { border-color:var(--verde); color:var(--verde); }
-.doc-tab.active { background:var(--verde); color:#fff; border-color:var(--verde); }
-.doc-tab .badge-pronto { font-size:10px; background:#fef3c7; color:#92400e; padding:2px 6px; border-radius:10px; margin-left:6px; font-weight:500; }
+.seccion-titulo { font-size:13px; font-weight:700; color:var(--azul-marino); text-transform:uppercase; letter-spacing:.8px; margin:28px 0 14px; padding-bottom:8px; border-bottom:2px solid var(--borde); }
+.seccion-titulo:first-child { margin-top:0; }
 
-/* Sección de documento */
-.doc-section { display:none; }
-.doc-section.active { display:block; }
+.docs-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; margin-bottom:8px; }
 
-.panel { background:var(--blanco); border-radius:12px; border:1px solid var(--borde); margin-bottom:20px; }
-.panel-header { padding:18px 22px; border-bottom:1px solid var(--borde); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
-.panel-header h3 { font-size:16px; font-weight:600; }
-.panel-body { padding:22px; }
-
-.form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
-.form-row-1 { display:grid; grid-template-columns:1fr; gap:16px; margin-bottom:16px; }
-.form-field label { display:block; font-size:13px; font-weight:600; margin-bottom:5px; color:var(--azul-marino); }
-.form-field input, .form-field select, .form-field textarea {
-  width:100%; padding:10px 12px; border:1.5px solid var(--borde); border-radius:8px;
-  font-size:14px; outline:none; font-family:inherit;
+.doc-card {
+  background:var(--blanco); border-radius:12px; border:1.5px solid var(--borde);
+  padding:20px; cursor:pointer; transition:all .18s;
+  display:flex; flex-direction:column; gap:10px;
 }
-.form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color:var(--verde); }
-.form-field .hint { font-size:11px; color:var(--gris); margin-top:4px; font-style:italic; }
+.doc-card:hover { border-color:var(--verde); box-shadow:0 4px 16px rgba(26,122,74,.1); transform:translateY(-2px); }
+.doc-card.pronto { cursor:default; opacity:.7; }
+.doc-card.pronto:hover { transform:none; box-shadow:none; border-color:var(--borde); }
 
-.btn-primary { padding:11px 22px; background:var(--verde); color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; }
-.btn-primary:hover { background:var(--verde-claro); }
-.btn-secondary { padding:11px 22px; background:transparent; color:var(--gris); border:1.5px solid var(--borde); border-radius:8px; font-size:14px; cursor:pointer; margin-right:8px; }
-.btn-imprimir { padding:10px 20px; background:var(--azul-medio); color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; }
+.doc-card-top { display:flex; align-items:center; gap:12px; }
+.doc-icon { width:42px; height:42px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+.doc-icon.verde { background:var(--verde-bg); }
+.doc-icon.azul { background:#dbeafe; }
+.doc-icon.amarillo { background:#fef3c7; }
+.doc-icon.rojo { background:#fee2e2; }
+.doc-icon.gris { background:#f3f4f6; }
+.doc-icon.morado { background:#ede9fe; }
 
-.alert { padding:12px 16px; border-radius:8px; font-size:14px; margin-bottom:16px; display:none; }
-.alert-success { background:#d1fae5; color:#065f46; border:1px solid #a7f3d0; }
-.alert-error { background:#fee2e2; color:#991b1b; border:1px solid #fecaca; }
+.doc-nombre { font-size:15px; font-weight:700; color:var(--azul-marino); }
+.doc-sigla { font-size:11px; color:var(--gris); font-weight:600; }
+.doc-desc { font-size:12px; color:var(--gris); line-height:1.5; }
 
-/* Sección dentro del PEC */
-.pec-seccion {
-  border:1px solid var(--borde); border-radius:10px; margin-bottom:16px; overflow:hidden;
-}
-.pec-seccion-header {
-  background:var(--azul-marino); color:#fff; padding:12px 18px;
-  display:flex; align-items:center; justify-content:space-between; cursor:pointer;
-}
-.pec-seccion-header h4 { font-size:14px; font-weight:600; }
-.pec-seccion-header .toggle { font-size:18px; }
-.pec-seccion-body { padding:18px; display:none; }
-.pec-seccion-body.open { display:block; }
+.doc-footer { display:flex; align-items:center; justify-content:space-between; margin-top:4px; }
+.badge-listo { background:#d1fae5; color:#065f46; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:600; }
+.badge-pronto { background:#fef3c7; color:#92400e; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:600; }
+.btn-abrir { padding:6px 14px; background:var(--verde); color:#fff; border:none; border-radius:7px; font-size:12px; font-weight:600; cursor:pointer; }
+.btn-abrir:hover { background:var(--verde-claro); }
 
-/* Progreso */
-.progreso-bar { background:#f3f4f6; border-radius:20px; height:8px; margin-bottom:20px; overflow:hidden; }
-.progreso-fill { background:var(--verde); height:100%; border-radius:20px; transition:width .3s; }
-.progreso-label { font-size:12px; color:var(--gris); margin-bottom:6px; }
-
-/* Índice del PEC */
-.pec-indice { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; margin-bottom:24px; }
-.pec-indice-item { padding:12px 16px; border:1.5px solid var(--borde); border-radius:8px; cursor:pointer; transition:all .15s; font-size:13px; display:flex; align-items:center; gap:8px; }
-.pec-indice-item:hover { border-color:var(--verde); background:var(--verde-bg); }
-.pec-indice-item.completado { border-color:var(--verde); background:var(--verde-bg); color:var(--verde); }
-.pec-indice-item .check { font-size:16px; }
-
-/* Próximamente */
-.pronto-card { background:var(--blanco); border-radius:12px; border:2px dashed var(--borde); padding:48px 24px; text-align:center; }
-.pronto-card .icon { font-size:48px; margin-bottom:16px; }
-.pronto-card h3 { font-size:18px; font-weight:700; color:var(--azul-marino); margin-bottom:8px; }
-.pronto-card p { color:var(--gris); font-size:14px; }
-
-@media (max-width:768px) { .form-row { grid-template-columns:1fr; } .container { padding:16px; } }
-@media print { .header, .docs-tabs, .btn-primary, .btn-secondary, .btn-imprimir, .no-print { display:none !important; } .panel { border:none; } body { background:#fff; } }
+@media (max-width:600px) { .docs-grid { grid-template-columns:1fr; } .container { padding:16px; } }
 </style>
 </head>
 <body>
@@ -103,614 +69,170 @@ body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--gris-claro)
       <p>EduActiva 360 · MINERD</p>
     </div>
   </div>
-  <a href="dashboard.html" class="btn-back">← Volver al Dashboard</a>
+  <a href="dashboard.html" class="btn-back">← Dashboard</a>
 </div>
 
 <div class="container">
 
-  <!-- TABS -->
-  <div class="docs-tabs">
-    <div class="doc-tab active" onclick="mostrarDoc('pec')">📘 PEC</div>
-    <div class="doc-tab" onclick="mostrarDoc('poa')">📗 POA <span class="badge-pronto">Próximo</span></div>
-    <div class="doc-tab" onclick="mostrarDoc('plan-mejora')">📙 Plan de Mejora <span class="badge-pronto">Próximo</span></div>
-    <div class="doc-tab" onclick="mostrarDoc('acta')">📝 Actas <span class="badge-pronto">Próximo</span></div>
-    <div class="doc-tab" onclick="mostrarDoc('informe')">📊 Informes <span class="badge-pronto">Próximo</span></div>
-    <div class="doc-tab" onclick="mostrarDoc('cronograma')">📅 Cronograma <span class="badge-pronto">Próximo</span></div>
+  <!-- GESTIÓN INSTITUCIONAL -->
+  <div class="seccion-titulo">📋 Gestión Institucional</div>
+  <div class="docs-grid">
+
+    <div class="doc-card" onclick="window.open('pec.html','_blank')">
+      <div class="doc-card-top">
+        <div class="doc-icon verde">📘</div>
+        <div><div class="doc-nombre">Proyecto Educativo de Centro</div><div class="doc-sigla">PEC</div></div>
+      </div>
+      <div class="doc-desc">Documento rector del centro. Define la identidad, prioridades, objetivos y estrategias de la comunidad educativa.</div>
+      <div class="doc-footer"><span class="badge-listo">✅ Disponible</span><button class="btn-abrir">Abrir</button></div>
+    </div>
+
+    <div class="doc-card" onclick="window.open('poa.html','_blank')">
+      <div class="doc-card-top">
+        <div class="doc-icon azul">📗</div>
+        <div><div class="doc-nombre">Plan Operativo Anual</div><div class="doc-sigla">POA</div></div>
+      </div>
+      <div class="doc-desc">Operativiza el PEC. Define actividades, metas, indicadores, responsables y presupuesto por eje estratégico alineado al PEI MINERD.</div>
+      <div class="doc-footer"><span class="badge-listo">✅ Disponible</span><button class="btn-abrir">Abrir</button></div>
+    </div>
+
+    <div class="doc-card pronto">
+      <div class="doc-card-top">
+        <div class="doc-icon amarillo">📙</div>
+        <div><div class="doc-nombre">Plan de Mejora</div><div class="doc-sigla">PM</div></div>
+      </div>
+      <div class="doc-desc">Instrumento para identificar áreas de mejora y establecer acciones correctivas basadas en la autoevaluación institucional.</div>
+      <div class="doc-footer"><span class="badge-pronto">🔜 Próximamente</span></div>
+    </div>
+
+    <div class="doc-card pronto">
+      <div class="doc-card-top">
+        <div class="doc-icon gris">📐</div>
+        <div><div class="doc-nombre">Proyecto Curricular de Centro</div><div class="doc-sigla">PCC</div></div>
+      </div>
+      <div class="doc-desc">Adecuación del currículo nacional a las necesidades específicas del centro y su contexto comunitario.</div>
+      <div class="doc-footer"><span class="badge-pronto">🔜 Próximamente</span></div>
+    </div>
+
+    <div class="doc-card pronto">
+      <div class="doc-card-top">
+        <div class="doc-icon rojo">📜</div>
+        <div><div class="doc-nombre">Reglamento Interno</div><div class="doc-sigla">RI</div></div>
+      </div>
+      <div class="doc-desc">Normas de funcionamiento interno del centro: derechos, deberes, sanciones y procedimientos.</div>
+      <div class="doc-footer"><span class="badge-pronto">🔜 Próximamente</span></div>
+    </div>
+
+    <div class="doc-card pronto">
+      <div class="doc-card-top">
+        <div class="doc-icon morado">🤝</div>
+        <div><div class="doc-nombre">Manual de Convivencia</div><div class="doc-sigla">MC</div></div>
+      </div>
+      <div class="doc-desc">Protocolos de convivencia escolar, resolución de conflictos y participación de la comunidad educativa.</div>
+      <div class="doc-footer"><span class="badge-pronto">🔜 Próximamente</span></div>
+    </div>
+
   </div>
 
-  <!-- PEC -->
-  <div id="doc-pec" class="doc-section active">
+  <!-- ACTAS E INFORMES -->
+  <div class="seccion-titulo">📝 Actas e Informes</div>
+  <div class="docs-grid">
 
-    <div class="panel no-print">
-      <div class="panel-header">
-        <h3>📘 Proyecto Educativo de Centro (PEC)</h3>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="btn-imprimir" onclick="imprimirPEC()">🖨️ Imprimir / PDF</button>
-          <button class="btn-primary" onclick="guardarPEC()">💾 Guardar</button>
-          <button class="btn-secondary" onclick="limpiarPEC()">🆕 Nuevo</button>
-        </div>
+    <div class="doc-card pronto">
+      <div class="doc-card-top">
+        <div class="doc-icon azul">📝</div>
+        <div><div class="doc-nombre">Acta de Reunión</div><div class="doc-sigla">Acta</div></div>
       </div>
-      <div class="panel-body">
-        <div class="alert alert-success" id="pec-success"></div>
-        <div class="alert alert-error" id="pec-error"></div>
-
-        <div class="progreso-label" id="pec-progreso-label">Progreso: 0 de 8 secciones completadas</div>
-        <div class="progreso-bar"><div class="progreso-fill" id="pec-progreso-fill" style="width:0%"></div></div>
-
-        <!-- Índice rápido -->
-        <div class="pec-indice" id="pec-indice">
-          <div class="pec-indice-item" id="idx-1" onclick="irSeccion('pec-s1')"><span class="check">⬜</span> I. Identificación</div>
-          <div class="pec-indice-item" id="idx-2" onclick="irSeccion('pec-s2')"><span class="check">⬜</span> II. Diagnóstico</div>
-          <div class="pec-indice-item" id="idx-3" onclick="irSeccion('pec-s3')"><span class="check">⬜</span> III. Identidad</div>
-          <div class="pec-indice-item" id="idx-4" onclick="irSeccion('pec-s4')"><span class="check">⬜</span> IV. Prioridades</div>
-          <div class="pec-indice-item" id="idx-5" onclick="irSeccion('pec-s5')"><span class="check">⬜</span> V. Objetivos</div>
-          <div class="pec-indice-item" id="idx-6" onclick="irSeccion('pec-s6')"><span class="check">⬜</span> VI. Estrategias</div>
-          <div class="pec-indice-item" id="idx-7" onclick="irSeccion('pec-s7')"><span class="check">⬜</span> VII. Evaluación</div>
-          <div class="pec-indice-item" id="idx-8" onclick="irSeccion('pec-s8')"><span class="check">⬜</span> VIII. Firmas</div>
-        </div>
-      </div>
+      <div class="doc-desc">Generador de actas oficiales de reuniones del equipo docente, APMAE, Consejo de Gestión y Consejo Escolar.</div>
+      <div class="doc-footer"><span class="badge-pronto">🔜 Próximamente</span></div>
     </div>
 
-    <!-- SECCIÓN I: Identificación -->
-    <div class="panel" id="pec-s1">
-      <div class="pec-seccion-header panel-header" onclick="toggleSeccion('pec-s1-body')">
-        <h3>I. Identificación del Centro Educativo</h3>
-        <span class="toggle">▼</span>
+    <div class="doc-card pronto">
+      <div class="doc-card-top">
+        <div class="doc-icon verde">📊</div>
+        <div><div class="doc-nombre">Informe Trimestral</div><div class="doc-sigla">IT</div></div>
       </div>
-      <div class="pec-seccion-body open panel-body" id="pec-s1-body">
-        <div class="form-row">
-          <div class="form-field"><label>Nombre del centro educativo</label><input type="text" id="pec-nombre-centro" placeholder="Nombre oficial del centro" oninput="actualizarProgreso()"></div>
-          <div class="form-field"><label>Código del centro (SIGERD)</label><input type="text" id="pec-codigo" placeholder="Código asignado por MINERD"></div>
-        </div>
-        <div class="form-row">
-          <div class="form-field"><label>Dirección</label><input type="text" id="pec-direccion" placeholder="Calle, sector, municipio, provincia"></div>
-          <div class="form-field"><label>Teléfono</label><input type="text" id="pec-telefono" placeholder="809-000-0000"></div>
-        </div>
-        <div class="form-row">
-          <div class="form-field"><label>Correo institucional</label><input type="email" id="pec-correo" placeholder="centro@minerd.edu.do"></div>
-          <div class="form-field"><label>Distrito educativo</label><input type="text" id="pec-distrito" placeholder="Ej: Distrito 10-03"></div>
-        </div>
-        <div class="form-row">
-          <div class="form-field"><label>Regional educativa</label><input type="text" id="pec-regional" placeholder="Ej: Regional 10 Santo Domingo"></div>
-          <div class="form-field"><label>Zona</label>
-            <select id="pec-zona">
-              <option value="">Seleccionar...</option>
-              <option>Urbana</option><option>Rural</option><option>Fronteriza</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-field"><label>Niveles que ofrece</label>
-            <select id="pec-niveles" multiple style="height:90px;">
-              <option>Inicial</option><option>Primaria</option><option>Secundaria</option>
-              <option>Adultos</option><option>Técnico-Profesional</option>
-            </select>
-            <div class="hint">Mantén Ctrl para seleccionar varios</div>
-          </div>
-          <div class="form-field"><label>Modalidad</label>
-            <select id="pec-modalidad">
-              <option value="">Seleccionar...</option>
-              <option>Jornada Regular</option><option>Jornada Extendida</option><option>Tanda Matutina</option>
-              <option>Tanda Vespertina</option><option>Tanda Nocturna</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-field"><label>Director(a)</label><input type="text" id="pec-director" placeholder="Nombre completo del director(a)"></div>
-          <div class="form-field"><label>Año escolar del PEC</label><input type="text" id="pec-anio" placeholder="Ej: 2026-2027"></div>
-        </div>
-        <div class="form-row">
-          <div class="form-field"><label>Total de estudiantes matriculados</label><input type="number" id="pec-total-est" placeholder="Número total"></div>
-          <div class="form-field"><label>Total de docentes</label><input type="number" id="pec-total-doc" placeholder="Número total"></div>
-        </div>
-      </div>
+      <div class="doc-desc">Informe de gestión pedagógica y administrativa del trimestre para presentar al Distrito Educativo.</div>
+      <div class="doc-footer"><span class="badge-pronto">🔜 Próximamente</span></div>
     </div>
 
-    <!-- SECCIÓN II: Diagnóstico -->
-    <div class="panel" id="pec-s2">
-      <div class="pec-seccion-header panel-header" onclick="toggleSeccion('pec-s2-body')">
-        <h3>II. Diagnóstico del Centro</h3>
-        <span class="toggle">▼</span>
+    <div class="doc-card pronto">
+      <div class="doc-card-top">
+        <div class="doc-icon amarillo">📈</div>
+        <div><div class="doc-nombre">Informe Anual de Gestión</div><div class="doc-sigla">IAG</div></div>
       </div>
-      <div class="pec-seccion-body panel-body" id="pec-s2-body">
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Contexto comunitario y social</label>
-            <textarea id="pec-contexto" rows="4" placeholder="Describe las características de la comunidad donde está ubicado el centro: nivel socioeconómico, servicios disponibles, problemáticas sociales relevantes..." oninput="actualizarProgreso()"></textarea>
-          </div>
-        </div>
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Fortalezas del centro</label>
-            <textarea id="pec-fortalezas" rows="4" placeholder="¿Qué hace bien el centro? Recursos humanos, infraestructura, logros académicos, participación familiar..."></textarea>
-          </div>
-        </div>
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Debilidades identificadas</label>
-            <textarea id="pec-debilidades" rows="4" placeholder="Áreas de mejora: bajo rendimiento en alguna asignatura, falta de recursos, infraestructura, clima escolar..."></textarea>
-          </div>
-        </div>
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Oportunidades del entorno</label>
-            <textarea id="pec-oportunidades" rows="3" placeholder="Instituciones aliadas, programas disponibles, recursos de la comunidad que pueden apoyar al centro..."></textarea>
-          </div>
-        </div>
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Amenazas o factores externos</label>
-            <textarea id="pec-amenazas" rows="3" placeholder="Factores externos que pueden afectar negativamente al centro: inseguridad, migración, pobreza, problemas de infraestructura vial..."></textarea>
-          </div>
-        </div>
-      </div>
+      <div class="doc-desc">Memoria institucional anual con logros, estadísticas, rendición de cuentas y proyecciones.</div>
+      <div class="doc-footer"><span class="badge-pronto">🔜 Próximamente</span></div>
     </div>
 
-    <!-- SECCIÓN III: Identidad -->
-    <div class="panel" id="pec-s3">
-      <div class="pec-seccion-header panel-header" onclick="toggleSeccion('pec-s3-body')">
-        <h3>III. Identidad del Centro</h3>
-        <span class="toggle">▼</span>
+    <div class="doc-card pronto">
+      <div class="doc-card-top">
+        <div class="doc-icon rojo">📅</div>
+        <div><div class="doc-nombre">Cronograma Institucional</div><div class="doc-sigla">CI</div></div>
       </div>
-      <div class="pec-seccion-body panel-body" id="pec-s3-body">
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Misión</label>
-            <textarea id="pec-mision" rows="4" placeholder="¿Cuál es el propósito fundamental del centro? ¿A quién sirve y cómo lo hace?" oninput="actualizarProgreso()"></textarea>
-          </div>
-        </div>
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Visión</label>
-            <textarea id="pec-vision" rows="4" placeholder="¿Cómo quiere verse el centro en el futuro? ¿Qué aspira lograr en los próximos años?"></textarea>
-          </div>
-        </div>
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Valores institucionales</label>
-            <textarea id="pec-valores" rows="3" placeholder="Ej: Respeto, solidaridad, excelencia académica, inclusión, honestidad, responsabilidad..."></textarea>
-          </div>
-        </div>
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Principios pedagógicos que orientan la práctica docente</label>
-            <textarea id="pec-principios" rows="3" placeholder="Ej: Aprendizaje centrado en el estudiante, educación inclusiva, enfoque por competencias..."></textarea>
-          </div>
-        </div>
-      </div>
+      <div class="doc-desc">Calendario de actividades del centro alineado al calendario escolar MINERD 2026-2027.</div>
+      <div class="doc-footer"><span class="badge-pronto">🔜 Esperando MINERD</span></div>
     </div>
 
-    <!-- SECCIÓN IV: Prioridades -->
-    <div class="panel" id="pec-s4">
-      <div class="pec-seccion-header panel-header" onclick="toggleSeccion('pec-s4-body')">
-        <h3>IV. Prioridades Educativas</h3>
-        <span class="toggle">▼</span>
-      </div>
-      <div class="pec-seccion-body panel-body" id="pec-s4-body">
-        <p style="font-size:13px;color:var(--gris);margin-bottom:16px;">Identifica las principales necesidades y prioridades del centro para el año escolar.</p>
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Prioridad 1 — Área académica / curricular</label>
-            <textarea id="pec-prior1" rows="3" placeholder="Ej: Mejorar los niveles de lecto-escritura en el primer ciclo del nivel primario..." oninput="actualizarProgreso()"></textarea>
-          </div>
-        </div>
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Prioridad 2 — Gestión institucional</label>
-            <textarea id="pec-prior2" rows="3" placeholder="Ej: Fortalecer la participación de la familia en los procesos educativos..."></textarea>
-          </div>
-        </div>
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Prioridad 3 — Convivencia y clima escolar</label>
-            <textarea id="pec-prior3" rows="3" placeholder="Ej: Reducir los casos de conflicto entre estudiantes mediante programas de mediación..."></textarea>
-          </div>
-        </div>
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Prioridad 4 — Infraestructura y recursos</label>
-            <textarea id="pec-prior4" rows="3" placeholder="Ej: Gestionar la dotación de recursos tecnológicos para el aula de informática..."></textarea>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SECCIÓN V: Objetivos -->
-    <div class="panel" id="pec-s5">
-      <div class="pec-seccion-header panel-header" onclick="toggleSeccion('pec-s5-body')">
-        <h3>V. Objetivos Estratégicos</h3>
-        <span class="toggle">▼</span>
-      </div>
-      <div class="pec-seccion-body panel-body" id="pec-s5-body">
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Objetivo general del PEC</label>
-            <textarea id="pec-obj-general" rows="3" placeholder="Ej: Mejorar la calidad educativa del centro mediante la implementación de estrategias pedagógicas innovadoras y la participación activa de toda la comunidad educativa..." oninput="actualizarProgreso()"></textarea>
-          </div>
-        </div>
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Objetivo específico 1</label>
-            <textarea id="pec-obj1" rows="2" placeholder="Relacionado con la prioridad 1 identificada..."></textarea>
-          </div>
-        </div>
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Objetivo específico 2</label>
-            <textarea id="pec-obj2" rows="2" placeholder="Relacionado con la prioridad 2 identificada..."></textarea>
-          </div>
-        </div>
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Objetivo específico 3</label>
-            <textarea id="pec-obj3" rows="2" placeholder="Relacionado con la prioridad 3 identificada..."></textarea>
-          </div>
-        </div>
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Objetivo específico 4</label>
-            <textarea id="pec-obj4" rows="2" placeholder="Relacionado con la prioridad 4 identificada..."></textarea>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SECCIÓN VI: Estrategias -->
-    <div class="panel" id="pec-s6">
-      <div class="pec-seccion-header panel-header" onclick="toggleSeccion('pec-s6-body')">
-        <h3>VI. Estrategias y Acciones</h3>
-        <span class="toggle">▼</span>
-      </div>
-      <div class="pec-seccion-body panel-body" id="pec-s6-body">
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Estrategias pedagógicas</label>
-            <textarea id="pec-estr-ped" rows="4" placeholder="¿Qué estrategias de enseñanza-aprendizaje implementará el centro? Trabajo cooperativo, aprendizaje basado en proyectos, tutorías entre pares..." oninput="actualizarProgreso()"></textarea>
-          </div>
-        </div>
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Estrategias de gestión institucional</label>
-            <textarea id="pec-estr-gest" rows="4" placeholder="¿Cómo se organizará el centro para alcanzar los objetivos? Reuniones de equipos docentes, jornadas de planificación, uso de tecnología..."></textarea>
-          </div>
-        </div>
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Estrategias de participación familiar y comunitaria</label>
-            <textarea id="pec-estr-fam" rows="4" placeholder="¿Cómo se involucrarán las familias y la comunidad? Escuelas de padres, actividades culturales, alianzas con instituciones..."></textarea>
-          </div>
-        </div>
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Recursos necesarios</label>
-            <textarea id="pec-recursos" rows="3" placeholder="Materiales, equipos, personal, capacitaciones necesarias para implementar las estrategias..."></textarea>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-field">
-            <label>Responsables principales</label>
-            <input type="text" id="pec-responsables" placeholder="Director(a), coordinadores, docentes...">
-          </div>
-          <div class="form-field">
-            <label>Período de ejecución</label>
-            <input type="text" id="pec-periodo" placeholder="Ej: Agosto 2026 — Julio 2027">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SECCIÓN VII: Evaluación -->
-    <div class="panel" id="pec-s7">
-      <div class="pec-seccion-header panel-header" onclick="toggleSeccion('pec-s7-body')">
-        <h3>VII. Seguimiento y Evaluación del PEC</h3>
-        <span class="toggle">▼</span>
-      </div>
-      <div class="pec-seccion-body panel-body" id="pec-s7-body">
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Indicadores de logro</label>
-            <textarea id="pec-indicadores" rows="4" placeholder="¿Cómo sabremos si se están alcanzando los objetivos? Porcentaje de aprobación, asistencia, número de actividades realizadas..." oninput="actualizarProgreso()"></textarea>
-          </div>
-        </div>
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Mecanismos de seguimiento</label>
-            <textarea id="pec-seguimiento" rows="3" placeholder="Reuniones de equipo directivo mensual, informes trimestrales, encuestas a la comunidad educativa, visitas al aula..."></textarea>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-field">
-            <label>Frecuencia de evaluación</label>
-            <select id="pec-frecuencia">
-              <option value="">Seleccionar...</option>
-              <option>Mensual</option><option>Trimestral</option><option>Semestral</option><option>Anual</option>
-            </select>
-          </div>
-          <div class="form-field">
-            <label>Responsable del seguimiento</label>
-            <input type="text" id="pec-resp-seguimiento" placeholder="Ej: Equipo de gestión del centro">
-          </div>
-        </div>
-        <div class="form-row-1">
-          <div class="form-field">
-            <label>Criterios de éxito</label>
-            <textarea id="pec-criterios" rows="3" placeholder="¿Cuándo consideraremos que el PEC fue exitoso? ¿Qué resultados mínimos esperamos lograr?"></textarea>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SECCIÓN VIII: Firmas -->
-    <div class="panel" id="pec-s8">
-      <div class="pec-seccion-header panel-header" onclick="toggleSeccion('pec-s8-body')">
-        <h3>VIII. Aprobación y Firmas</h3>
-        <span class="toggle">▼</span>
-      </div>
-      <div class="pec-seccion-body panel-body" id="pec-s8-body">
-        <div class="form-row">
-          <div class="form-field">
-            <label>Lugar y fecha de elaboración</label>
-            <input type="text" id="pec-lugar-fecha" placeholder="Ej: Santo Domingo, agosto de 2026" oninput="actualizarProgreso()">
-          </div>
-          <div class="form-field">
-            <label>Fecha de aprobación del APMAE</label>
-            <input type="date" id="pec-fecha-apmae">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-field">
-            <label>Director(a) del centro</label>
-            <input type="text" id="pec-firma-director" placeholder="Nombre completo">
-          </div>
-          <div class="form-field">
-            <label>Presidente(a) del APMAE</label>
-            <input type="text" id="pec-firma-apmae" placeholder="Nombre completo">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-field">
-            <label>Coordinador(a) pedagógico(a)</label>
-            <input type="text" id="pec-firma-coord" placeholder="Nombre completo">
-          </div>
-          <div class="form-field">
-            <label>Técnico(a) distrital</label>
-            <input type="text" id="pec-firma-tecnico" placeholder="Nombre completo">
-          </div>
-        </div>
-        <div style="background:var(--verde-bg);border:1px solid var(--verde);border-radius:8px;padding:14px;font-size:13px;color:#065f46;margin-top:8px;">
-          💡 El PEC debe ser socializado con toda la comunidad educativa y enviado al Distrito Educativo correspondiente para su revisión y aprobación.
-        </div>
-      </div>
-    </div>
-
-  </div><!-- fin doc-pec -->
-
-  <!-- POA - Próximamente -->
-  <div id="doc-poa" class="doc-section">
-    <div class="pronto-card">
-      <div class="icon">📗</div>
-      <h3>Plan Operativo Anual (POA)</h3>
-      <p>Este módulo estará disponible próximamente.<br>Incluirá el formulario completo del POA alineado al PEC del centro.</p>
-    </div>
   </div>
 
-  <!-- PLAN DE MEJORA -->
-  <div id="doc-plan-mejora" class="doc-section">
-    <div class="pronto-card">
-      <div class="icon">📙</div>
-      <h3>Plan de Mejora</h3>
-      <p>Este módulo estará disponible próximamente.<br>Incluirá el instrumento de autoevaluación y el plan de mejora continua.</p>
+  <!-- SUPERVISIÓN PEDAGÓGICA -->
+  <div class="seccion-titulo">🔍 Supervisión Pedagógica</div>
+  <div class="docs-grid">
+
+    <div class="doc-card pronto">
+      <div class="doc-card-top">
+        <div class="doc-icon verde">👁️</div>
+        <div><div class="doc-nombre">Plan de Acompañamiento Docente</div><div class="doc-sigla">PAD</div></div>
+      </div>
+      <div class="doc-desc">Planificación del acompañamiento a la práctica pedagógica de los docentes del centro.</div>
+      <div class="doc-footer"><span class="badge-pronto">🔜 Próximamente</span></div>
     </div>
+
+    <div class="doc-card pronto">
+      <div class="doc-card-top">
+        <div class="doc-icon azul">✔️</div>
+        <div><div class="doc-nombre">Instrumento de Observación de Clase</div><div class="doc-sigla">IOC</div></div>
+      </div>
+      <div class="doc-desc">Lista de cotejo y rúbrica para la observación sistemática de la práctica docente en el aula.</div>
+      <div class="doc-footer"><span class="badge-pronto">🔜 Próximamente</span></div>
+    </div>
+
+    <div class="doc-card pronto">
+      <div class="doc-card-top">
+        <div class="doc-icon amarillo">🔄</div>
+        <div><div class="doc-nombre">Plan de Recuperación Pedagógica</div><div class="doc-sigla">PRP</div></div>
+      </div>
+      <div class="doc-desc">Estrategias de reforzamiento para estudiantes que no alcanzaron los indicadores de logro esperados.</div>
+      <div class="doc-footer"><span class="badge-pronto">🔜 Próximamente</span></div>
+    </div>
+
   </div>
 
-  <!-- ACTAS -->
-  <div id="doc-acta" class="doc-section">
-    <div class="pronto-card">
-      <div class="icon">📝</div>
-      <h3>Actas de Reunión</h3>
-      <p>Este módulo estará disponible próximamente.<br>Generará actas oficiales de reuniones del equipo docente, APMAE y Consejo Escolar.</p>
+  <!-- CONVIVENCIA E INCLUSIÓN -->
+  <div class="seccion-titulo">🤝 Convivencia e Inclusión</div>
+  <div class="docs-grid">
+
+    <div class="doc-card pronto">
+      <div class="doc-card-top">
+        <div class="doc-icon morado">🕊️</div>
+        <div><div class="doc-nombre">Plan de Convivencia Escolar</div><div class="doc-sigla">PCE</div></div>
+      </div>
+      <div class="doc-desc">Protocolos de actuación, registro de incidencias y estrategias de mediación y resolución de conflictos.</div>
+      <div class="doc-footer"><span class="badge-pronto">🔜 Próximamente</span></div>
     </div>
+
+    <div class="doc-card pronto">
+      <div class="doc-card-top">
+        <div class="doc-icon verde">♿</div>
+        <div><div class="doc-nombre">Plan Individualizado de Apoyo</div><div class="doc-sigla">PIA</div></div>
+      </div>
+      <div class="doc-desc">Instrumento para estudiantes con necesidades específicas de apoyo educativo (NEE). Adecuaciones curriculares individualizadas.</div>
+      <div class="doc-footer"><span class="badge-pronto">🔜 Próximamente</span></div>
+    </div>
+
   </div>
 
-  <!-- INFORMES -->
-  <div id="doc-informe" class="doc-section">
-    <div class="pronto-card">
-      <div class="icon">📊</div>
-      <h3>Informes de Gestión</h3>
-      <p>Este módulo estará disponible próximamente.<br>Incluirá informes trimestrales y anuales de gestión del centro.</p>
-    </div>
-  </div>
-
-  <!-- CRONOGRAMA -->
-  <div id="doc-cronograma" class="doc-section">
-    <div class="pronto-card">
-      <div class="icon">📅</div>
-      <h3>Cronograma de Actividades</h3>
-      <p>Este módulo estará disponible cuando el MINERD publique el calendario oficial 2026-2027.</p>
-    </div>
-  </div>
-
-</div><!-- fin container -->
-
-<script>
-// ====== TABS ======
-function mostrarDoc(id) {
-  document.querySelectorAll('.doc-section').forEach(function(s) { s.classList.remove('active'); });
-  document.querySelectorAll('.doc-tab').forEach(function(t) { t.classList.remove('active'); });
-  document.getElementById('doc-' + id).classList.add('active');
-  event.currentTarget.classList.add('active');
-}
-
-// ====== TOGGLE SECCIONES ======
-function toggleSeccion(id) {
-  var body = document.getElementById(id);
-  body.classList.toggle('open');
-}
-function irSeccion(id) {
-  var seccion = document.getElementById(id);
-  if (seccion) {
-    var bodyId = id + '-body';
-    var body = document.getElementById(bodyId);
-    if (body) body.classList.add('open');
-    seccion.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-}
-
-// ====== CAMPOS DEL PEC ======
-var CAMPOS_PEC = [
-  'pec-nombre-centro', 'pec-contexto', 'pec-mision',
-  'pec-prior1', 'pec-obj-general', 'pec-estr-ped',
-  'pec-indicadores', 'pec-lugar-fecha'
-];
-
-function actualizarProgreso() {
-  var completados = 0;
-  CAMPOS_PEC.forEach(function(id, i) {
-    var el = document.getElementById(id);
-    var lleno = el && el.value.trim().length > 10;
-    completados += lleno ? 1 : 0;
-    var idx = document.getElementById('idx-' + (i+1));
-    if (idx) {
-      idx.classList.toggle('completado', lleno);
-      idx.querySelector('.check').textContent = lleno ? '✅' : '⬜';
-    }
-  });
-  var pct = Math.round((completados / CAMPOS_PEC.length) * 100);
-  document.getElementById('pec-progreso-fill').style.width = pct + '%';
-  document.getElementById('pec-progreso-label').textContent = 'Progreso: ' + completados + ' de ' + CAMPOS_PEC.length + ' secciones completadas (' + pct + '%)';
-}
-
-// ====== GUARDAR ======
-var PEC_FIELDS = ['pec-nombre-centro','pec-codigo','pec-direccion','pec-telefono','pec-correo','pec-distrito','pec-regional','pec-zona','pec-modalidad','pec-director','pec-anio','pec-total-est','pec-total-doc','pec-contexto','pec-fortalezas','pec-debilidades','pec-oportunidades','pec-amenazas','pec-mision','pec-vision','pec-valores','pec-principios','pec-prior1','pec-prior2','pec-prior3','pec-prior4','pec-obj-general','pec-obj1','pec-obj2','pec-obj3','pec-obj4','pec-estr-ped','pec-estr-gest','pec-estr-fam','pec-recursos','pec-responsables','pec-periodo','pec-indicadores','pec-seguimiento','pec-frecuencia','pec-resp-seguimiento','pec-criterios','pec-lugar-fecha','pec-fecha-apmae','pec-firma-director','pec-firma-apmae','pec-firma-coord','pec-firma-tecnico'];
-
-function guardarPEC() {
-  var data = {};
-  PEC_FIELDS.forEach(function(id) { var el = document.getElementById(id); if (el) data[id] = el.value; });
-  data['pec-niveles'] = Array.from(document.getElementById('pec-niveles').selectedOptions).map(function(o){return o.value;}).join(', ');
-  localStorage.setItem('ea_pec', JSON.stringify(data));
-  showAlert('pec-success', '✅ PEC guardado correctamente. Los datos se mantendrán en este dispositivo.');
-  actualizarProgreso();
-}
-
-function cargarPEC() {
-  var data = JSON.parse(localStorage.getItem('ea_pec') || '{}');
-  PEC_FIELDS.forEach(function(id) {
-    var el = document.getElementById(id);
-    if (el && data[id] !== undefined) el.value = data[id];
-  });
-  // Niveles select múltiple
-  if (data['pec-niveles']) {
-    var niveles = data['pec-niveles'].split(', ');
-    Array.from(document.getElementById('pec-niveles').options).forEach(function(opt) {
-      opt.selected = niveles.includes(opt.value);
-    });
-  }
-  actualizarProgreso();
-}
-
-function limpiarPEC() {
-  if (!confirm('¿Limpiar todos los campos del PEC? Los datos no guardados se perderán.')) return;
-  PEC_FIELDS.forEach(function(id) { var el = document.getElementById(id); if (el) el.value = ''; });
-  localStorage.removeItem('ea_pec');
-  actualizarProgreso();
-}
-
-// ====== IMPRIMIR ======
-function imprimirPEC() {
-  guardarPEC();
-  var data = JSON.parse(localStorage.getItem('ea_pec') || '{}');
-  var centro = data['pec-nombre-centro'] || '—';
-  var w = window.open('', '_blank');
-  w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
-<title>PEC - ${centro}</title>
-<style>
-body{font-family:Arial,sans-serif;padding:30px;color:#111;font-size:13px;}
-h1{color:#1a7a4a;font-size:20px;margin-bottom:4px;}
-h2{font-size:13px;color:#666;margin-bottom:24px;}
-h3{background:#0f2d4a;color:#fff;padding:8px 12px;font-size:13px;margin:20px 0 10px;}
-table{width:100%;border-collapse:collapse;margin-bottom:12px;}
-td{padding:8px;border:1px solid #ddd;vertical-align:top;}
-.label{font-weight:bold;background:#f9f9f9;width:200px;}
-.content-block{border:1px solid #ddd;padding:10px;margin-bottom:10px;min-height:60px;}
-.firma-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:30px;}
-.firma-box{border-top:1px solid #333;padding-top:8px;text-align:center;font-size:12px;}
-@media print{body{padding:15px;}}
-</style></head><body>
-<h1>🎓 PROYECTO EDUCATIVO DE CENTRO (PEC)</h1>
-<h2>Sistema de Gestión Educativa EduActiva 360 · República Dominicana · MINERD</h2>
-
-<h3>I. IDENTIFICACIÓN DEL CENTRO EDUCATIVO</h3>
-<table>
-<tr><td class="label">Nombre del centro</td><td>${data['pec-nombre-centro']||'—'}</td><td class="label">Código SIGERD</td><td>${data['pec-codigo']||'—'}</td></tr>
-<tr><td class="label">Dirección</td><td>${data['pec-direccion']||'—'}</td><td class="label">Teléfono</td><td>${data['pec-telefono']||'—'}</td></tr>
-<tr><td class="label">Correo institucional</td><td>${data['pec-correo']||'—'}</td><td class="label">Distrito</td><td>${data['pec-distrito']||'—'}</td></tr>
-<tr><td class="label">Regional</td><td>${data['pec-regional']||'—'}</td><td class="label">Zona</td><td>${data['pec-zona']||'—'}</td></tr>
-<tr><td class="label">Niveles que ofrece</td><td>${data['pec-niveles']||'—'}</td><td class="label">Modalidad</td><td>${data['pec-modalidad']||'—'}</td></tr>
-<tr><td class="label">Director(a)</td><td>${data['pec-director']||'—'}</td><td class="label">Año escolar</td><td>${data['pec-anio']||'—'}</td></tr>
-<tr><td class="label">Total estudiantes</td><td>${data['pec-total-est']||'—'}</td><td class="label">Total docentes</td><td>${data['pec-total-doc']||'—'}</td></tr>
-</table>
-
-<h3>II. DIAGNÓSTICO DEL CENTRO</h3>
-<p><strong>Contexto comunitario:</strong></p><div class="content-block">${(data['pec-contexto']||'—').replace(/\n/g,'<br>')}</div>
-<p><strong>Fortalezas:</strong></p><div class="content-block">${(data['pec-fortalezas']||'—').replace(/\n/g,'<br>')}</div>
-<p><strong>Debilidades:</strong></p><div class="content-block">${(data['pec-debilidades']||'—').replace(/\n/g,'<br>')}</div>
-<p><strong>Oportunidades:</strong></p><div class="content-block">${(data['pec-oportunidades']||'—').replace(/\n/g,'<br>')}</div>
-<p><strong>Amenazas:</strong></p><div class="content-block">${(data['pec-amenazas']||'—').replace(/\n/g,'<br>')}</div>
-
-<h3>III. IDENTIDAD DEL CENTRO</h3>
-<p><strong>Misión:</strong></p><div class="content-block">${(data['pec-mision']||'—').replace(/\n/g,'<br>')}</div>
-<p><strong>Visión:</strong></p><div class="content-block">${(data['pec-vision']||'—').replace(/\n/g,'<br>')}</div>
-<p><strong>Valores:</strong></p><div class="content-block">${(data['pec-valores']||'—').replace(/\n/g,'<br>')}</div>
-<p><strong>Principios pedagógicos:</strong></p><div class="content-block">${(data['pec-principios']||'—').replace(/\n/g,'<br>')}</div>
-
-<h3>IV. PRIORIDADES EDUCATIVAS</h3>
-<p><strong>Prioridad 1 (Académica):</strong></p><div class="content-block">${(data['pec-prior1']||'—').replace(/\n/g,'<br>')}</div>
-<p><strong>Prioridad 2 (Gestión):</strong></p><div class="content-block">${(data['pec-prior2']||'—').replace(/\n/g,'<br>')}</div>
-<p><strong>Prioridad 3 (Convivencia):</strong></p><div class="content-block">${(data['pec-prior3']||'—').replace(/\n/g,'<br>')}</div>
-<p><strong>Prioridad 4 (Infraestructura):</strong></p><div class="content-block">${(data['pec-prior4']||'—').replace(/\n/g,'<br>')}</div>
-
-<h3>V. OBJETIVOS ESTRATÉGICOS</h3>
-<p><strong>Objetivo general:</strong></p><div class="content-block">${(data['pec-obj-general']||'—').replace(/\n/g,'<br>')}</div>
-<p><strong>Objetivo específico 1:</strong></p><div class="content-block">${(data['pec-obj1']||'—').replace(/\n/g,'<br>')}</div>
-<p><strong>Objetivo específico 2:</strong></p><div class="content-block">${(data['pec-obj2']||'—').replace(/\n/g,'<br>')}</div>
-<p><strong>Objetivo específico 3:</strong></p><div class="content-block">${(data['pec-obj3']||'—').replace(/\n/g,'<br>')}</div>
-<p><strong>Objetivo específico 4:</strong></p><div class="content-block">${(data['pec-obj4']||'—').replace(/\n/g,'<br>')}</div>
-
-<h3>VI. ESTRATEGIAS Y ACCIONES</h3>
-<p><strong>Estrategias pedagógicas:</strong></p><div class="content-block">${(data['pec-estr-ped']||'—').replace(/\n/g,'<br>')}</div>
-<p><strong>Estrategias de gestión:</strong></p><div class="content-block">${(data['pec-estr-gest']||'—').replace(/\n/g,'<br>')}</div>
-<p><strong>Participación familiar y comunitaria:</strong></p><div class="content-block">${(data['pec-estr-fam']||'—').replace(/\n/g,'<br>')}</div>
-<p><strong>Recursos necesarios:</strong></p><div class="content-block">${(data['pec-recursos']||'—').replace(/\n/g,'<br>')}</div>
-<table><tr><td class="label">Responsables</td><td>${data['pec-responsables']||'—'}</td><td class="label">Período</td><td>${data['pec-periodo']||'—'}</td></tr></table>
-
-<h3>VII. SEGUIMIENTO Y EVALUACIÓN</h3>
-<p><strong>Indicadores de logro:</strong></p><div class="content-block">${(data['pec-indicadores']||'—').replace(/\n/g,'<br>')}</div>
-<p><strong>Mecanismos de seguimiento:</strong></p><div class="content-block">${(data['pec-seguimiento']||'—').replace(/\n/g,'<br>')}</div>
-<table><tr><td class="label">Frecuencia</td><td>${data['pec-frecuencia']||'—'}</td><td class="label">Responsable</td><td>${data['pec-resp-seguimiento']||'—'}</td></tr></table>
-<p><strong>Criterios de éxito:</strong></p><div class="content-block">${(data['pec-criterios']||'—').replace(/\n/g,'<br>')}</div>
-
-<h3>VIII. APROBACIÓN</h3>
-<table><tr><td class="label">Lugar y fecha</td><td>${data['pec-lugar-fecha']||'—'}</td><td class="label">Aprobado por APMAE</td><td>${data['pec-fecha-apmae']||'—'}</td></tr></table>
-<div class="firma-row">
-<div class="firma-box"><br><br>_______________________________<br>${data['pec-firma-director']||'Director(a) del Centro'}</div>
-<div class="firma-box"><br><br>_______________________________<br>${data['pec-firma-apmae']||'Presidente(a) del APMAE'}</div>
-<div class="firma-box"><br><br>_______________________________<br>${data['pec-firma-coord']||'Coordinador(a) Pedagógico(a)'}</div>
-<div class="firma-box"><br><br>_______________________________<br>${data['pec-firma-tecnico']||'Técnico(a) Distrital'}</div>
 </div>
-</body></html>`);
-  w.document.close();
-  w.print();
-}
-
-function showAlert(id, msg) {
-  var el = document.getElementById(id);
-  if (!el) return;
-  el.textContent = msg; el.style.display = 'block';
-  setTimeout(function() { el.style.display = 'none'; }, 4000);
-}
-
-// Cargar al iniciar
-cargarPEC();
-</script>
 </body>
 </html>
